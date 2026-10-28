@@ -7,8 +7,8 @@ def request(path,body=None):
  p=subprocess.run(args,input=json.dumps(body).encode() if body is not None else None,capture_output=True)
  data,code=p.stdout.rsplit(b'\n',1)
  return int(code),data
-proof={'deployment':'dpl_7eZGMtMmXQCYUWCr1rAySZYncGta','url':base,'assets':{}}
-for name in ['index.html','siempre-zombie.js','landing-leaderboard.css','leaderboard-config.js','assets/leaderboard-gas-chrome.png','gatling-source-views.js']:
+proof={'deployment':'dpl_8o8z5jsrReEFBWiGNPaGnPgirZfk','url':base,'assets':{}}
+for name in ['index.html','siempre-zombie.js','landing-leaderboard.css','leaderboard-config.js','assets/leaderboard-gas-chrome.png','gatling-source-views.js','source-vivo-compositor.js','balloon-visuals.js','source-glass-projectile.js','new-field-props.js','refill-layout.js','distillery-world.js','assets/moon/nasa-lroc-color-1k.jpg']:
  code,body=request('/'+name)
  proof['assets'][name]={'http':code,'matchesLocal':hashlib.sha256(body).digest()==hashlib.sha256((root/'game'/name).read_bytes()).digest()}
 code,body=request('/api/siempre-zombie/leaderboard')

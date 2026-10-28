@@ -1,6 +1,6 @@
 import fs from 'node:fs';import assert from 'node:assert/strict';
 import * as THREE from '../game/vendor/three.module.min.js';
-import {createCognacGlass} from '../game/assets/weapons/plus-v1/cognac-glass.js';
+import {createSourceGlassProjectiles} from '../game/source-glass-projectile.js';
 const source=fs.readFileSync(new URL('../game/siempre-zombie.js',import.meta.url),'utf8');
 const extract=(start,end)=>source.slice(source.indexOf(start),source.indexOf(end,source.indexOf(start)));
 const GLASS={shot:.05,pour:.62,toss:.34,speed:13,drops:24,range:9,dmg:3.6};let releases=0;
@@ -12,7 +12,7 @@ update(.016,false,-1);assert.equal(game.pourT,GLASS.pour);assert(Math.abs(game.t
 globalThis.innerWidth=1920;globalThis.innerHeight=1080;
 const camera=new THREE.PerspectiveCamera(70,1920/1080,.01,200);camera.position.y=1.6;camera.updateMatrixWorld(true);
 const scene=new THREE.Scene(),thrownGlasses=[],drops={i:0,p:new Float32Array(288),v:new Float32Array(288),life:new Float32Array(96),dmg:new Float32Array(96)};
-const actualScope={THREE,GLASS,game:{glassLevel:1},authoredVM:{muzzle:()=>[1100,600]},vmNdc:new THREE.Vector3(),muzzleW:new THREE.Vector3(),camera,aimPoint:new THREE.Vector3(0,1,-10),tmpV2:new THREE.Vector3(),findAimPoint(){},createCognacGlass,glassMat:new THREE.MeshPhysicalMaterial({transparent:true}),blancoMat:new THREE.MeshBasicMaterial({transparent:true}),player:{yaw:0},scene,thrownGlasses,drops,DMAX:96,rand:(a,b)=>(a+b)/2};
+const actualScope={THREE,GLASS,game:{glassLevel:1},authoredVM:{muzzle:()=>[1100,600]},vmNdc:new THREE.Vector3(),muzzleW:new THREE.Vector3(),camera,aimPoint:new THREE.Vector3(0,1,-10),tmpV2:new THREE.Vector3(),findAimPoint(){},sourceGlassProjectiles:createSourceGlassProjectiles(THREE),glassMat:new THREE.MeshPhysicalMaterial({transparent:true}),blancoMat:new THREE.MeshBasicMaterial({transparent:true}),player:{yaw:0},scene,thrownGlasses,drops,DMAX:96,rand:(a,b)=>(a+b)/2};
 const toss=new Function('scope','with(scope){'+extract('function tossShot(','function setPumpHand(')+';return tossShot;}')(actualScope);toss();
 assert.equal(actualScope.game.glassLevel,0);assert.equal(thrownGlasses.length,1);assert.equal(scene.children.length,1);assert.equal(drops.life.filter(v=>v>0).length,GLASS.drops);
 assert.equal(thrownGlasses[0].m.userData.setLevel instanceof Function,true);assert(thrownGlasses[0].v.length()>10);

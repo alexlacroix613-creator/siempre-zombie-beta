@@ -16,6 +16,10 @@ function setup(href='http://localhost/game/index.html?assetReview'){
  return {context,window,document,location,listeners,frames,scripts,elements,logs,setTime:value=>{now=value;}};
 }
 const resource=setup();resource.listeners.get('error')({target:{tagName:'SCRIPT',src:'http://localhost/game/cylindrical-label.js'}});
+const analytics=setup();analytics.listeners.get('error')({target:{id:'vercel-analytics',tagName:'SCRIPT',src:'http://localhost/_vercel/insights/script.js'}});
+assert.equal(analytics.window.__szLoader.error,undefined,'blocked/unavailable optional analytics never blocks the game');
+analytics.window.__szLoader.done();analytics.frames[0](10000);
+assert.equal(analytics.window.__szLoader.error,undefined,'game startup finishes without analytics');
 assert.match(resource.elements.get('loader-error').textContent,/cylindrical-label\.js/);
 assert.equal(resource.elements.get('loader-error').hidden,false);
 resource.window.__szLoader.done();resource.frames[0](10000);

@@ -1,5 +1,4 @@
 // Source-authored operator variants. Wide glass frames extend real sleeves to viewport edges.
-import {compositeCylinderLabel} from './cylindrical-label.js';
 import {createSourceVivoCompositor,SOURCE_VIVO_REVISION} from './source-vivo-compositor.js';
 import {containSleeveCuts} from './held-frame-layout.js';
 export function createAuthoredWeaponViews(parent,{skin:initialSkin='vivo'}={}){
@@ -26,11 +25,7 @@ export function createAuthoredWeaponViews(parent,{skin:initialSkin='vivo'}={}){
       for(const name of ['vivo','muerto'])for(const pose of ['empty','full','pour','flick','release'])frames[name][pose]=compose({original:originals[name][pose],mask:pose==='pour'?pourMask:pose==='flick'?flickMask:holdMask,pose,skin:name});
       for(const name of ['vivo','muerto'])variants[name].glass=frames[name];canvas.dataset.bottleSource=SOURCE_VIVO_REVISION;
     }catch(error){
-      // Explicit legacy fallback preserves playability without disguising a source-art failure.
-      console.warn('Official Vivo composition unavailable; legacy label fallback:',error.message);
-      const label=new Image();label.src=new URL('./assets/vivo-label.jpg',import.meta.url).href;await label.decode();
-      for(const name of ['vivo','muerto'])for(const pose of ['empty','full','pour','flick','release']){const quad=pose==='pour'?[[781,153],[772,337],[593,325],[637,145]]:[[508,337],[712,337],[708,735],[506,735]];const f=compositeCylinderLabel(originals[name][pose],label,quad);f.frameLayout={originX:0,originY:0,edgeCuts:pose==='pour'?[456,906]:[920,925]};variants[name].glass[pose]=f;}
-      canvas.dataset.bottleSource='legacy-reference-fallback';
+      throw new Error('Authentic Vivo artwork could not load: '+error.message);
     }finally{
       for(const image of [...sourceImages,...originalImages])image.src='';all.length=0;
     }

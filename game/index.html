@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script>
+<script id="vercel-analytics" defer src="/_vercel/insights/script.js"></script>
 <script src="no-zoom.js?v=1"></script>
 <title>Siempre Zombie</title>
 <meta name="description" content="Hold the old hacienda cemetery against waves of the restless dead on Halloween night. A first-person shooter from Siempre Games.">
@@ -205,6 +207,7 @@
   };
   retry.onclick = function () { var url = new URL(location.href); url.searchParams.delete('p03Failure'); url.searchParams.set('bootRetry', String(Date.now())); location.assign(url.href); };
   window.addEventListener('error', function (event) {
+    if (event.target && event.target.id === 'vercel-analytics') return;
     if (event.target && String(event.target.rel || '').toLowerCase().includes('icon')) return;
     window.__szLoader.fail(event);
   }, true);
@@ -233,7 +236,7 @@
 (function () {
   var params = new URL(location.href).searchParams;
   var localDiagnostics = ['localhost', '127.0.0.1', '[::1]'].includes(new URL(location.href).hostname);
-  var module = document.createElement('script'), url = new URL(localDiagnostics && params.has('p03Review') && params.has('p03Failure') ? 'p03-intentionally-missing-module.js' : 'siempre-zombie.js?boot=20261028-leaderboard1', location.href);
+  var module = document.createElement('script'), url = new URL(localDiagnostics && params.has('p03Review') && params.has('p03Failure') ? 'p03-intentionally-missing-module.js' : 'siempre-zombie.js?boot=20261028-source-controls2', location.href);
   var retry = params.get('bootRetry');
   if (retry) url.searchParams.set('bootRetry', retry);
   module.type = 'module'; module.src = url.href;

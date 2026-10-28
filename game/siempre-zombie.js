@@ -13,6 +13,7 @@ import { createCoaViewmodel } from './coa-viewmodel.js';
 import { createAuthoredWeaponViews } from './authored-weapon-views.js';
 import { createGatlingSourceViews } from './gatling-source-views.js?v=20261028-source1';
 import { createFieldProps } from './new-field-props.js';
+import { createSourceGlassProjectiles } from './source-glass-projectile.js';
 import {segmentBoxTime,segmentCylinderTime} from './combat-trace.js';
 import { siteGpsPosition, gpsHeading } from './minimap-gps.js';
 import { preloadRzr6, makeRzr6, RZR6_FOOTPRINT } from './rzr6-loader.js';
@@ -25,6 +26,9 @@ import { createVivoGatling } from './assets/weapons/plus-v1/vivo-gatling.js?v=1'
 import { createZombieBottle } from './assets/weapons/plus-v1/zombie-bottle.js?v=1';
 import { createCognacGlass } from './assets/weapons/plus-v1/cognac-glass.js?v=1';
 import { loadCharacterArtwork } from './character-art.js';
+import { FITTED_ZOMBIE_VARIANTS, FITTED_ZOMBIE_ROSTER, preloadFittedZombieVariants, isOriginalHeadMesh, cloneFittedBodyMaterials, cloneFittedHead } from './fitted-zombie-variants.mjs';
+import { preloadPhysicalDeath, createPhysicalDeathClip } from './physical-death.mjs';
+import { createCharacterLabels } from './character-labels.js';
 import { createAxe } from './assets/weapons/plus-v1/axe.js?v=1';
 import { createPina } from './assets/weapons/plus-v1/pina.js?v=1';
 
@@ -60,26 +64,34 @@ const TOUCH = matchMedia('(pointer: coarse)').matches || PARAMS.has('touch');
 const AIM_ENABLED = PARAMS.has('aim');   // Alex 26 Oct: aim felt redundant, hip fire only (?aim brings it back for review)
 const zombieGLTFLoader = new GLTFLoader();
 const zombieGLTFs = new Map();
-const ZOMBIE_MODELS = { ken: './assets/characters/shared-zombie-body-ken-v1.glb' };
+const FITTED_REVIEW = LOCAL_DIAGNOSTICS && PARAMS.has('fittedReview');
+const SHARED_ZOMBIE_MODEL = './assets/characters/shared-zombie-body-ken-v1.glb';
+const ZOMBIE_MODELS = {ken:SHARED_ZOMBIE_MODEL, ...(FITTED_REVIEW ? Object.fromEntries(Object.keys(FITTED_ZOMBIE_VARIANTS).map(name=>[name,SHARED_ZOMBIE_MODEL])) : {})};
+const characterLabel = createCharacterLabels(THREE);
 window.__zombieModelStatus = [];
 let zombieVariantIndex = 0;
 let characterArtwork = null;
-const ORIGINAL_ZOMBIE_ROSTER = ['ken','monica','dan','alex','rick'];
+const ORIGINAL_ZOMBIE_ROSTER = FITTED_REVIEW ? [...FITTED_ZOMBIE_ROSTER] : ['ken','monica','dan','alex','rick'];
 function loadZombieGLTF(variant) {
   if (!ZOMBIE_MODELS[variant]) return Promise.reject(new Error(`No registered zombie model for ${variant}`));
-  if (!zombieGLTFs.has(variant)) zombieGLTFs.set(variant, zombieGLTFLoader.loadAsync(ZOMBIE_MODELS[variant]).then(gltf => {
+  const url = ZOMBIE_MODELS[variant];
+  if (!zombieGLTFs.has(url)) zombieGLTFs.set(url, zombieGLTFLoader.loadAsync(url).then(gltf => {
     const required = ['zombie_idle', 'zombie_walk', 'zombie_chase', 'zombie_attack', 'zombie_death'];
     const missing = required.filter(name => !THREE.AnimationClip.findByName(gltf.animations, name));
     if (missing.length) throw new Error(`${variant} model is missing required animations: ${missing.join(', ')}`);
     return gltf;
   }));
-  return zombieGLTFs.get(variant);
+  return zombieGLTFs.get(url);
 }
 
-function cloneZombieRig(source) {
+function cloneZombieRig(source, gltf) {
   const sourceToClone = new Map(), cloneToSource = new Map(), clone = source.clone(true);
   const pair = (a, b) => { sourceToClone.set(a, b); cloneToSource.set(b, a); for (let i = 0; i < a.children.length; i++) pair(a.children[i], b.children[i]); };
   pair(source, clone);
+  const headIndex = gltf.parser.json.nodes.findIndex(node=>node.name === 'Head');
+  const originalHead = [...sourceToClone.keys()].find(node=>gltf.parser.associations.get(node)?.nodes === headIndex);
+  if (!originalHead) throw new Error('Approved common body Head node missing');
+  clone.userData.zombieHeadBone = sourceToClone.get(originalHead);
   clone.traverse(node => {
     if (!node.isSkinnedMesh) return;
     const original = cloneToSource.get(node);
@@ -106,7 +118,8 @@ function attachZombieRig(z, variant) {
   z.modelPending = true;
   loadZombieGLTF(variant).then(gltf => {
     if (!zombies.includes(z) || z.state === 'dying') return;
-    const rig = cloneZombieRig(gltf.scene), mixer = new THREE.AnimationMixer(rig);
+    const rig = cloneZombieRig(gltf.scene, gltf), mixer = new THREE.AnimationMixer(rig);
+    const actorClips = FITTED_REVIEW ? gltf.animations.map(clip=>clip.name === 'zombie_death' ? createPhysicalDeathClip(THREE,gltf,variant) : clip) : gltf.animations;
     const idleClip = THREE.AnimationClip.findByName(gltf.animations, 'zombie_idle');
     mixer.clipAction(idleClip).play(); mixer.update(0);
     rig.updateMatrixWorld(true);
@@ -114,23 +127,29 @@ function attachZombieRig(z, variant) {
     const fit = 1.8 / Math.max(size.y, .01);
     rig.scale.setScalar(fit);
     rig.position.y = -bounds.min.y * fit;
+    if (FITTED_REVIEW && variant !== 'ken') {
+      rig.traverse(node=>{if(node.isMesh && isOriginalHeadMesh(node))node.visible=false;});
+      const head = cloneFittedHead(variant);
+      head.traverse(node=>{if(node.isMesh)node.userData.fittedCharacterHead=true;});
+      rig.userData.zombieHeadBone.add(head);
+    }
     rig.traverse(node => {
-      if (!node.isMesh) return;
+      if (!node.isMesh || !node.visible) return;
       node.castShadow = true; node.receiveShadow = true;
       const materials = Array.isArray(node.material) ? node.material : [node.material];
-      const isHead = materials.some(material => material.name.includes('intact head'));
+      const isHead = !!node.userData.fittedCharacterHead || isOriginalHeadMesh(node);
       node.userData.z = z; node.userData.head = isHead; node.userData.targetBody = true;
       if (isHead) z.headParts.push(node);
-      const cloned = materials.map(material => material.clone());
+      const cloned = FITTED_REVIEW ? cloneFittedBodyMaterials(variant,materials) : materials.map(material=>material.clone());
       node.material = Array.isArray(node.material) ? cloned : cloned[0];
       z.mats.push(...cloned);
       z.parts.push(node);
     });
     z.body.add(rig);
     z.animMixer = mixer;
-    z.animActions = Object.fromEntries(gltf.animations.map(clip => [clip.name, z.animMixer.clipAction(clip)]));
+    z.animActions = Object.fromEntries(actorClips.map(clip => [clip.name, z.animMixer.clipAction(clip)]));
     z.animClip = 'zombie_idle'; z.modelRoot = rig; z.rigged = true;
-    z.headBone = rig.getObjectByName('Head'); z.headshotY = z.root.position.y + 1.62 * z.body.scale.x;
+    z.headBone = rig.userData.zombieHeadBone; z.headshotY = z.root.position.y + 1.62 * z.body.scale.x;
     if (z.headBone) { z.root.updateMatrixWorld(true); z.headBone.getWorldPosition(z.headPosition); z.headshotY = z.headPosition.y + .04 * z.body.scale.x; }
     z.modelPending = false;
     window.__zombieModelStatus.push(`${variant}:ok`);
@@ -673,6 +692,7 @@ const SOAKER = { drain: .1, rate: 46, dmg: 3.4 };     // tank per second, drople
 const BALLOON = { rate: .55, radius: 3.2, dmg: 130, max: 12, start: 5 };
 const COA = { swing: .5, hitAt: .42, reach: 2.7, cos: .55, dmg: 75, maxHits: 3 };   // jimador chop: seconds per swing, hit moment, reach in metres, cone, damage, zombies per chop
 const newFieldProps = createFieldProps(THREE);
+const sourceGlassProjectiles = createSourceGlassProjectiles(THREE);
 // Vivo Soaker: cream toy blaster, Siempre Vivo blanco bottle as the reservoir, teal hose, gloved hands
 const VIVO = { swap: 1.45, fill: .45, spare: 2, max: 4, restock: .6 };   // bottle swap seconds, point the new bottle is in, starting/max spare bottles, seconds per bottle at a barrel
 const toyCream = new THREE.MeshStandardMaterial({ color: 0xefe5cf, roughness: .5 });
@@ -1206,7 +1226,10 @@ function makeZombie(type) {
   z.isSergioBoss = type === 'brute'; z.character = character;
   for (const key of ['legL', 'legR', 'torso', 'head', 'armL', 'armR']) z[key] = new THREE.Group();
   scene.add(root);
-  if (character === 'ken') {
+  if (FITTED_REVIEW) {
+    z.visual = characterLabel(z.name,T.scale); root.add(z.visual.marker);
+    attachZombieRig(z, character);
+  } else if (character === 'ken') {
     if (!characterArtwork) throw new Error('Original zombie artwork has not loaded');
     z.visual = characterArtwork.create(character, T.scale); root.add(z.visual.marker);
     attachZombieRig(z, 'ken');
@@ -1322,8 +1345,7 @@ function weaponPickup(id) {
   if (id === 0 || id === 3) for (const k of id === 3 ? [-1, 1] : [0]) { const s = buildSoaker(); s.scale.setScalar(1.7); s.position.set(k * .18, .32, 0); s.rotation.y = k * .35; g.add(s); }
   else if (id === 4) { const t = gatlingVM.pickup(); g.add(t); g.userData.dispose = () => { t.userData.dispose?.(); halo.material.dispose(); }; }
   else if (id === 1) {
-    const bucket = new THREE.Mesh(new THREE.CylinderGeometry(.2, .16, .26, 18), toyTeal); bucket.position.y = .13; g.add(bucket);
-    balloonCols.forEach((c, k) => { const b = newFieldProps.balloon(); b.scale.setScalar(.8); b.position.set(Math.cos(k * 1.6) * .08, .3 + (k % 2) * .06, Math.sin(k * 1.6) * .08); g.add(b); });
+    balloonCols.forEach((c, k) => { const b = newFieldProps.balloon({ground:true}); b.scale.setScalar(.8); b.position.set(Math.cos(k * 1.6) * .22, 0, Math.sin(k * 1.6) * .22); g.add(b); });
   } else if (id === 2) {
     const t = newFieldProps.coa(); t.rotation.z = -.23; g.add(t);
   } else if (id === 6) {
@@ -1333,7 +1355,7 @@ function weaponPickup(id) {
   const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: goldHaloTex, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true }));
   halo.scale.setScalar(1.3); halo.position.y = .5; g.add(halo); g.userData.halo = halo;
   if(id===1)g.userData.dispose=()=>{for(const child of g.children){if(child.userData.dispose)child.userData.dispose();else if(child.isMesh)child.geometry.dispose();}halo.material.dispose();};
-  if(id===2 || id===6)g.userData.dispose=()=>g.traverse(o=>{if(o.isMesh)o.geometry.dispose();});
+  if(id===2 || id===6)g.userData.dispose=()=>g.traverse(o=>{if(o.isMesh)o.geometry.dispose();if(o.isSprite)o.material.dispose();});
   return g;
 }
 function placeWeapons() {
@@ -1349,17 +1371,17 @@ function placeWeapons() {
     }
     if (!list.length) continue;
     const p = list[(Math.random() * list.length) | 0]; used.push(p);
-    const m = weaponPickup(id); m.position.set(p[0], (id===2 || id===6) ? (distilleryLevel?.groundHeight(p[0],p[1],2) || 0) : 0, p[1]); m.rotation.y = rand(0, Math.PI * 2); scene.add(m);
-    pickups.push({ m, kind: 'weapon', id, t: Infinity, still: id === 2 || id === 6 });
+    const m = weaponPickup(id); m.position.set(p[0], (id===1 || id===2 || id===6) ? (distilleryLevel?.groundHeight(p[0],p[1],2) || 0) : 0, p[1]); m.rotation.y = rand(0, Math.PI * 2); scene.add(m);
+    pickups.push({ m, kind: 'weapon', id, t: Infinity, still: id === 1 || id === 2 || id === 6 });
   }
 }
 function dropPickup(p, kind) {
   const m = kind === 'health' ? new THREE.Mesh(new THREE.SphereGeometry(.25, 14, 10), skullMat)
     : kind === 'bottle' ? vivoPickup()
     : kind === 'zombie' ? zombiePickup()
-    : newFieldProps.balloon();
-  m.position.set(p.x, .55, p.z); scene.add(m);
-  pickups.push({ m, kind, t: kind === 'zombie' ? ZBOTTLE.life : 25 });
+    : newFieldProps.balloon({ground:true});
+  m.position.set(p.x, kind==='balloons' ? (distilleryLevel?.groundHeight(p.x,p.z,2) || 0) : .55, p.z); scene.add(m);
+  pickups.push({ m, kind, t: kind === 'zombie' ? ZBOTTLE.life : 25, still:kind==='balloons' });
 }
 
 // ---------------- player & input ----------------
@@ -1966,6 +1988,7 @@ function damageZombie(z, dmg, head, point) {
   // the stream pushes zombies back in proportion to the hit
   if (z.state === 'chase' || z.state === 'enter') z.root.position.addScaledVector(knock.set(Math.sin(z.yaw), 0, Math.cos(z.yaw)), -Math.min(.6, .012 * dmg) * (z.type === 'brute' ? .3 : 1));
   if (z.hp > 0) return;
+  z.reviewClip = null;
   z.state = 'dying'; z.t = 0;
   // Keep the last animated pose while the visible rig falls, instead of resetting to rest pose.
   if (z.rigged) {
@@ -2485,9 +2508,9 @@ function tossShot() {
   muzzleW.copy(camera.position).addScaledVector(vmNdc,.6);
   findAimPoint();
   tmpV2.copy(aimPoint).sub(muzzleW).normalize();
-  const released = createCognacGlass(THREE,{glass:glassMat.clone(),liquid:blancoMat.clone()});
-  released.scale.setScalar(2); released.userData.setLevel(1); released.rotation.set(.1,player.yaw,.25);
-  released.position.copy(muzzleW).sub(released.userData.rim.clone().multiplyScalar(2).applyEuler(released.rotation));
+  const released = sourceGlassProjectiles.create();
+  released.scale.setScalar(1.4); released.userData.setLevel(1); released.rotation.set(.1,player.yaw,.25);
+  released.position.copy(muzzleW).sub(released.userData.rim.clone().multiplyScalar(1.4).applyEuler(released.rotation));
   scene.add(released); thrownGlasses.push({m:released,v:tmpV2.clone().multiplyScalar(GLASS.speed).add(new THREE.Vector3(0,.8,0)),t:0});
   for (let n = 0; n < GLASS.drops; n++) {
     const i = drops.i = (drops.i + 1) % DMAX, o = i * 3, sp = GLASS.speed * rand(.85, 1.1), spread = .11;
@@ -2583,6 +2606,11 @@ function updateZombies(dt) {
     const p = z.root.position;
     const floorY = distilleryLevel?.groundHeight(p.x, p.z, Math.max(.6, p.y + .35)) ?? 0;
     z.t += dt;
+    if (FITTED_REVIEW && z.reviewClip && z.animMixer && z.state !== 'dying') {
+      setZombieClip(z,z.reviewClip); z.animMixer.update(dt);
+      if(z.headBone){z.root.updateMatrixWorld(true);z.headBone.getWorldPosition(z.headPosition);z.headshotY=z.headPosition.y+.04*z.body.scale.x;}
+      continue;
+    }
     z.flashT = Math.max(0, z.flashT - dt);
     const fl = z.flashT > 0 ? .9 : 0;
     z.mats.forEach(m => m.emissive.setScalar(fl));
@@ -2673,7 +2701,7 @@ function updateZombies(dt) {
       bossAttack = tickBossMelee(z, dt, meleeClear);
     } else z.attackT = Math.max(0, z.attackT - dt);
     const lunge = z.attackT > .7 ? (1 - (z.attackT - .7) / .3) : 0;
-    if(z.visual){
+    if(z.visual?.pose){
       if(z.character==='sergio')z.visual.pose(z.bossHitPending?2:z.state==='chase'?1:0);
       else if(z.character==='ken')z.visual.pose(z.attackT>.7?1:0);
     }
@@ -2739,7 +2767,7 @@ function updatePickups(dt) {
   }
   for (const k of pickups.slice()) {
     if (k.kind === 'weapon') { k.m.userData.halo.material.opacity = .55 + .3 * Math.sin(clock.elapsedTime * 3 + k.id); if (!k.still) k.m.rotation.y += dt * .7; }
-    else { k.t -= dt; k.m.rotation.y += dt * 2; k.m.position.y = .55 + Math.sin(k.t * 3) * .1; }
+    else { k.t -= dt; if(!k.still){k.m.rotation.y += dt * 2; k.m.position.y = .55 + Math.sin(k.t * 3) * .1;} }
     if (k.kind === 'zombie') k.m.userData.halo.material.opacity = .75 + .25 * Math.sin(k.t * 6);
     const d = Math.hypot(k.m.position.x - player.pos.x, k.m.position.z - player.pos.z);
     if (d < 1.3) {
@@ -3005,7 +3033,8 @@ setScreen('title'); refreshBoard();
 requestAnimationFrame(frame);
 { const img = src => { const im = new Image(); im.src = src; return im.decode().catch(() => {}); };
   const tick = p => p.then(() => { LOAD.files.push({ l: 1.5e6, t: 1.5e6 }); loadReport(); });
-  Promise.all([tick(loadCharacterArtwork().then(art=>{characterArtwork=art;})), tick(loadZombieGLTF('ken')), dualVM.ready, driverVM.ready, newCoaVM.ready, authoredVM.ready, gatlingVM.ready, newFieldProps.ready,
+  Promise.all([tick(loadCharacterArtwork().then(art=>{characterArtwork=art;})), tick(loadZombieGLTF('ken')), dualVM.ready, driverVM.ready, newCoaVM.ready, authoredVM.ready, gatlingVM.ready, newFieldProps.ready, sourceGlassProjectiles.ready,
+    ...(FITTED_REVIEW ? [tick(preloadFittedZombieVariants(THREE,zombieGLTFLoader,loadZombieGLTF('ken'))),tick(preloadPhysicalDeath(THREE))] : []),
     createTacoTruck({scene, blockers, parent:$('#hud'), groundHeight:(x,z,y)=>distilleryLevel?.groundHeight(x,z,y) ?? 0, onHeal:()=>{sfx('pickup');hud(true);}}).then(truck=>{tacoTruck=truck;}),
     RZR6 ? preloadRzr6().then(gltf => { rzr6GLTF = gltf; }) : null,
     ...Object.values(vmImgs).map(b => b.firstChild.decode().catch(() => {})),
@@ -3042,7 +3071,7 @@ if (LOCAL_DIAGNOSTICS && (PARAMS.has('assetReview') || PARAMS.has('p01Review') |
   const actions = {
     'Sergio boss': () => { reviewStart(); if (buggy?.state === 'driving') exitBuggy(); zombies.slice().forEach(removeZombie); player.pos.set(0,0,6); player.yaw=player.pitch=0; player.hp=100; game.wave=3; spawnZombie('brute'); const boss=zombies.at(-1); boss.root.position.x=0; boss.root.position.z=-10; showBanner('Solo boss review', 'SERGIO CRUZ', 3); },
     'Ken artwork': () => { reviewStart(); if (buggy?.state === 'driving') exitBuggy(); zombies.slice().forEach(removeZombie); player.pos.set(0,0,6); player.yaw=player.pitch=0; player.hp=100; zombieVariantIndex=0; spawnZombie('walker'); const ken=zombies.at(-1); ken.root.position.set(0,0,1); ken.state='chase'; ken.speed=0; ken.dmg=0; },
-    'Zombie lineup': () => { reviewStart(); if (buggy?.state === 'driving') exitBuggy(); zombies.slice().forEach(removeZombie); player.pos.set(0,0,6); player.yaw=player.pitch=0; player.hp=100; zombieVariantIndex=0; for(let i=0;i<5;i++){spawnZombie('walker');const z=zombies.at(-1);z.root.position.set((i-2)*1.65,0,-2);z.state='chase';z.speed=0;z.dmg=0;} },
+    'Zombie lineup': () => { reviewStart(); if (buggy?.state === 'driving') exitBuggy(); zombies.slice().forEach(removeZombie); player.pos.set(0,0,6); player.yaw=player.pitch=0; player.hp=100; zombieVariantIndex=0; for(let i=0;i<ORIGINAL_ZOMBIE_ROSTER.length;i++){spawnZombie('walker');const z=zombies.at(-1);z.root.position.set((i-(ORIGINAL_ZOMBIE_ROSTER.length-1)/2)*1.65,0,-2);z.state='chase';z.speed=0;z.dmg=0;} },
     'Gatling': () => { reviewStart(); if (buggy?.state === 'driving') exitBuggy(); game.owned.add(4); game.tank=1; game.spare=2; input.fire=false; swap(4,true); const m=weaponPickup(4); m.position.set(player.pos.x+1.2,0,player.pos.z-2.5); scene.add(m); pickups.push({m,kind:'weapon',id:4,t:9999}); },
     'Dual pistols': () => { reviewStart(); if (buggy?.state === 'driving') exitBuggy(); game.owned.add(3); game.tank = 1; game.spare = 2; swap(3, true); },
     'Glass kit': () => { reviewStart(); if (buggy?.state === 'driving') exitBuggy(); input.fire = false; game.owned.add(5); game.tank = 1; game.glassLevel = 1; game.pourT = game.tossT = 0; swap(5,true); },
@@ -3062,6 +3091,27 @@ if (LOCAL_DIAGNOSTICS && (PARAMS.has('assetReview') || PARAMS.has('p01Review') |
     'Boundary fog': () => { reviewStart(); if (buggy?.state === 'driving') exitBuggy(); input.moveX = 0; player.pos.set(OVEN_YARD.maxX - 4, 0, 30); player.yaw = -Math.PI / 2; player.pitch = 0; },
     'Pause': pause,
   };
+  if(FITTED_REVIEW){
+    for(const [label,clip] of Object.entries({'Fitted idle':'zombie_idle','Fitted walk':'zombie_walk','Fitted chase':'zombie_chase','Fitted attack':'zombie_attack','Fitted death':'zombie_death'}))actions[label]=()=>{for(const z of zombies){z.reviewClip=clip;z.visual?.marker&&(z.visual.marker.visible=clip!=='zombie_death');}};
+    actions['Record character motion']=()=>{
+      actions['Zombie lineup']();
+      const output=document.createElement('output');output.textContent='Preparing character motion recording…';row.append(output);
+      function begin(){
+        if(zombies.some(z=>z.modelPending)){requestAnimationFrame(begin);return;}
+        const stream=canvas.captureStream(24),recorder=new MediaRecorder(stream,{mimeType:'video/webm;codecs=vp8'}),chunks=[];
+        const actors=[...zombies],started=performance.now();let falling=false;
+        for(const z of actors)z.reviewClip='zombie_chase';
+        recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data);};
+        recorder.onstop=()=>{stream.getTracks().forEach(t=>t.stop());const link=document.createElement('a');link.textContent='Download character motion';link.download='shared-character-motion.webm';link.href=URL.createObjectURL(new Blob(chunks,{type:'video/webm'}));row.append(link);output.textContent='Recorded actual renderer: shared chase → articulated fall → ground contact';};
+        recorder.start();
+        function sample(){const t=(performance.now()-started)/1000;
+          if(t>=2.5&&!falling){falling=true;for(const z of actors){z.reviewClip='zombie_death';z.visual.marker.visible=false;}}
+          if(t>=7){recorder.stop();return;}
+          output.textContent=`Recording ${t.toFixed(1)}s · ${falling?'fall/settle':'shared chase'}`;requestAnimationFrame(sample);
+        }requestAnimationFrame(sample);
+      }begin();
+    };
+  }
   if(PARAMS.has('gatlingReview')){
     const result=document.createElement('output');result.id='gatling-motion-result';result.style.cssText='font:12px system-ui;color:white;padding:8px';row.append(result);
     actions['Vivo hands']=()=>applySkin('vivo');actions['Muerto hands']=()=>applySkin('muerto');

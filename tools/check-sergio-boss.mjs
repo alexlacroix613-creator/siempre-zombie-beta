@@ -10,7 +10,7 @@ const makeEnd=source.indexOf('function spawnZombie(type)',makeStart);
 assert.ok(makeStart>=0 && makeEnd>makeStart,'makeZombie extraction boundaries must exist and be ordered');
 const scene=new THREE.Scene(),attached=[];
 const characterArtwork={create(){return {sprite:new THREE.Sprite(),marker:new THREE.Sprite(),pose(){},fade(){},dispose(){}};}};
-const context={THREE,TYPES:{walker:{hp:100,speed:[1.3,1.9],dmg:12,scale:1,points:100},runner:{hp:70,speed:[3.3,3.9],dmg:10,scale:.95,points:150},brute:SERGIO},scene,rand:(a,b)=>a,Math,
+const context={THREE,FITTED_REVIEW:false,TYPES:{walker:{hp:100,speed:[1.3,1.9],dmg:12,scale:1,points:100},runner:{hp:70,speed:[3.3,3.9],dmg:10,scale:.95,points:150},brute:SERGIO},scene,rand:(a,b)=>a,Math,
   ORIGINAL_ZOMBIE_ROSTER:['ken','monica','dan','alex','rick'],zombieVariantIndex:0,characterArtwork,
   attachZombieRig:(z,name)=>{z.modelPending=true;attached.push([z,name]);}};
 vm.createContext(context);
@@ -21,7 +21,7 @@ assert.equal(boss.character,'sergio');assert.equal(boss.isSergioBoss,true);
 assert.equal(boss.visual.sprite.parent,boss.root,'Sergio remains on supplied original artwork');
 assert.equal(attached.length,0,'Sergio does not fall back to a generic/Keith rig');
 assert.ok(boss.speed>1.9,'faster than ordinary walker maximum');
-assert.match(source,/const ZOMBIE_MODELS = \{ ken: '\.\/assets\/characters\/shared-zombie-body-ken-v1\.glb' \}/);
+assert.ok(source.includes("const SHARED_ZOMBIE_MODEL = './assets/characters/shared-zombie-body-ken-v1.glb'"),'approved common body source retained');
 assert.doesNotMatch(source,/keith-faithful|ZOMBIE_MODELS\[variant\]\s*\|\|/);
 
 const tick={attackT:0};assert.equal(tickBossMelee(tick,0,true),'windup');

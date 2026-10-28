@@ -1,4 +1,4 @@
-export const SOURCE_VIVO_REVISION='20261027-user-neck-v4';
+export const SOURCE_VIVO_REVISION='20261028-neutral-glass-seam-v7';
 export const SOURCE_VIVO_PROFILE=Object.freeze({top:600,capReferenceTop:175,shoulder:1050,labelTop:1470,labelBottom:2940,base:3321,bodyMinX:690,bodyMaxX:1405});
 // Source-faithful component. Generated RGB is limited to optics and missing sleeve outside source frame.
 export function createSourceVivoCompositor({official,relight,labelAngle=official,sleeveExtensions={}}){
@@ -33,8 +33,17 @@ const matte=document.createElement('canvas');matte.width=1672;matte.height=941;c
 // One-pixel erosion removes registration fringe from native alpha; source RGB remains intact.
 const originalAlpha=new Uint8ClampedArray(ma.data);for(let y=1;y<940;y++)for(let x=1;x<1671;x++){const i=(y*1672+x)*4;let a=255;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)a=Math.min(a,originalAlpha[((y+dy)*1672+x+dx)*4+3]);ma.data[i+3]=a;}mc.putImageData(ma,0,0);
 
-// Limit optical neutralization to the bowl. Palms, sleeves and the stem keep original RGB.
-for(let y=0;y<590;y++)for(let x=900;x<1180;x++){if(pose==='release')continue;const i=(y*1672+x)*4,r=ri.data[i],g=ri.data[i+1],b=ri.data[i+2],teal=g>r*1.07&&b>r*1.15,black=Math.max(r,g,b)<120&&Math.max(r,g,b)-Math.min(r,g,b)<28,foreground=ma.data[i+3]>32&&(x>1160||(pose==='flick'&&x<1120&&y>530));if(teal||black||foreground)continue;const l=.2126*r+.7152*g+.0722*b;ri.data[i]=ri.data[i+1]=ri.data[i+2]=l;}rc.putImageData(ri,0,0);
+// The generated hand mask mistakenly includes glass/liquid. Explicit optical contours stop its ivory/copper leaks.
+const shapes={
+ pour:[[[990,365],[1168,365],[1186,396],[1206,452],[1219,495],[1219,529],[1205,563],[1186,589],[1162,609],[1135,617],[1107,610],[1084,601],[1062,600],[1041,606],[1023,620],[1003,612],[978,592],[960,567],[949,538],[943,511],[950,469],[969,418]],[[1057,681],[1094,682],[1092,701],[1120,707],[1141,719],[1160,736],[1155,749],[1130,759],[1092,765],[1040,762],[996,752],[975,740],[975,729],[994,717],[1020,711],[1054,704]]],
+ full:[[[947,361],[1138,361],[1159,405],[1175,459],[1182,505],[1174,548],[1153,582],[1124,607],[1096,616],[1075,604],[1054,599],[1029,601],[1010,611],[997,619],[970,603],[944,580],[924,551],[910,519],[908,477],[922,423]],[[1028,680],[1069,684],[1074,704],[1104,711],[1125,724],[1138,739],[1128,752],[1099,762],[1058,767],[1009,762],[964,752],[937,739],[940,727],[961,716],[992,709],[1027,703]]],
+ flick:[[[918,348],[965,320],[1020,301],[1096,289],[1117,314],[1153,357],[1176,407],[1185,444],[1173,488],[1155,518],[1126,544],[1100,550],[1080,540],[1057,535],[1035,537],[1012,550],[998,561],[969,549],[943,529],[923,500],[913,461],[911,412]],[[1060,616],[1100,626],[1106,644],[1127,645],[1143,656],[1151,674],[1144,689],[1104,701],[1063,706],[1020,701],[992,691],[985,679],[996,662],[1023,648],[1053,636]]]
+};
+const optical=document.createElement('canvas');optical.width=1672;optical.height=941;const oxm=optical.getContext('2d',{willReadFrequently:true});oxm.fillStyle='#fff';
+for(const points of (shapes[pose]||(pose==='empty'?shapes.full:[]))){oxm.beginPath();points.forEach(([x,y],i)=>i?oxm.lineTo(x,y):oxm.moveTo(x,y));oxm.closePath();oxm.fill();}
+const forceOptics=oxm.getImageData(0,0,1672,941).data;
+// Actual glove/finger RGB is protected outside the traced glass silhouette, including Muerto copper leather.
+for(let y=0;y<775;y++)for(let x=900;x<1225;x++){if(pose==='release')continue;const i=(y*1672+x)*4,r=ri.data[i],g=ri.data[i+1],b=ri.data[i+2],teal=g>r*1.07&&b>r*1.15,black=Math.max(r,g,b)<120&&Math.max(r,g,b)-Math.min(r,g,b)<28,foreground=ma.data[i+3]>32;if(forceOptics[i+3]<=32&&(teal||black||foreground))continue;const l=.2126*r+.7152*g+.0722*b;ri.data[i]=ri.data[i+1]=ri.data[i+2]=l;}rc.putImageData(ri,0,0);
 if(pose==='pour'){
  p.drawImage(right,800,354,872,587,800,354,872,587);
  // Preserve the existing physical stream from mouth to glass, without native bottle fragments.
@@ -45,5 +54,47 @@ const hands=document.createElement('canvas');hands.width=1672;hands.height=941;c
 
 let image=pilot;const cuts={full:[920,925],pour:[456,906],release:[926,933],flick:[924,883],empty:[920,931]};let layout={originX:0,originY:0,edgeCuts:cuts[pose]};
 const extension=sleeveExtensions[skin];
-if(pose==='pour'&&extension){const {image:outpaint,registration:r}=extension;const w=Math.round(outpaint.naturalWidth/r.scale),h=Math.round(outpaint.naturalHeight/r.scale),ox=Math.round(r.tx/r.scale),oy=Math.round(r.ty/r.scale);image=document.createElement('canvas');image.width=w;image.height=h;const e=image.getContext('2d');e.drawImage(outpaint,0,0,w,h);e.clearRect(ox,oy,1672,941);e.drawImage(pilot,ox,oy);layout={originX:ox,originY:oy,edgeCuts:r.nativeEdgeCuts.map(y=>y===null?undefined:Math.ceil(y/r.scale))};}
+if(pose==='pour'&&extension){
+ const {image:outpaint,registration:r}=extension,w=Math.round(outpaint.naturalWidth/r.scale),height=Math.round(outpaint.naturalHeight/r.scale),ox=Math.round(r.tx/r.scale),oy=Math.round(r.ty/r.scale);
+ image=document.createElement('canvas');image.width=w;image.height=height;const e=image.getContext('2d');e.drawImage(outpaint,0,0,w,height);e.clearRect(ox,oy,1672,941);
+ // Clearing the native rectangle also cleared the inside half of its sleeve join. Rebuild ONLY that sleeve span.
+ const sleeve=document.createElement('canvas');sleeve.width=outpaint.naturalWidth;sleeve.height=outpaint.naturalHeight;const sx=sleeve.getContext('2d',{willReadFrequently:true});sx.drawImage(outpaint,0,0);const pixels=sx.getImageData(0,0,sleeve.width,sleeve.height).data;
+ function span(data,width,height,x){let top=-1,bottom=-1;for(let y=0;y<height;y++)if(data[(y*width+x)*4+3]>32){if(top<0)top=y;bottom=y;}return top<0?null:{top,bottom};}
+ const scaleX=sleeve.width/w,scaleY=sleeve.height/height,seam=span(pixels,sleeve.width,sleeve.height,Math.round(ox*scaleX)),nativeSeam=span(ma.data,1672,941,0);
+ if(seam&&nativeSeam){
+   const reach=384,inside=256,first=Math.max(0,ox-reach),last=Math.min(w,ox+inside);
+   const topDelta=oy+nativeSeam.top-seam.top/scaleY,bottomDelta=oy+nativeSeam.bottom-seam.bottom/scaleY;
+   e.clearRect(first,0,last-first,height);
+   for(let x=first;x<last;x++){
+     const nativeX=x-ox,sourceX=Math.min(sleeve.width-1,Math.max(0,Math.floor((x+.5)*scaleX))),source=span(pixels,sleeve.width,sleeve.height,sourceX);if(!source)continue;
+     let top,bottom;
+     if(nativeX>=0){const native=span(ma.data,1672,941,nativeX);if(!native)continue;top=oy+native.top;bottom=oy+native.bottom;}
+     else{const blend=Math.max(0,1+nativeX/reach);top=source.top/scaleY+topDelta*blend;bottom=source.bottom/scaleY+bottomDelta*blend;}
+     e.drawImage(outpaint,sourceX,source.top,1,source.bottom-source.top+1,x,top,1,bottom-top+1);
+   }
+ }
+ // Match only generated sleeve RGB to the intact native edge, with row-local tone and a soft outward falloff.
+ if(seam&&nativeSeam){
+   const joined=e.getImageData(0,0,w,height),data=joined.data,feather=72;
+   for(let y=nativeSeam.top;y<=nativeSeam.bottom;y++){
+     const yy=oy+y;if(yy<0||yy>=height)continue;
+     const nativeRGB=[0,0,0],extensionRGB=[0,0,0];let nc=0,ec=0;
+     for(let k=0;k<6;k++){
+       const ni=(y*1672+k)*4,ei=(yy*w+ox-1-k)*4;
+       if(ma.data[ni+3]>180&&ri.data[ni+3]>180){for(let c=0;c<3;c++)nativeRGB[c]+=ri.data[ni+c];nc++;}
+       if(data[ei+3]>180){for(let c=0;c<3;c++)extensionRGB[c]+=data[ei+c];ec++;}
+     }
+     if(!nc||!ec)continue;
+     const delta=nativeRGB.map((v,c)=>v/nc-extensionRGB[c]/ec),edge=(y*1672)*4;
+     for(let distance=0;distance<feather;distance++){
+       const x=ox-1-distance;if(x<0)break;const i=(yy*w+x)*4;if(data[i+3]<32)continue;
+       const t=1-distance/feather,weight=t*t*(3-2*t),edgeBlend=ma.data[edge+3]>180?Math.max(0,1-distance/6):0;
+       for(let c=0;c<3;c++){const registered=data[i+c]+delta[c]*weight;data[i+c]=registered*(1-edgeBlend)+ri.data[edge+c]*edgeBlend;}
+     }
+   }
+   e.putImageData(joined,0,0);
+ }
+ // Exact native hands/bottle/glass remain on top at their original fixed anchor and scale.
+ e.drawImage(pilot,ox,oy);layout={originX:ox,originY:oy,edgeCuts:r.nativeEdgeCuts.map(y=>y===null?undefined:Math.ceil(y/r.scale)),sleeveJoin:'alpha-and-row-RGB-registered-strip'};
+}
 image.frameLayout=layout;return image;};}
