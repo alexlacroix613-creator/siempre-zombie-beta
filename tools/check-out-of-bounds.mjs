@@ -52,9 +52,9 @@ assert.equal(fresh.elapsed,.1);assert.equal(fresh.damage,0,'new run starts with 
 const source=readFileSync(new URL('../game/siempre-zombie.js',import.meta.url),'utf8');
 function extract(name){const start=source.indexOf('function '+name+'(');assert(start>=0);const brace=source.indexOf('{',start);let depth=1,end=brace+1;for(;depth;end++){if(source[end]==='{')depth++;if(source[end]==='}')depth--;}return source.slice(start,end);}
 const foot={pos:new THREE.Vector3(48,0,6),vel:new THREE.Vector3(),hp:100,r:.4,grounded:true,hurt:0,bob:0,yaw:0,pitch:0,vy:0};
-const c={THREE,Math,player:foot,game:{shake:0,started:3,invulnT:0},buggy:null,keys:{KeyD:true},input:{moveX:0,moveY:0},fwd:new THREE.Vector3(),right:new THREE.Vector3(),wish:new THREE.Vector3(),tmpV:new THREE.Vector3(),camera:new THREE.PerspectiveCamera(),gunRig:new THREE.Group(),EYE:1.6,HALF:20,document,
+const c={THREE,Math,lastSafeFootPosition:foot.pos.clone(),player:foot,game:{shake:0,started:3,invulnT:0},buggy:null,keys:{KeyD:true},input:{moveX:0,moveY:0},fwd:new THREE.Vector3(),right:new THREE.Vector3(),wish:new THREE.Vector3(),tmpV:new THREE.Vector3(),camera:new THREE.PerspectiveCamera(),gunRig:new THREE.Group(),EYE:1.6,HALF:20,document,
   blockers:[east,building],gateBars:[],distilleryLevel:{groundHeight:()=>0},fullSiteWorld:()=>true,softMovementBlockers,outOfBounds:createOutOfBounds({bounds,parent:element()}),clamp:(v,a,b)=>Math.max(a,Math.min(b,v)),rand:(a,b)=>(a+b)/2};
-vm.createContext(c);vm.runInContext(extract('pushOut')+'\n'+extract('updatePlayer')+'\nglobalThis.step=updatePlayer;',c);
+vm.createContext(c);vm.runInContext(extract('pushOut')+'\n'+extract('settlePlayerFloor')+'\n'+extract('updatePlayer')+'\nglobalThis.step=updatePlayer;',c);
 for(let i=0;i<25;i++)c.step(.05);
 assert.ok(foot.pos.x>50.5,'actual foot source crosses original50m clamp/perimeter');
 assert.ok(foot.pos.x<54,'actual building collider remains solid');

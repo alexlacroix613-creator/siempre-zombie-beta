@@ -2,8 +2,8 @@
 const asset = path => new URL(path, import.meta.url).href;
 export const FITTED_ZOMBIE_VARIANTS = Object.freeze(Object.fromEntries(
   ['dan', 'rick', 'alex', 'monica', 'keith', 'sergio'].map(name => [name, {
-    body: asset(`./assets/characters/fitted-20261028/${name}/body_albedo.png`),
-    head: asset(`./assets/characters/fitted-20261028/${name}/head.glb`),
+    body: asset(`./assets/characters/fitted-20261028/${name}/body_albedo.png?v=source-final28`),
+    head: asset(`./assets/characters/fitted-20261028/${name}/head.glb?v=source-final28`),
   }]),
 ));
 export const FITTED_ZOMBIE_ROSTER = Object.freeze(['ken','monica','dan','alex','rick','keith']);

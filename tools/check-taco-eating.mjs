@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createTacoHealing,TACO_HEAL} from '../game/taco-truck.js';
+import {createRPGState,stepRPGState} from '../game/muerto-rpg-combat.js';
 const h=createTacoHealing(),player={hp:55};
 assert.equal(h.start({hp:55,near:false}),false);assert.equal(h.start({hp:55,near:true,driving:true}),false);assert.equal(h.start({hp:100,near:true}),false);
 assert.equal(h.start({hp:55,near:true}),true);assert.equal(h.start({hp:55,near:true}),false,'no overlapping meals');
@@ -10,9 +11,9 @@ assert.equal(h.start({hp:80,near:true}),false,'cooldown');h.reset();assert.equal
 player.hp=93;assert.equal(h.start({hp:93,near:true}),true);for(let i=0;i<30;i++)h.update(.1,player);assert.equal(player.hp,100,'health cap');
 const source=fs.readFileSync(new URL('../game/siempre-zombie.js',import.meta.url),'utf8');
 const a=source.indexOf('function updateWeapon(dt)'),b=source.indexOf('function updateZombies(',a);assert(a>=0&&b>a);
-let projectileUpdates=0;const input={fire:true,firePressed:true},scope={game:{fireT:0},hitSoundT:0,tacoTruck:{isEating:true},input,gunRig:{visible:true},jets:[{visible:true}],vmEl:{hidden:false},dualVM:{hide(){}},sprayAudio(){},updateDrops(){projectileUpdates++},updateBalloons(){projectileUpdates++}};
+let projectileUpdates=0;const input={fire:true,firePressed:true},scope={game:{fireT:0,state:'play',weapon:7,rpg:createRPGState()},stepRPGState,buggy:null,rpgRuntime:{update(){projectileUpdates++}},launchRPG(){throw new Error('Cannot fire RPG while eating');},hitSoundT:0,tacoTruck:{isEating:true},input,gunRig:{visible:true},jets:[{visible:true}],vmEl:{hidden:false},dualVM:{hide(){}},sprayAudio(){},updateDrops(){projectileUpdates++},updateBalloons(){projectileUpdates++}};
 new Function('scope','with(scope){'+source.slice(a,b)+';return updateWeapon;}')(scope)(.016);
-assert.equal(input.fire,false);assert.equal(input.firePressed,false);assert.equal(scope.gunRig.visible,false);assert.equal(scope.jets[0].visible,false);assert.equal(projectileUpdates,2,'existing projectiles continue while eating');
+assert.equal(input.fire,false);assert.equal(input.firePressed,false);assert.equal(scope.gunRig.visible,false);assert.equal(scope.jets[0].visible,false);assert.equal(projectileUpdates,3,'existing RPG, drop and balloon projectiles continue while eating');assert.equal(scope.game.rpg.loaded,1,'eating never consumes the loaded RPG round');assert.equal(scope.game.rpg.reserve,2);
 const truck=fs.readFileSync(new URL('../game/taco-truck.js',import.meta.url),'utf8');assert.match(truck,/if\(playing&&healing\.update\(dt,player\)\)/,'pause cannot complete the meal');
 const view=fs.readFileSync(new URL('../game/taco-eating-view.js',import.meta.url),'utf8');assert.match(view,/frame=p<\.18\?0:p<\.44\?1:p<\.64\?3:p<\.83\?4:5/,'intact, raised, bitten, smaller and empty');
 assert.equal(TACO_HEAL.eatSeconds,2.6);

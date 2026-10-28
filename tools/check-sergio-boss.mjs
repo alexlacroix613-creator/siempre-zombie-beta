@@ -11,15 +11,15 @@ assert.ok(makeStart>=0 && makeEnd>makeStart,'makeZombie extraction boundaries mu
 const scene=new THREE.Scene(),attached=[];
 const characterArtwork={create(){return {sprite:new THREE.Sprite(),marker:new THREE.Sprite(),pose(){},fade(){},dispose(){}};}};
 const context={THREE,FITTED_REVIEW:false,TYPES:{walker:{hp:100,speed:[1.3,1.9],dmg:12,scale:1,points:100},runner:{hp:70,speed:[3.3,3.9],dmg:10,scale:.95,points:150},brute:SERGIO},scene,rand:(a,b)=>a,Math,
-  ORIGINAL_ZOMBIE_ROSTER:['ken','monica','dan','alex','rick'],zombieVariantIndex:0,characterArtwork,
+  ORIGINAL_ZOMBIE_ROSTER:['ken','monica','dan','alex','rick'],zombieVariantIndex:0,characterArtwork,characterLabel:()=>({marker:new THREE.Sprite(),dispose(){}}),
   attachZombieRig:(z,name)=>{z.modelPending=true;attached.push([z,name]);}};
 vm.createContext(context);
 vm.runInContext(source.slice(makeStart,makeEnd)+';globalThis.build=makeZombie;',context);
 const boss=context.build('brute');
 assert.equal(boss.hp,720);assert.equal(boss.name,'Sergio Cruz');
 assert.equal(boss.character,'sergio');assert.equal(boss.isSergioBoss,true);
-assert.equal(boss.visual.sprite.parent,boss.root,'Sergio remains on supplied original artwork');
-assert.equal(attached.length,0,'Sergio does not fall back to a generic/Keith rig');
+assert.equal(boss.visual.marker.parent,boss.root,'Sergio has a consistent name marker');
+assert.equal(attached.length,1);assert.equal(attached[0][1],'sergio','boss receives his source-fitted head/body on the shared rig, not Keith');
 assert.ok(boss.speed>1.9,'faster than ordinary walker maximum');
 assert.ok(source.includes("const SHARED_ZOMBIE_MODEL = './assets/characters/shared-zombie-body-ken-v1.glb'"),'approved common body source retained');
 assert.doesNotMatch(source,/keith-faithful|ZOMBIE_MODELS\[variant\]\s*\|\|/);
@@ -65,4 +65,4 @@ assert.equal(existingContext.buggy,existingVehicle,'existing RZR remains availab
 assert.equal(duplicateSpawns,0,'boss wave does not duplicate an existing RZR');
 assert.equal(existingGame.toSpawn,1);assert.equal(existingGame.spawnT,3);
 assert.match(existingEvents.at(-1)[0],/Solo encounter/,'Sergio remains the boss-wave banner');
-console.log('PASS Sergio original-art fixture, no Keith fallback, melee windup/dodge, waves 3/6/9, RZR spawn/retention, random boss delay and pending state; normal wave counts/timing preserved');
+console.log('PASS Sergio shared-rig fixture, no Keith identity fallback, melee windup/dodge, waves 3/6/9, RZR spawn/retention, random boss delay and pending state; normal wave counts/timing preserved');

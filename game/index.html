@@ -58,7 +58,7 @@
       <div class="keyhint" id="keyhint" aria-hidden="true">
         <span><kbd>WASD</kbd>move</span><span><kbd>Shift</kbd>sprint</span><span><kbd>Space</kbd>jump</span>
         <span class="on-foot"><kbd>Click</kbd>fire</span><span class="on-foot"><kbd>R</kbd>reload</span>
-        <span class="on-foot"><kbd>1</kbd>–<kbd>7</kbd>weapon</span><span id="keyhint-drive"><kbd>E</kbd>drive</span><span><kbd>M</kbd>map</span>
+        <span class="on-foot"><kbd>1</kbd>–<kbd>8</kbd>weapon</span><span id="keyhint-drive"><kbd>E</kbd>drive</span><span><kbd>M</kbd>map</span>
         <span><kbd>Esc</kbd>pause</span><span><kbd>H</kbd>hide keys</span>
       </div>
       <div class="hp"><span>Health</span><div class="bar"><i id="hud-hp"></i></div></div>
@@ -154,6 +154,7 @@
       <button class="slot" id="t-slot-1" data-od-id="t-slot-1" aria-label="Tequila balloons"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3.9 0 6 3 6 6.5S15 17 12 17s-6-4-6-7.5S8.1 3 12 3z" fill="currentColor"/><path d="M12 17l-1.5 2h3zM12 19c0 1.5-1 2-1 3" fill="none" stroke="currentColor" stroke-width="1.2"/></svg><b id="t-balloons">0</b></button>
       <button class="slot" id="t-slot-2" data-od-id="t-slot-2" aria-label="Agave Coa" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20L15.2 8.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/><ellipse cx="17.6" cy="6.4" rx="4.2" ry="3.4" transform="rotate(-42 17.6 6.4)" fill="currentColor"/></svg></button>
       <button class="slot" id="t-slot-6" data-od-id="t-slot-6" aria-label="Jimador axe"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20.5L15 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M12.6 6.2l3.2-3 5.4 5.4c-1.6 2.4-4.4 3.2-6.4 2.2l-.9.9-2.6-2.6.9-.9c-.5-.7-.4-1.4.4-2z" fill="currentColor"/></svg></button>
+      <button class="slot" id="t-slot-7" aria-label="Muerto RPG" hidden>RPG</button>
       <div class="ammo-m"><b id="t-ammo">100%</b><span class="spare"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2h4v3l1.5 2.5V20a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2V7.5L10 5z" fill="currentColor"/></svg><b id="t-spare">2</b></span></div>
     </div>
   </div>
@@ -236,7 +237,7 @@
 (function () {
   var params = new URL(location.href).searchParams;
   var localDiagnostics = ['localhost', '127.0.0.1', '[::1]'].includes(new URL(location.href).hostname);
-  var module = document.createElement('script'), url = new URL(localDiagnostics && params.has('p03Review') && params.has('p03Failure') ? 'p03-intentionally-missing-module.js' : 'siempre-zombie.js?boot=20261028-rzr5', location.href);
+  var module = document.createElement('script'), url = new URL(localDiagnostics && params.has('p03Review') && params.has('p03Failure') ? 'p03-intentionally-missing-module.js' : 'siempre-zombie.js?boot=20261028-rpg-shared1', location.href);
   var retry = params.get('bootRetry');
   if (retry) url.searchParams.set('bootRetry', retry);
   module.type = 'module'; module.src = url.href;

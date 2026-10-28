@@ -14,6 +14,9 @@ import { createAuthoredWeaponViews } from './authored-weapon-views.js';
 import { createGatlingSourceViews } from './gatling-source-views.js?v=20261028-source1';
 import { createFieldProps } from './new-field-props.js';
 import { createSourceGlassProjectiles } from './source-glass-projectile.js';
+import {RPG,createRPGState,collectRPG,stepRPGState} from './muerto-rpg-combat.js';
+import {createMuertoRPGSourceViews} from './muerto-rpg-source-views.js?v=actions4';
+import {createMuertoRPGRuntime} from './muerto-rpg-runtime.js';
 import {segmentBoxTime,segmentCylinderTime} from './combat-trace.js';
 import { siteGpsPosition, gpsHeading } from './minimap-gps.js';
 import { preloadRzr6, makeRzr6, RZR6_FOOTPRINT } from './rzr6-loader.js?v=20261028-rzr5';
@@ -25,10 +28,10 @@ import { createGlove, createGloveMaterials } from './assets/weapons/plus-v1/fp-h
 import { createVivoGatling } from './assets/weapons/plus-v1/vivo-gatling.js?v=1';
 import { createZombieBottle } from './assets/weapons/plus-v1/zombie-bottle.js?v=1';
 import { createCognacGlass } from './assets/weapons/plus-v1/cognac-glass.js?v=1';
-import { loadCharacterArtwork } from './character-art.js';
-import { FITTED_ZOMBIE_VARIANTS, FITTED_ZOMBIE_ROSTER, preloadFittedZombieVariants, isOriginalHeadMesh, cloneFittedBodyMaterials, cloneFittedHead } from './fitted-zombie-variants.mjs';
-import { preloadPhysicalDeath, createPhysicalDeathClip } from './physical-death.mjs';
+import { FITTED_ZOMBIE_VARIANTS, FITTED_ZOMBIE_ROSTER, preloadFittedZombieVariants, isOriginalHeadMesh, cloneFittedBodyMaterials, cloneFittedHead } from './fitted-zombie-variants.mjs?v=source-final28';
+import { preloadPhysicalDeath, createPhysicalDeathClip } from './physical-death.mjs?v=contact-final28';
 import { createCharacterLabels } from './character-labels.js';
+import { settleDeathAccessories,resetDeathAccessories,disposeDeathAccessories } from './accessory-death-settle.mjs';
 import { createAxe } from './assets/weapons/plus-v1/axe.js?v=1';
 import { createPina } from './assets/weapons/plus-v1/pina.js?v=1';
 
@@ -66,12 +69,11 @@ const zombieGLTFLoader = new GLTFLoader();
 const zombieGLTFs = new Map();
 const FITTED_REVIEW = LOCAL_DIAGNOSTICS && PARAMS.has('fittedReview');
 const SHARED_ZOMBIE_MODEL = './assets/characters/shared-zombie-body-ken-v1.glb';
-const ZOMBIE_MODELS = {ken:SHARED_ZOMBIE_MODEL, ...(FITTED_REVIEW ? Object.fromEntries(Object.keys(FITTED_ZOMBIE_VARIANTS).map(name=>[name,SHARED_ZOMBIE_MODEL])) : {})};
+const ZOMBIE_MODELS = {ken:SHARED_ZOMBIE_MODEL, ...Object.fromEntries(Object.keys(FITTED_ZOMBIE_VARIANTS).map(name=>[name,SHARED_ZOMBIE_MODEL]))};
 const characterLabel = createCharacterLabels(THREE);
 window.__zombieModelStatus = [];
 let zombieVariantIndex = 0;
-let characterArtwork = null;
-const ORIGINAL_ZOMBIE_ROSTER = FITTED_REVIEW ? [...FITTED_ZOMBIE_ROSTER] : ['ken','monica','dan','alex','rick'];
+const ORIGINAL_ZOMBIE_ROSTER = [...FITTED_ZOMBIE_ROSTER];
 function loadZombieGLTF(variant) {
   if (!ZOMBIE_MODELS[variant]) return Promise.reject(new Error(`No registered zombie model for ${variant}`));
   const url = ZOMBIE_MODELS[variant];
@@ -119,7 +121,7 @@ function attachZombieRig(z, variant) {
   loadZombieGLTF(variant).then(gltf => {
     if (!zombies.includes(z) || z.state === 'dying') return;
     const rig = cloneZombieRig(gltf.scene, gltf), mixer = new THREE.AnimationMixer(rig);
-    const actorClips = FITTED_REVIEW ? gltf.animations.map(clip=>clip.name === 'zombie_death' ? createPhysicalDeathClip(THREE,gltf,variant) : clip) : gltf.animations;
+    const actorClips = gltf.animations.map(clip=>clip.name === 'zombie_death' ? createPhysicalDeathClip(THREE,gltf,variant) : clip);
     const idleClip = THREE.AnimationClip.findByName(gltf.animations, 'zombie_idle');
     mixer.clipAction(idleClip).play(); mixer.update(0);
     rig.updateMatrixWorld(true);
@@ -127,7 +129,7 @@ function attachZombieRig(z, variant) {
     const fit = 1.8 / Math.max(size.y, .01);
     rig.scale.setScalar(fit);
     rig.position.y = -bounds.min.y * fit;
-    if (FITTED_REVIEW && variant !== 'ken') {
+    if (variant !== 'ken') {
       rig.traverse(node=>{if(node.isMesh && isOriginalHeadMesh(node))node.visible=false;});
       const head = cloneFittedHead(variant);
       head.traverse(node=>{if(node.isMesh)node.userData.fittedCharacterHead=true;});
@@ -140,7 +142,7 @@ function attachZombieRig(z, variant) {
       const isHead = !!node.userData.fittedCharacterHead || isOriginalHeadMesh(node);
       node.userData.z = z; node.userData.head = isHead; node.userData.targetBody = true;
       if (isHead) z.headParts.push(node);
-      const cloned = FITTED_REVIEW ? cloneFittedBodyMaterials(variant,materials) : materials.map(material=>material.clone());
+      const cloned = cloneFittedBodyMaterials(variant,materials);
       node.material = Array.isArray(node.material) ? cloned : cloned[0];
       z.mats.push(...cloned);
       z.parts.push(node);
@@ -680,10 +682,11 @@ const WEAPONS = [
   { id: 'gatling', name: 'Vivo Gatling' },
   { id: 'glass', name: 'Cognac glass' },
   { id: 'axe', name: 'Jimador axe' },
+  { id: 'rpg', name: 'Muerto RPG' },
 ];
 // Alex 26 Oct: every run starts with only the cognac glass and a bottle of Vivo; everything else is found in the yard
 const START_WEAPON = 5;
-const SLOT_ORDER = [5, 0, 3, 4, 1, 2, 6];   // keys 1-7 and the touch bar, left to right
+const SLOT_ORDER = [5, 0, 3, 4, 1, 2, 6, 7];   // keys 1-8 and the touch bar, left to right
 const TANK_WEAPONS = new Set([0, 3, 4, 5]);   // the weapons that run on the Vivo bottle
 const GLASS = { shot: .05, pour: .62, toss: .34, drops: 24, dmg: 3.6, speed: 13, range: 9 };   // tank per shot; seconds; liquid per toss
 const AXE = { swing: .4, hitAt: .4, reach: 2.4, cos: .6, dmg: 95, maxHits: 2 };
@@ -992,12 +995,30 @@ const dualVM = createDualViewmodel(vmEl);
 const newCoaVM = createCoaViewmodel($('#hud'));
 const authoredVM = createAuthoredWeaponViews($('#hud'));
 const gatlingVM = createGatlingSourceViews(THREE, $('#hud'));
+const rpgVM=createMuertoRPGSourceViews(THREE,$('#hud'));
+const rpgRuntime=createMuertoRPGRuntime(THREE,{scene,views:rpgVM,firstHit:firstCombatHit,lineClear:combatLineClear,
+  targets:()=>zombies.map(z=>({id:z,position:z.root.position,radius:z.r*1.15,minY:z.root.position.y,maxY:z.root.position.y+2.1*z.body.scale.x,active:activeCombatTarget(z)})),
+  damage:(target,damage,point)=>damageZombie(target.id,damage,false,new THREE.Vector3(point.x,point.y,point.z)),
+  onBlast:origin=>{sfx('splash',clamp(1.6-Math.hypot(origin.x-player.pos.x,origin.y-player.pos.y,origin.z-player.pos.z)/35,.2,1));game.shake=Math.max(game.shake,.35);hud(true);},
+});
+function updateRPGView(){rpgVM.update({visible:game.state==='play'&&game.weapon===7&&buggy?.state!=='driving'&&!tacoTruck?.isEating,skin,aim:input.aim,loaded:game.rpg.loaded,
+  firing:game.rpg.cooldown>RPG.cooldown-.12,reload:game.rpg.reload>0?1-game.rpg.reload/RPG.reload:-1,bob:player.bob,moving:Math.min(1,Math.hypot(player.vel.x,player.vel.z)/5)});}
+function launchRPG(){
+  updateRPGView();const [px,py]=rpgVM.muzzle();
+  vmNdc.set(px/innerWidth*2-1,-(py/innerHeight*2-1),.5).unproject(camera).sub(camera.position).normalize();
+  const origin=camera.position.clone().addScaledVector(vmNdc,.6);findAimPoint();
+  const direction=aimPoint.clone().sub(origin).normalize();rpgRuntime.launch(origin,direction,camera.position);sfx('throw');game.shake=Math.max(game.shake,.1);hud(true);
+}
+function requestRPGReload(){
+  if(game.state!=='play'||buggy?.state==='driving'||tacoTruck?.isEating)return false;
+  const result=stepRPGState(game.rpg,0,{reload:true});const changed=result.state.reload>game.rpg.reload;game.rpg=result.state;if(changed){sfx('reload');hud(true);}return changed;
+}
 const newToolHint = document.createElement('div'); newToolHint.id = 'new-tool-nearby';
 newToolHint.style.cssText = 'position:absolute;left:50%;top:63%;transform:translateX(-50%);font:700 12px Arial;color:#eff5df;text-shadow:0 2px 4px #000;pointer-events:none';
 $('#hud').append(newToolHint);
 function updateAuthoredWeapons() {
   const visible = game.state === 'play' && buggy?.state !== 'driving' && !tacoTruck?.isEating;
-  updateGatlingView();
+  updateGatlingView();updateRPGView();
   newCoaVM.update({ visible: visible && game.weapon === 2, skin, swingPhase: game.coaT > 0 ? 1 - game.coaT / COA.swing : 0 });
   authoredVM.update({ visible: visible && [1,5,6].includes(game.weapon), weapon: game.weapon, skin,
     balloons: game.balloons, throwRemaining: game.fireT,
@@ -1037,8 +1058,8 @@ function applySkin(id) {
   for (const mode of ['empty']) new Image().src = `assets/fx-${S.fx}-${mode}.webp`;
   if (S.reload) for (const src of [S.reload.swap, S.reload.pump]) new Image().src = src;   // load them before the first swap
   WEAPONS[0].name = S.name + ' Soaker';
-  for (const el of [$('#aim-btn'), $('#t-aim')]) el.hidden = !(AIM_ENABLED && S.aim);
-  if (!S.aim) setAim(false);
+  for (const el of [$('#aim-btn'), $('#t-aim')]) el.hidden = !(game.weapon===7 || (AIM_ENABLED && S.aim));
+  if (game.weapon!==7 && !S.aim) setAim(false);
   layoutVM();
 }
 // two layers so each painted frame dissolves into the next instead of stepping
@@ -1105,7 +1126,7 @@ function vmMuzzle(out, which = 1) {
   return out.copy(camera.position).addScaledVector(vmNdc, .6);
 }
 function setAim(on) {
-  input.aim = AIM_ENABLED && on && SKINS[skin].aim && buggy?.state !== 'driving';
+  input.aim = game.weapon===7 ? !!on && buggy?.state !== 'driving' && !tacoTruck?.isEating : AIM_ENABLED && on && SKINS[skin].aim && buggy?.state !== 'driving';
   for (const el of [$('#t-aim'), $('#aim-btn')]) el.classList.toggle('on', input.aim);
 }
 function updateVM(dt, spraying, swapPhase) {
@@ -1226,18 +1247,8 @@ function makeZombie(type) {
   z.isSergioBoss = type === 'brute'; z.character = character;
   for (const key of ['legL', 'legR', 'torso', 'head', 'armL', 'armR']) z[key] = new THREE.Group();
   scene.add(root);
-  if (FITTED_REVIEW) {
-    z.visual = characterLabel(z.name,T.scale); root.add(z.visual.marker);
-    attachZombieRig(z, character);
-  } else if (character === 'ken') {
-    if (!characterArtwork) throw new Error('Original zombie artwork has not loaded');
-    z.visual = characterArtwork.create(character, T.scale); root.add(z.visual.marker);
-    attachZombieRig(z, 'ken');
-  } else {
-    if (!characterArtwork) throw new Error('Original zombie artwork has not loaded');
-    z.visual = characterArtwork.create(character, T.scale); root.add(z.visual.sprite);
-    if (z.visual.marker) root.add(z.visual.marker);
-  }
+  z.visual = characterLabel(z.name,T.scale); root.add(z.visual.marker);
+  attachZombieRig(z, character);
   return z;
 }
 function spawnZombie(type) {
@@ -1284,7 +1295,7 @@ function removeZombie(z) {
   scene.remove(z.root);
   z.visual?.dispose();
   z.animMixer?.stopAllAction();
-  if (z.modelRoot) z.animMixer?.uncacheRoot(z.modelRoot);
+  if (z.modelRoot) {z.animMixer?.uncacheRoot(z.modelRoot);disposeDeathAccessories(z.modelRoot);}
   for (const skeleton of new Set(z.parts.filter(part => part.isSkinnedMesh).map(part => part.skeleton))) skeleton.dispose();
   z.mats.forEach(m => m.dispose());
   zombies.splice(zombies.indexOf(z), 1);
@@ -1343,6 +1354,7 @@ const goldHaloTex = canvasTex(128, 128, (g, w, h) => {
 function weaponPickup(id) {
   const g = new THREE.Group();
   if (id === 0 || id === 3) for (const k of id === 3 ? [-1, 1] : [0]) { const s = buildSoaker(); s.scale.setScalar(1.7); s.position.set(k * .18, .32, 0); s.rotation.y = k * .35; g.add(s); }
+  else if (id === 7) { const t=rpgVM.pickup();g.add(t);g.userData.dispose=()=>{t.userData.dispose?.();halo.material.dispose();}; }
   else if (id === 4) { const t = gatlingVM.pickup(); g.add(t); g.userData.dispose = () => { t.userData.dispose?.(); halo.material.dispose(); }; }
   else if (id === 1) {
     balloonCols.forEach((c, k) => { const b = newFieldProps.balloon({ground:true}); b.scale.setScalar(.8); b.position.set(Math.cos(k * 1.6) * .22, 0, Math.sin(k * 1.6) * .22); g.add(b); });
@@ -1361,8 +1373,8 @@ function weaponPickup(id) {
 function placeWeapons() {
   for (const k of pickups.filter(k => k.kind === 'weapon')) { scene.remove(k.m); k.m.userData.dispose?.(); pickups.splice(pickups.indexOf(k), 1); }
   const used = [];
-  for (const id of [2, 6, 0, 3, 4, 1]) {
-    if (game.owned.has(id)) continue;
+  for (const id of [2, 6, 0, 3, 4, 1, 7]) {
+    if (game.owned.has(id) && (id!==7 || game.rpg.reserve>=RPG.maxReserve)) continue;
     const free = p => spotOK(p) && !used.some(u => Math.hypot(u[0] - p[0], u[1] - p[1]) < 4) && Math.hypot(p[0] - player.pos.x, p[1] - player.pos.z) > 3;
     let list = (id === 2 ? WEAPON_SPOTS.field : id === 6 ? WEAPON_SPOTS.ovens : WEAPON_SPOTS.hide).filter(free);
     for (let n = 0; !list.length && n < 60 && id !== 2 && id !== 6; n++) {   // Field tools stay at agave/oven locations.
@@ -1371,8 +1383,8 @@ function placeWeapons() {
     }
     if (!list.length) continue;
     const p = list[(Math.random() * list.length) | 0]; used.push(p);
-    const m = weaponPickup(id); m.position.set(p[0], (id===1 || id===2 || id===6) ? (distilleryLevel?.groundHeight(p[0],p[1],2) || 0) : 0, p[1]); m.rotation.y = rand(0, Math.PI * 2); scene.add(m);
-    pickups.push({ m, kind: 'weapon', id, t: Infinity, still: id === 1 || id === 2 || id === 6 });
+    const m = weaponPickup(id); m.position.set(p[0], (id===1 || id===2 || id===6 || id===7) ? (distilleryLevel?.groundHeight(p[0],p[1],2) || 0) : 0, p[1]); m.rotation.y = rand(0, Math.PI * 2); scene.add(m);
+    pickups.push({ m, kind: 'weapon', id, t: Infinity, still: id === 1 || id === 2 || id === 6 || id === 7 });
   }
 }
 function dropPickup(p, kind) {
@@ -1445,13 +1457,13 @@ addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT') return;
   if (game.state !== 'play') return;
   keys[e.code] = true;
-  const dg = /^Digit([1-7])$/.exec(e.code); if (dg) swap(SLOT_ORDER[dg[1] - 1]);
+  const dg = /^Digit([1-8])$/.exec(e.code); if (dg) swap(SLOT_ORDER[dg[1] - 1]);
   if (e.code === 'KeyQ' && !e.repeat) swap(nextOwned());
   if (e.code === 'Space') e.preventDefault();
   if ((e.code === 'KeyP' || e.code === 'Escape') && !e.repeat) pause();
   if (e.code === 'KeyE' && !e.repeat) toggleDrive();
   if (e.code === 'KeyT' && !e.repeat) tacoTruck?.tryEat();
-  if (e.code === 'KeyR') swapBottle();
+  if (e.code === 'KeyR') game.weapon===7?requestRPGReload():swapBottle();
   if (e.code === 'KeyF' && !e.repeat) setAim(!input.aim);
   if (e.code === 'KeyH' && !e.repeat) { const shown = !$('#keyhint').classList.toggle('off'); store.set('keyhint', shown ? 1 : 0); }
 });
@@ -1546,7 +1558,7 @@ if (TOUCH) {
     try { const r = document.documentElement.requestFullscreen?.({ navigationUI: 'hide' }); r?.then?.(() => screen.orientation?.lock?.('landscape').catch(() => {})).catch(() => {}); } catch {}
   });
   hold($('#t-swap'), () => swap(nextOwned()));
-  hold($('#t-reload'), () => swapBottle());
+  hold($('#t-reload'), () => game.weapon===7?requestRPGReload():swapBottle());
   hold($('#t-sprint'), () => { keys.ShiftLeft = !keys.ShiftLeft; $('#t-sprint').classList.toggle('on', !!keys.ShiftLeft); });
   hold($('#t-pause'), () => pause());
   WEAPONS.forEach((w, i) => hold($('#t-slot-' + i), () => swap(i)));
@@ -1606,7 +1618,7 @@ function pushOutOfRzr(p, radius=0) {
 // ---------------- game state ----------------
 const game = {
   state: 'title', score: 0, wave: 0, kills: 0, heads: 0, toSpawn: 0, alive: 0, spawnT: 0, breakT: 0,
-  weapon: 0, coaT: 0, tank: 1, spare: 0, swapT: 0, swapOld: null, restockT: 0, balloons: 0, spin: 0, invulnT: 0, zbT: 0, owned: new Set([START_WEAPON]), glassLevel: 1, pourT: 0, tossT: 0, refilling: false, sprayAcc: 0, shake: 0, fireT: 0, started: 0, runId: null, banner: 0,
+  rpg:createRPGState(), weapon: 0, coaT: 0, tank: 1, spare: 0, swapT: 0, swapOld: null, restockT: 0, balloons: 0, spin: 0, invulnT: 0, zbT: 0, owned: new Set([START_WEAPON]), glassLevel: 1, pourT: 0, tossT: 0, refilling: false, sprayAcc: 0, shake: 0, fireT: 0, started: 0, runId: null, banner: 0,
 };
 function setScreen(s) {
   app.dataset.screen = s;
@@ -1628,7 +1640,7 @@ function startGame(capturePointer = true) {
   lastSafeFootPosition.set(0, 0, 6);
   Object.assign(game, { state: 'play', score: 0, wave: 0, kills: 0, heads: 0, toSpawn: 0, spawnT: 0, breakT: 2.5, breakLen: 2.5, fireT: 0, started: performance.now(), runId: null,
     tank: 1, spare: VIVO.spare, swapT: 0, swapOld: null, restockT: 0, balloons: 0, spin: 0, invulnT: 0, zbT: ZBOTTLE.first, refilling: false, sprayAcc: 0,
-    owned: new Set([START_WEAPON]), glassLevel: 1, pourT: 0, tossT: 0 });
+    rpg:createRPGState(), owned: new Set([START_WEAPON]), glassLevel: 1, pourT: 0, tossT: 0 });
   trail.length = 0; zombieMode(false); placeWeapons();
   clearProjectiles();
   setAim(false);
@@ -1695,10 +1707,12 @@ function showBanner(sub, main, t) { $('#banner-sub').textContent = sub; $('#bann
 function swap(i, force) {
   if (!WEAPONS[i]) return;
   if (!force && (i === game.weapon || game.state !== 'play' || !game.owned.has(i))) return;
+  const leavingRPG=game.weapon===7&&i!==7;
   game.weapon = i; game.fireT = Math.max(game.fireT, .25);
   soakerR.visible = soakerL.visible = false; balloonHand.visible = false; coaVis(false); gatVis(i === 4); kitVis(false); game.coaT = 0; game.spin = 0;
   game.tossT = 0; if (game.pourT > 0) { game.pourT = 0; game.glassLevel = 1; }
-  if (i === 3) setAim(false);
+  if (i === 3 || leavingRPG) setAim(false);
+  for(const el of [$('#aim-btn'),$('#t-aim')])el.hidden=!(i===7 || (AIM_ENABLED && SKINS[skin].aim));
   app.classList.toggle('dual', i === 3);
   gunRig.position.y = -.22;
   hud(true);
@@ -1745,6 +1759,7 @@ const balloonCols = [0xff3d7f, 0xff8a1c, 0x3cc6ff, 0xb46aff];
 const dropM = new THREE.Matrix4(), zeroM = new THREE.Matrix4().makeScale(0, 0, 0);
 const dropDir = new THREE.Vector3(), dropP = new THREE.Vector3(), dropS = new THREE.Vector3(), dropQ = new THREE.Quaternion(), Z_AXIS = new THREE.Vector3(0, 0, 1);
 function clearProjectiles() {
+  rpgRuntime.clear();
   drops.life.fill(0);
   balloons.splice(0).forEach(b => { scene.remove(b.m); b.m.userData?.dispose?.(); });
   newFieldProps.clearLatex();
@@ -2523,6 +2538,9 @@ function setPumpHand(on) { const a = soakerR.userData.arms.pump; a.hand.visible 
 function updateWeapon(dt) {
   game.fireT = Math.max(0, game.fireT - dt);
   hitSoundT -= dt;
+  const rpgStep=stepRPGState(game.rpg,dt,{fire:game.state==='play'&&game.weapon===7&&game.fireT<=0&&buggy?.state!=='driving'&&!tacoTruck?.isEating&&input.firePressed});
+  game.rpg=rpgStep.state;if(rpgStep.fired)launchRPG();if(rpgStep.reloaded){sfx('reload');hud(true);}if(rpgStep.empty)sfx('empty');
+  rpgRuntime.update(dt);
   if (tacoTruck?.isEating) {
     gunRig.visible=false; input.fire=input.firePressed=false; sprayAudio(0,0);
     for (const jet of jets) jet.visible=false;
@@ -2552,6 +2570,8 @@ function updateWeapon(dt) {
   if (driving) {
     input.fire = input.firePressed = false;
     sprayAudio(0, 0);
+  } else if (game.weapon === 7) {
+    sprayAudio(0,0);input.firePressed=false;
   } else if (game.weapon === 5) {
     sprayAudio(0, 0);
     updateGlass(dt, swapping, swapPhase);
@@ -2608,6 +2628,7 @@ function updateZombies(dt) {
     z.t += dt;
     if (FITTED_REVIEW && z.reviewClip && z.animMixer && z.state !== 'dying') {
       setZombieClip(z,z.reviewClip); z.animMixer.update(dt);
+      if(z.reviewClip==='zombie_death')settleDeathAccessories(THREE,z.modelRoot,floorY);else resetDeathAccessories(z.modelRoot);
       if(z.headBone){z.root.updateMatrixWorld(true);z.headBone.getWorldPosition(z.headPosition);z.headshotY=z.headPosition.y+.04*z.body.scale.x;}
       continue;
     }
@@ -2617,6 +2638,7 @@ function updateZombies(dt) {
     if (z.state === 'dying') {
       if (z.rigged) {
         z.animMixer.update(dt);
+        settleDeathAccessories(THREE,z.modelRoot,floorY);
         if (z.t > z.deathDuration + 1) removeZombie(z);
       } else {
         z.visual?.fade(Math.min(1,z.t/1.8));
@@ -2772,6 +2794,7 @@ function updatePickups(dt) {
     const d = Math.hypot(k.m.position.x - player.pos.x, k.m.position.z - player.pos.z);
     if (d < 1.3) {
       if (k.kind === 'weapon') {
+        if(k.id===7)game.rpg=collectRPG(game.rpg,game.owned.has(7));
         game.owned.add(k.id); if (k.id === 1) game.balloons = Math.max(game.balloons, BALLOON.start + 3);
         swap(k.id, true); showBanner('Found', WEAPONS[k.id].name, 2); sfx('levelup');
       } else if (k.kind === 'zombie') { game.invulnT = ZBOTTLE.invuln; zombieMode(true); showBanner('Nothing can bite you for 10 seconds', 'Zombie mode', 2.4); sfx('levelup'); }
@@ -2869,12 +2892,12 @@ function hud(force) {
   setText('#hud-left', String(game.toSpawn + game.alive));
   const tk = TANK_WEAPONS.has(i);
   setText('#hud-weapon', w.name);
-  setText('#hud-ammo', tk ? tankPct + '%' : i === 1 ? String(game.balloons) : '∞');
-  setText('#hud-reserve', tk ? (game.tank < .25 ? 'low pressure' : SKINS[skin].name) + ' · ' + game.spare + (game.spare === 1 ? ' spare bottle' : ' spare bottles') : i === 1 ? 'balloons' : 'hold to chop');
-  $('#hud-ammo').parentElement.classList.toggle('low', tk ? game.tank < .25 : i === 1 && game.balloons === 0);
-  $('#hud-tank').style.width = tankPct + '%';
-  setText('#hud-reload', game.swapT > 0 ? 'Swapping bottle…' : 'Restocking Vivo at the barrel…');
-  $('#hud-reload').classList.toggle('on', game.refilling || game.swapT > 0);
+  setText('#hud-ammo', i===7?game.rpg.loaded+' / '+game.rpg.reserve:tk ? tankPct + '%' : i === 1 ? String(game.balloons) : '∞');
+  setText('#hud-reserve', i===7?'Muerto bottle rockets · '+(game.rpg.reload>0?'reloading':game.rpg.loaded?'ready':'empty'):tk ? (game.tank < .25 ? 'low pressure' : SKINS[skin].name) + ' · ' + game.spare + (game.spare === 1 ? ' spare bottle' : ' spare bottles') : i === 1 ? 'balloons' : 'hold to chop');
+  $('#hud-ammo').parentElement.classList.toggle('low', i===7?game.rpg.loaded===0:tk ? game.tank < .25 : i === 1 && game.balloons === 0);
+  $('#hud-tank').style.width = (i===7?(game.rpg.reload>0?100*(1-game.rpg.reload/RPG.reload):game.rpg.loaded*100):tankPct) + '%';
+  setText('#hud-reload', i===7?'Loading Muerto bottle…':game.swapT > 0 ? 'Swapping bottle…' : 'Restocking Vivo at the barrel…');
+  $('#hud-reload').classList.toggle('on', i===7?game.rpg.reload>0:game.refilling || game.swapT > 0);
   $('#hud-hp').style.width = Math.max(0, player.hp) + '%';
   $('#hud-veh').hidden = !buggy;
   if (buggy) {
@@ -2890,18 +2913,19 @@ function hud(force) {
   $('#keyhint-drive').classList.toggle('on', !!(driving || nearBuggy()));
   if (TOUCH) {
     $('#t-drive').hidden = !(driving || nearBuggy());
-    setText('#t-ammo', tk ? tankPct + '%' : i === 1 ? String(game.balloons) : '∞');
+    setText('#t-ammo', i===7?game.rpg.loaded+' / '+game.rpg.reserve:tk ? tankPct + '%' : i === 1 ? String(game.balloons) : '∞');
     setText('#t-spare', String(game.spare));
     setText('#t-balloons', String(game.balloons));
-    $('#t-ammo').parentElement.classList.toggle('low', tk ? game.tank < .25 : i === 1 && game.balloons === 0);
+    $('#t-ammo').parentElement.classList.toggle('low', i===7?game.rpg.loaded===0:tk ? game.tank < .25 : i === 1 && game.balloons === 0);
     WEAPONS.forEach((w, n) => { const el = $('#t-slot-' + n); el.classList.toggle('on', n === i); el.hidden = !game.owned.has(n); });
     const art = 'url(assets/card-' + skin + '.webp)';
     if ($('#t-slot-art').style.backgroundImage !== art) {
       $('#t-slot-art').style.backgroundImage = art;
       $('#t-slot-art-r').style.backgroundImage = art; $('#t-slot-art-l').style.backgroundImage = 'url(assets/card-' + otherSkin() + '.webp)';
     }
-    $('#t-reload').classList.toggle('busy', game.swapT > 0 || game.refilling);
-    $('#t-reload').classList.toggle('low', tk && game.tank < .25 && game.spare > 0);
+    $('#t-reload').setAttribute('aria-label',i===7?'Reload rocket':'Swap Vivo bottle');
+    $('#t-reload').classList.toggle('busy', i===7?game.rpg.reload>0:game.swapT > 0 || game.refilling);
+    $('#t-reload').classList.toggle('low', i===7?game.rpg.loaded===0&&game.rpg.reserve>0:tk && game.tank < .25 && game.spare > 0);
   }
 }
 
@@ -3033,8 +3057,8 @@ setScreen('title'); refreshBoard();
 requestAnimationFrame(frame);
 { const img = src => { const im = new Image(); im.src = src; return im.decode().catch(() => {}); };
   const tick = p => p.then(() => { LOAD.files.push({ l: 1.5e6, t: 1.5e6 }); loadReport(); });
-  Promise.all([tick(loadCharacterArtwork().then(art=>{characterArtwork=art;})), tick(loadZombieGLTF('ken')), dualVM.ready, driverVM.ready, newCoaVM.ready, authoredVM.ready, gatlingVM.ready, newFieldProps.ready, sourceGlassProjectiles.ready,
-    ...(FITTED_REVIEW ? [tick(preloadFittedZombieVariants(THREE,zombieGLTFLoader,loadZombieGLTF('ken'))),tick(preloadPhysicalDeath(THREE))] : []),
+  Promise.all([tick(loadZombieGLTF('ken')), dualVM.ready, driverVM.ready, newCoaVM.ready, authoredVM.ready, gatlingVM.ready, rpgVM.ready, newFieldProps.ready, sourceGlassProjectiles.ready,
+    tick(preloadFittedZombieVariants(THREE,zombieGLTFLoader,loadZombieGLTF('ken'))),tick(preloadPhysicalDeath(THREE)),
     createTacoTruck({scene, blockers, parent:$('#hud'), groundHeight:(x,z,y)=>distilleryLevel?.groundHeight(x,z,y) ?? 0, onHeal:()=>{sfx('pickup');hud(true);}}).then(truck=>{tacoTruck=truck;}),
     RZR6 ? preloadRzr6().then(gltf => { rzr6GLTF = gltf; }) : null,
     ...Object.values(vmImgs).map(b => b.firstChild.decode().catch(() => {})),
@@ -3072,6 +3096,7 @@ if (LOCAL_DIAGNOSTICS && (PARAMS.has('assetReview') || PARAMS.has('p01Review') |
     'Sergio boss': () => { reviewStart(); if (buggy?.state === 'driving') exitBuggy(); zombies.slice().forEach(removeZombie); player.pos.set(0,0,6); player.yaw=player.pitch=0; player.hp=100; game.wave=3; spawnZombie('brute'); const boss=zombies.at(-1); boss.root.position.x=0; boss.root.position.z=-10; showBanner('Solo boss review', 'SERGIO CRUZ', 3); },
     'Ken artwork': () => { reviewStart(); if (buggy?.state === 'driving') exitBuggy(); zombies.slice().forEach(removeZombie); player.pos.set(0,0,6); player.yaw=player.pitch=0; player.hp=100; zombieVariantIndex=0; spawnZombie('walker'); const ken=zombies.at(-1); ken.root.position.set(0,0,1); ken.state='chase'; ken.speed=0; ken.dmg=0; },
     'Zombie lineup': () => { reviewStart(); if (buggy?.state === 'driving') exitBuggy(); zombies.slice().forEach(removeZombie); player.pos.set(0,0,6); player.yaw=player.pitch=0; player.hp=100; zombieVariantIndex=0; for(let i=0;i<ORIGINAL_ZOMBIE_ROSTER.length;i++){spawnZombie('walker');const z=zombies.at(-1);z.root.position.set((i-(ORIGINAL_ZOMBIE_ROSTER.length-1)/2)*1.65,0,-2);z.state='chase';z.speed=0;z.dmg=0;} },
+    'Muerto RPG': () => { reviewStart(); if (buggy?.state === 'driving') exitBuggy(); game.owned.add(7);game.rpg=createRPGState();game.fireT=0;input.fire=input.firePressed=false;swap(7,true);player.pos.set(0,0,6);player.yaw=player.pitch=0;player.hp=100;zombieVariantIndex=0;for(let i=0;i<3;i++){spawnZombie('walker');const z=zombies.at(-1);z.root.position.set((i-1)*1.1,0,-4.5-(i%2)*.6);z.state='chase';z.speed=z.dmg=0;} },
     'Gatling': () => { reviewStart(); if (buggy?.state === 'driving') exitBuggy(); game.owned.add(4); game.tank=1; game.spare=2; input.fire=false; swap(4,true); const m=weaponPickup(4); m.position.set(player.pos.x+1.2,0,player.pos.z-2.5); scene.add(m); pickups.push({m,kind:'weapon',id:4,t:9999}); },
     'Dual pistols': () => { reviewStart(); if (buggy?.state === 'driving') exitBuggy(); game.owned.add(3); game.tank = 1; game.spare = 2; swap(3, true); },
     'Glass kit': () => { reviewStart(); if (buggy?.state === 'driving') exitBuggy(); input.fire = false; game.owned.add(5); game.tank = 1; game.glassLevel = 1; game.pourT = game.tossT = 0; swap(5,true); },
@@ -3216,6 +3241,10 @@ if (LOCAL_DIAGNOSTICS && (PARAMS.has('assetReview') || PARAMS.has('p01Review') |
     button.style.cssText = 'font:13px system-ui;padding:8px;color:#fff;background:#19352e;border:1px solid #87bdb0';
     button.onclick = event => { event.stopPropagation(); suspendReviewPointer(); action(); hud(true); };
     row.append(button);
+  }
+  if(PARAMS.has('rpgReview')){
+    const status=document.createElement('output');status.id='rpg-review-status';status.style.cssText='color:#fff;font:13px system-ui;width:100%;text-align:center';row.append(status);
+    function updateRPGReviewStatus(){status.textContent=`RPG · ${game.rpg.loaded} loaded · ${game.rpg.reserve} reserve · ${game.rpg.reload>0?'reloading':'ready'} · ${zombies.filter(z=>z.state!=='dying').length} live · ${zombies.filter(z=>z.state==='dying').length} falling · ${zombies.filter(z=>z.rigged).length} rigged · ${rpgRuntime.rockets.length} bottles · ${game.score} score`;requestAnimationFrame(updateRPGReviewStatus);}updateRPGReviewStatus();
   }
   document.body.append(row);
 }

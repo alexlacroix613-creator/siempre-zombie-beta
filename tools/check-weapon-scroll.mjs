@@ -27,8 +27,8 @@ ctx.buggy={state:'driving'};assert.equal(scroll(120),true);assert.equal(game.wea
 ctx.buggy.state='parked';scroll(120);assert.equal(game.weapon,3,'scroll resumes immediately after exit');
 game.state='pause';assert.equal(scroll(120),false);game.state='play';scroll(120);assert.equal(game.weapon,1,'scroll resumes after pause');
 ctx.buggy=null;game.owned=new Set(ctx.SLOT_ORDER);game.weapon=5;
-const allForward=[0,3,4,1,2,6,5];for(const expected of allForward){scroll(120);assert.equal(game.weapon,expected,'all-owned order matches keyboard slot order');}
-const allReverse=[6,2,1,4,3,0,5];for(const expected of allReverse){scroll(-120);assert.equal(game.weapon,expected,'all-owned reverse order');}
+const allForward=[0,3,4,1,2,6,7,5];for(const expected of allForward){scroll(120);assert.equal(game.weapon,expected,'all-owned order matches keyboard slot order');}
+const allReverse=[7,6,2,1,4,3,0,5];for(const expected of allReverse){scroll(-120);assert.equal(game.weapon,expected,'all-owned reverse order');}
 game.owned = new Set([5]); game.weapon = 5; scroll(120); assert.equal(game.weapon, 5, 'single weapon remains selected');
 scroll(-120);assert.equal(game.weapon,5,'single weapon is stable in reverse too');
 game.state = 'pause'; assert.equal(scroll(-120), false, 'paused scroll is untouched');

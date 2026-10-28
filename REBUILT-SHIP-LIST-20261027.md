@@ -50,13 +50,13 @@ Recovered 27 October 2026 from SHIP-TRACKER.md, HANDOFF-RECONCILIATION.md, curre
 
 | A01 | VERIFY | Alex accepted and froze the exact shared Ken body, `a01-work/corner-uv-test/ken-original-corner-uv-ONLY.glb`, SHA-256 `41fb25aa968684c22e04bc9b5063b7a5b9fb8c5c76c282bb3eee8c1bdce9cf17`; runtime copy is `game/assets/characters/shared-zombie-body-ken-v1.glb`. Ken uses its 69-bone rig and five supplied clips, including death. No more Ken polishing or body/UV edits. | Local checks, production asset fetch and local Ken/truck counter render pass; root still owns gameplay validation. Remaining skin work is A03. |
 
-| A02 | OPEN — NAME TAG DECISION | Latest side-chat report: remove the Ken-only tag or give all characters smaller subtle name tags consistently. Side-chat recommendation is consistent subtle tags; no selection or implementation approval is inferred. | Validate normal encounter, idle/walk/chase/attack, articulated death/floor contact and restart in browser.  Also reproduce reported stiff movement in the current hosted build; verify actual limb motion, not clip names alone. |
+| A02 | VERIFY - LOCAL SHARED MOVEMENT | Common rig drives the seven authentic character skins; consistent small labels include Ken and Sergio. Actual local walk/chase lineup and contact checks reviewed. | Hosted normal encounter, independent limb motion, attack, death and restart; Alex visual review remains open. |
 
-| A03 | BUILDING | Native ChatGPT skin batch submitted for Dan, Rick, Alex, Monica, Keith Bogart and Sergio Cruz, all using the exact frozen common body. **Dan = trucker cap; Rick = bald/sunglasses; Alex = cowboy; Monica = woman.** Keith's confirmed source photo remains at `a01-work/keith-bogart/`; preserve bald head, grey beard, face/proportions and black Siempre polo. | Batch returned locally; texture corrections and integration remain unfinished. Review each authentic likeness/material/rig before runtime use; do not reopen Ken polishing. |
+| A03 | VERIFY - LOCAL SHARED RIGS | Dan, Rick, Alex, Monica, Keith Bogart and Sergio Cruz are source-fitted on the exact frozen Ken body, with final head/hair corrections. Actual local lineup reviewed; all seven pass shared rig/contact checks. | Promote reviewed runtime, then Alex verifies likeness, movement and labels in hosted normal gameplay; no Ken mesh/UV redesign. |
 
 | A04 | VERIFY | Sergio stays on original art until the submitted shared-body skin is returned. Solo boss now appears on waves 3, 6, 9, etc., waits a random 2–6 seconds and uses the existing random spawn point. | `node tools/check-sergio-boss.mjs` passes. Validate actual boss encounter, telegraphs, damage, death and next wave in hosted gameplay. RZR-mounted guns remain removed. |
 
-| C03 | VERIFY | Ken now uses the supplied articulated `zombie_death` clip and holds the settled pose before cleanup; other characters await A03 skins. | Browser validation must confirm Ken's fall/ground contact and subsequent character deaths; no Ken fade/sink. |
+| C03 | VERIFY - LOCAL CONTACT | All seven actors share the articulated fall/contact path. Local Three checks pass (69 bones, 207 tracks); actual cluster blasts kill three actors, play the fall and clean up. | Verify hosted deaths and rest pose across the roster; physical ragdoll simulation is not claimed. |
 
 
 
@@ -70,7 +70,7 @@ Recovered 27 October 2026 from SHIP-TRACKER.md, HANDOFF-RECONCILIATION.md, curre
 
 | A05 | VERIFY — DEPLOYED | Source-image held Gatling uses the forward action artwork Alex approved on 28 October, both costumes and actual-source pickup views. Cranking removed at his request: one stable forward pose and immediate fire, without spin-up, run-down or firing camera shake. Production `dpl_F8g4Z7jBPuk2wnPGxrahdw7RXML2`. | Local actual-game registration/state checks and independent code review passed; remote code/image hashes match. `gatling-repair/RELEASE.json`, `muerto-motion-report.json` and `LOCAL-IMPLEMENTATION.md` record limits. Alex's live gameplay approval remains pending; no foreground-FPS acceptance claimed. |
 
-| A12 | OPEN | New Muerto RPG side mission (28 October), owned by Main after current Gatling delivery: Muerto-styled launcher with rocket impact blast radius that can kill several clustered zombies. | Authored held/pickup/action visuals, collision, radius damage blocked by buildings/walls, ammo/reload/reset; verify multi-kill, survivors outside radius and occluded survivors in game, then Vercel review. |
+| A12 | READY - LOCAL RPG | Approved original Muerto launcher and bottle are preserved. Native loading/hip/aim/fire sheets, contextual aim, one loaded/two reserve, 1.65-second reload and 6-metre cover-aware blast are integrated locally. Twenty checks pass; aimed and hip shots each killed three actors for 300 points. | Publish next reviewed beta item after RZR approval (now received); Alex tests appearance, pickup, aim, fire, reload, cluster blast and switching. |
 
 | A13 | LIVE / USER REVIEW | Main: imagegen green-gas/chrome framed global top 10 directly on the landing page. Require an Instagram handle; use persistent shared scores, separate beta season and a clean official-launch season. | Desktop/phone layout, real two-client persistence and ranking, concurrency/replay checks, public save. Provisioning/cost approval pending; no new deployment yet. Launch changes season rather than deleting beta history. |
 
@@ -108,7 +108,7 @@ Recovered 27 October 2026 from SHIP-TRACKER.md, HANDOFF-RECONCILIATION.md, curre
 
 | V12 | PASS — ALEX APPROVED | Keep the truck at the far right; player walks up, actually eats tacos in first person and replenishes health. | Alex, 28 October: The taco truck works well now, approved. Accepted truck/eating/healing frozen in swarm-20261028/APPROVED-TRUCK-FREEZE.json. |
 
-| V05 | OPEN | Finish real dimensional RZR exterior using supplied render appearance and missing views as needed. Driver camera at the wheel, hands on it, animated left/right steering and independent look. | Walk around exterior, enter driver seat, steer, look around and exit; source likeness and no back-seat framing. |
+| V05 | PASS - USER APPROVED | Source-textured two-seat RZR and original six-pose cockpit are live in RZR5; traced wheel mattes, both costumes and driver-seat view. Alex approved cockpit and turning-wheel mask on 28 October. | Freeze approved RZR5 appearance and controls; retain regression checks during the next release. |
 
 | V06 | VERIFY | Keep RZR-mounted guns removed; restore selected weapon after exiting. | Driving cannot fire/reload; normal weapon operation returns on exit. |
 
@@ -166,7 +166,7 @@ Recovered 27 October 2026 from SHIP-TRACKER.md, HANDOFF-RECONCILIATION.md, curre
 
 | Q09 | PASS - LIVE TRAFFIC | Set up Vercel Web Analytics for the public beta using the actual game stack. Added from Alex's 28 October screenshot of the analytics setup screen; do not assume the Next.js selector describes this game. Owner: Main. | Deploy, visit the live game and confirm visitor/page-view data in Vercel. Analytics failure cannot block game loading or controls; no paid plan changes without authorization. |
 
-| Q10 | VERIFY - GIT CONNECTED | Reconcile the authoritative game source/assets into the intended GitHub repository and link it to the existing Vercel beta project. Added from the screenshot's Missing GitHub Connection notice. Owner: Main. | Review tracked content for secrets and generated bulk; verify repository identity, current approved assets, Vercel repository connection and a reproducible deployment. Preserve repository visibility/access unless Alex authorizes changes. |
+| Q10 | PASS - GIT DEPLOY VERIFIED | Reconcile the authoritative game source/assets into the intended GitHub repository and link it to the existing Vercel beta project. Added from the screenshot's Missing GitHub Connection notice. Owner: Main. | Review tracked content for secrets and generated bulk; verify repository identity, current approved assets, Vercel repository connection and a reproducible deployment. Preserve repository visibility/access unless Alex authorizes changes. |
 
 
 
@@ -242,3 +242,24 @@ Production dpl_8o8z5jsrReEFBWiGNPaGnPgirZfk is READY. See public-beta-20261028-s
 Q09 verification: official analytics script HTTP200; authenticated Vercel query for 28-29 October reports1visitor/2pageviews. Receipt swarm-20261028/ANALYTICS-VERIFIED.json. No plan or billing changes.
 
 Q10: private repo alexlacroix613-creator/siempre-zombie-beta contains source commit0b6f854; Vercel connection verified github/main/rootDirectory game. Reproducible Git deployment pending. No repository visibility/access expansion.
+
+Q10 complete: private GitHub main commit65e2e30 deployed automatically as dpl_38ZtoSWpk87Up6uqESu55wDa9194; all13 checked public source/artifact hashes equal exact committed Git bytes. Shared API healthy. Connection/rootDirectory game/production main verified. Receipt swarm-20261028/GITHUB-CONNECTION.json.
+
+
+## 2026-10-28 RZR5 production update
+- V05 / RZR cockpit: VERIFY - LIVE, awaiting Alex's gameplay acceptance. Owner: root.
+- Production Git commit 092b9cb70ff4d32a75c921940b8d41499989fa0f; Vercel dpl_9a3Uhrjg92M2FGAd9LX4MTNvQbii, canonical siempre-zombie-beta.vercel.app.
+- All 10 remote files match Git bytes; source-textured two-seat model, both six-pose costumes, traced turning wheel/spoke openings, restored shift knuckles, narrow Muerto grip continuation.
+- Actual local game: source P/vehicle LCD shown; left/right steering follows authored poses; E exits with pointer still locked. Source RGB invariant across 12 frames; four wheel/footprint/resource checks pass.
+- RZR arrives at wave 3 under existing progression. No public diagnostic controls added. Approved taco truck bytes unchanged.
+- Receipt: swarm-20261028/rzr/LIVE-RZR5-VERIFICATION.json. Next: Alex verifies normal hosted gameplay and wheel masking.
+- RPG owner: root + rpg_source_finish. Approved original source received; native loading approved by Alex, forward/aim/fire sprites being registered; no RPG published yet. Character changes remain local for their separate release gate.
+
+
+## Current local release gate: shared characters and Muerto RPG
+- A03: all seven source-fitted characters use the frozen Ken body; final heads/hair copied, actual local lineup reviewed. Body/UV/weights remain frozen.
+- C03: actual Three mixer/contact checks pass for all seven (69 bones, 207 death tracks). Actual aimed and hip RPG shots each killed three actors, scored 300, played death clips and cleaned up. No whole-game/mobile acceptance inferred.
+- A12: new approved original RPG source is preserved; native ChatGPT loading, forward and aimed firing/recovery sheets are integrated locally. Alex approved loading artwork; shooting/aiming product review remains open. One loaded/two reserve, 1.65-second reload, 6-metre cover-aware cluster blast; 20 checks pass. No RPG on canonical production yet.
+- Root corrected the aimed reload path to show actual bottle insertion after aimed firing instead of a frozen empty pose plus loading text. Actual runtime screenshot: swarm-20261028/rpg/root-actual-bottle-reload.png.
+- RZR5 remains the canonical live release. Root asked Alex to approve RZR before promoting the next item; that answer is pending.
+

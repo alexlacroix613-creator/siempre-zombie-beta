@@ -1,0 +1,56 @@
+{
+  "source": "C:/Users/alexl/Downloads/b12ac4fa-16fd-41bf-b323-7d627c75aa76.png",
+  "approvedOriginalSha256": "76A74977AF579571722EAEA12ECF2039924C49DD95B378791B20A63FF3BE3729",
+  "dimensions": [
+    1536,
+    1024
+  ],
+  "method": "Original copied unchanged; runtime source-image rendering through measured polygon silhouettes. RGB and original lettering retained.",
+  "held": "Native forward ready/aim/fired-empty sheet, separate native loading sheet, two operator rows; measured per-frame mouth registration and source border sleeve containment.",
+  "pickup": "Original left side panel rendered as alpha-tested world sprite.",
+  "projectile": "Original standalone Muerto bottle rendered as alpha-tested world sprite, neck aligned to projected flight.",
+  "loadingSource": "C:/Users/alexl/.codex/generated_images/01a17ac9-0d37-75b3-95c2-c55f72d66040/exec-199dfe1e-21c6-449c-a621-c2b30928e412.png",
+  "loadingSha256": "22E9BDFD4628198FCE2DCFC5FB4E63E7EEC77D7C9307F78D1758A4D35259336C",
+  "forwardSource": "C:/Users/alexl/.codex/generated_images/01a17ac9-0d37-75b3-95c2-c55f72d66040/exec-3eb96912-fd19-4378-b489-3f554219021e.png",
+  "forwardSha256": "F9BAF902F8BE21112FB30B4555F45A50E8983C8CB6FD7D11F7D068ED833FF1E6",
+  "forwardIsolation": "Aim Vivo uses source x56..479 within its512 tile; Muerto x48..479. Removes adjacent ready-exhaust/fired-sleeve spillover; native originals untouched and all retained source RGB preserved. Both far sight anchors250,110 fixed to crosshair.",
+  "nativeFilePreservation": "Both native RGBA1536x1024 originals copied unchanged, alpha range0..254. Runtime scales only alpha to255 maximum; RGB stays unchanged. No generated background or substitute texture.",
+  "aimSource": "C:/Users/alexl/.codex/generated_images/01a17ac9-0d37-75b3-95c2-c55f72d66040/exec-6d6aa4ce-f22b-4f57-8946-cbf3b19d9451.png",
+  "aimSha256": "DE0166394FF45C139E1EB50C7DC5EE348D2C4AFD2A6EDD0C5EFE1A85C695548E",
+  "aimRegistration": {
+    "vivo": [
+      [
+        264,
+        120
+      ],
+      [
+        258,
+        131
+      ],
+      [
+        250,
+        130
+      ]
+    ],
+    "muerto": [
+      [
+        264,
+        97
+      ],
+      [
+        258,
+        104
+      ],
+      [
+        251,
+        100
+      ]
+    ],
+    "method": "Same far-iron feature correspondence inspected and matched numerically across native cells. Constant H*.82 scale; each anchor fixed exactly to crosshair."
+  },
+  "aimIsolation": "Bottom row excludes source y0..7 to remove preceding row separator/cuff bleed. Native file unchanged. No source arm repaint or background generation.",
+  "knownLimitation": "No exposed bottle neck/cap visible in native aimed fire/recover; reflective forward arcs remain, so complete removal of all potential bottle-shoulder pixels is not asserted. Actual game visual review remains required.",
+  "spend": 0,
+  "generation": "Root supplied successful native ChatGPT loading and forward sheets based on newly approved source. No paid fallback; this builder made no generation calls.",
+  "rootRuntimeReview": "Actual hip and aimed shots each killed three clustered actors, scored 300, consumed one round and completed automatic reload. Actual bottle insertion now plays even if aim remains held. No exposed neck/cap remains in firing plates; forward reflective arc ambiguity remains disclosed."
+}

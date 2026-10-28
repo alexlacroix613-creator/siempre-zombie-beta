@@ -1,5 +1,5 @@
 // Separate shared physical death animation. The approved GLB is never modified.
-const dataUrl = new URL('./assets/characters/physical-death-v1.json', import.meta.url).href;
+const dataUrl = new URL('./assets/characters/physical-death-v1.json?v=contact-final28', import.meta.url).href;
 let data = null;
 let pending = null;
 const clips = new Map();
