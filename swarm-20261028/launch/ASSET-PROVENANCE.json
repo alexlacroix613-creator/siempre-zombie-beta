@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-28",
+  "logo": "Exact supplied Ken & Keith lockup. No lettering regeneration.",
+  "fog": "Native ChatGPT background, exec-440bf6c5-600a-4ef9-aaa8-855fb663dbca.png.",
+  "videos": "Original supplied desktop/mobile films encoded locally with installed ffmpeg; originals preserved. See intro-media-receipt.json.",
+  "artifacts": [
+    {
+      "path": "game/halloween/assets/halloween-fog-20261028.png",
+      "bytes": 2055627,
+      "sha256": "dfbb8ababc1c2a26910c22463ca84f95ab6c0f6f041ab7068c21655fc750365c",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "game/halloween/assets/main-lockup-20261028.png",
+      "bytes": 2863557,
+      "sha256": "0f31d2ce7ef5a7f7c65988ac792cac61f4f699a40be76df8e9b20b9e1d77b89a",
+      "dimensions": [
+        1330,
+        1182
+      ]
+    },
+    {
+      "path": "game/halloween/media/intro-desktop.mp4",
+      "bytes": 3921529,
+      "sha256": "443db4545410c94d0df186e0d39694a8d23490446723aead2db922042eaea20c"
+    },
+    {
+      "path": "game/halloween/media/intro-mobile.mp4",
+      "bytes": 2520926,
+      "sha256": "c0f4d31e8616b9a19c27a577632f0b406095d1fff9a6e952f6abf981f706b077"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+const html=readFileSync(new URL('../../game/halloween/index.html',import.meta.url),'utf8');
+assert(!/leaderboard|id="scores"|watch-intro|intro-dialog/.test(html));
+assert(html.includes('Ken and Keith brought Siempre Vivo and Siempre Muerto together'));
+assert(html.includes('main-lockup-20261028.png'));
+assert(html.includes('href="../"'));
+const game=readFileSync(new URL('../../game/index.html',import.meta.url),'utf8');
+assert(game.includes('id="title-board"'));
+assert(game.includes('zombie-intro.js?v=20261028-v2'));
+console.log('PASS: simple splash, original lockup, origin story, direct game link; Top 10 stays inside game.');

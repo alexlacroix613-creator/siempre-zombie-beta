@@ -1451,7 +1451,8 @@ function clearHeldInput() {
   setAim(false);
   releaseTouchInput();
 }
-addEventListener('blur', () => { clearHeldInput(); if (game.state === 'play') pause(); });
+document.addEventListener('zombie-intro-end', clearHeldInput);
+addEventListener('blur', () => { clearHeldInput(); if (game.state === 'play' && app.dataset.introPlaying !== 'true') pause(); });
 document.addEventListener('visibilitychange', () => { if (document.hidden) { clearHeldInput(); if (game.state === 'play') pause(); } });
 addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT') return;
@@ -3018,6 +3019,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) addEventListener('p
 function frame() {
   const dt = Math.min(clock.getDelta(), .05);
   const now = clock.elapsedTime;
+  if (app.dataset.introPlaying === 'true') { requestAnimationFrame(frame); return; }
   if (game.state === 'play') {
     updateBuggy(dt); updatePlayer(dt); updateWeapon(dt); updateZombies(dt);
     if (game.state === 'play') { updateWaves(dt); updatePickups(dt); }

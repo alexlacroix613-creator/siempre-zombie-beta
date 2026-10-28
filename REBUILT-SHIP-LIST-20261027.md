@@ -50,13 +50,13 @@ Recovered 27 October 2026 from SHIP-TRACKER.md, HANDOFF-RECONCILIATION.md, curre
 
 | A01 | VERIFY | Alex accepted and froze the exact shared Ken body, `a01-work/corner-uv-test/ken-original-corner-uv-ONLY.glb`, SHA-256 `41fb25aa968684c22e04bc9b5063b7a5b9fb8c5c76c282bb3eee8c1bdce9cf17`; runtime copy is `game/assets/characters/shared-zombie-body-ken-v1.glb`. Ken uses its 69-bone rig and five supplied clips, including death. No more Ken polishing or body/UV edits. | Local checks, production asset fetch and local Ken/truck counter render pass; root still owns gameplay validation. Remaining skin work is A03. |
 
-| A02 | VERIFY - LOCAL SHARED MOVEMENT | Common rig drives the seven authentic character skins; consistent small labels include Ken and Sergio. Actual local walk/chase lineup and contact checks reviewed. | Hosted normal encounter, independent limb motion, attack, death and restart; Alex visual review remains open. |
+| A02 | VERIFY - LIVE SHARED MOVEMENT | Common rig drives the seven authentic character skins; consistent small labels include Ken and Sergio. Actual local walk/chase lineup and contact checks reviewed. | Hosted normal encounter, independent limb motion, attack, death and restart; Alex visual review remains open. |
 
-| A03 | VERIFY - LOCAL SHARED RIGS | Dan, Rick, Alex, Monica, Keith Bogart and Sergio Cruz are source-fitted on the exact frozen Ken body, with final head/hair corrections. Actual local lineup reviewed; all seven pass shared rig/contact checks. | Promote reviewed runtime, then Alex verifies likeness, movement and labels in hosted normal gameplay; no Ken mesh/UV redesign. |
+| A03 | VERIFY - LIVE SHARED RIGS | Dan, Rick, Alex, Monica, Keith Bogart and Sergio Cruz are source-fitted on the exact frozen Ken body, with final head/hair corrections. Actual local lineup reviewed; all seven pass shared rig/contact checks. | Live in release 49c6887; Alex verifies likeness, movement and labels in hosted normal gameplay; no Ken mesh/UV redesign. |
 
 | A04 | VERIFY | Sergio stays on original art until the submitted shared-body skin is returned. Solo boss now appears on waves 3, 6, 9, etc., waits a random 2–6 seconds and uses the existing random spawn point. | `node tools/check-sergio-boss.mjs` passes. Validate actual boss encounter, telegraphs, damage, death and next wave in hosted gameplay. RZR-mounted guns remain removed. |
 
-| C03 | VERIFY - LOCAL CONTACT | All seven actors share the articulated fall/contact path. Local Three checks pass (69 bones, 207 tracks); actual cluster blasts kill three actors, play the fall and clean up. | Verify hosted deaths and rest pose across the roster; physical ragdoll simulation is not claimed. |
+| C03 | VERIFY - LIVE CONTACT | All seven actors share the articulated fall/contact path. Local Three checks pass (69 bones, 207 tracks); actual cluster blasts kill three actors, play the fall and clean up. | Verify hosted deaths and rest pose across the roster; physical ragdoll simulation is not claimed. |
 
 
 
@@ -70,7 +70,7 @@ Recovered 27 October 2026 from SHIP-TRACKER.md, HANDOFF-RECONCILIATION.md, curre
 
 | A05 | VERIFY — DEPLOYED | Source-image held Gatling uses the forward action artwork Alex approved on 28 October, both costumes and actual-source pickup views. Cranking removed at his request: one stable forward pose and immediate fire, without spin-up, run-down or firing camera shake. Production `dpl_F8g4Z7jBPuk2wnPGxrahdw7RXML2`. | Local actual-game registration/state checks and independent code review passed; remote code/image hashes match. `gatling-repair/RELEASE.json`, `muerto-motion-report.json` and `LOCAL-IMPLEMENTATION.md` record limits. Alex's live gameplay approval remains pending; no foreground-FPS acceptance claimed. |
 
-| A12 | READY - LOCAL RPG | Approved original Muerto launcher and bottle are preserved. Native loading/hip/aim/fire sheets, contextual aim, one loaded/two reserve, 1.65-second reload and 6-metre cover-aware blast are integrated locally. Twenty checks pass; aimed and hip shots each killed three actors for 300 points. | Publish next reviewed beta item after RZR approval (now received); Alex tests appearance, pickup, aim, fire, reload, cluster blast and switching. |
+| A12 | PASS - USER APPROVED | Approved original Muerto launcher and bottle are preserved. Native loading/hip/aim/fire sheets, contextual aim, one loaded/two reserve, 1.65-second reload and 6-metre cover-aware blast are live in release 49c6887. Alex approved the RPG on 28 October. Twenty checks pass; aimed and hip shots each killed three actors for 300 points. | User approval received 28 October. Freeze authentic RPG design and preserve aim/fire/reload, six-metre cluster blast and switching. Release 49c6887 / dpl_56pGWpbkC4xXuquiXHtKQn3H73WD; swarm-20261028/rpg/LIVE-VERIFICATION.json. |
 
 | A13 | LIVE / USER REVIEW | Main: imagegen green-gas/chrome framed global top 10 directly on the landing page. Require an Instagram handle; use persistent shared scores, separate beta season and a clean official-launch season. | Desktop/phone layout, real two-client persistence and ranking, concurrency/replay checks, public save. Provisioning/cost approval pending; no new deployment yet. Launch changes season rather than deleting beta history. |
 
@@ -263,3 +263,11 @@ Q10 complete: private GitHub main commit65e2e30 deployed automatically as dpl_38
 - Root corrected the aimed reload path to show actual bottle insertion after aimed firing instead of a frozen empty pose plus loading text. Actual runtime screenshot: swarm-20261028/rpg/root-actual-bottle-reload.png.
 - RZR5 remains the canonical live release. Root asked Alex to approve RZR before promoting the next item; that answer is pending.
 
+
+## Halloween launch package — 28 October 2026
+
+- Current live RPG/roster release: 49c6887, deployment dpl_56pGWpbkC4xXuquiXHtKQn3H73WD. RZR and RPG explicitly approved by Alex; approved truck remains frozen.
+- Root owns Halloween splash, authentic lockup, Ken-and-Keith origin, desktop/mobile films and shared Top 10. Main website banner remains a review package until Alex approves website publication.
+- Alex rejected intro menus: Play must run the video then reveal gameplay automatically, with one Skip control. Original Play gesture retains pointer capture; simulation/input freeze during film, no extra start menu. Native browser focus/capture failure retains existing Pause/Resume safety.
+- Alex rejected the plain/offline website Top 10 strip. Launch-page builder owns rich chrome-frame correction and real-score review via read-only local proxy; do not mark an offline placeholder as complete.
+- Official launch score-season switch remains pending actual launch authorization; retain beta history.

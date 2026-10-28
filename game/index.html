@@ -12,6 +12,8 @@
 <link rel="stylesheet" href="mobile-hud.css?v=11-beta">
 <link rel="stylesheet" href="soldier-selection.css?v=1">
 <link rel="stylesheet" href="landing-leaderboard.css?v=20261028-1">
+<link rel="stylesheet" href="zombie-intro.css?v=20261028-v2">
+<script defer src="zombie-intro.js?v=20261028-v2"></script>
 <style id="minimap-gps-style">
 /* Position dot stays centered on registered ground point; arrow gives heading. */
 .minimap.map-3d #minimap-player { display:block !important; z-index:5; width:10px; height:10px; clip-path:none; background:#8dfff4; border:2px solid #fff; border-radius:50%; box-shadow:0 0 0 2px #06100f; filter:drop-shadow(0 1px 3px #000); pointer-events:none; }
@@ -237,7 +239,7 @@
 (function () {
   var params = new URL(location.href).searchParams;
   var localDiagnostics = ['localhost', '127.0.0.1', '[::1]'].includes(new URL(location.href).hostname);
-  var module = document.createElement('script'), url = new URL(localDiagnostics && params.has('p03Review') && params.has('p03Failure') ? 'p03-intentionally-missing-module.js' : 'siempre-zombie.js?boot=20261028-rpg-shared1', location.href);
+  var module = document.createElement('script'), url = new URL(localDiagnostics && params.has('p03Review') && params.has('p03Failure') ? 'p03-intentionally-missing-module.js' : 'siempre-zombie.js?boot=20261028-halloween1', location.href);
   var retry = params.get('bootRetry');
   if (retry) url.searchParams.set('bootRetry', retry);
   module.type = 'module'; module.src = url.href;

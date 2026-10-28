@@ -8,6 +8,7 @@ function extract(name){const s=source.indexOf('function '+name+'('),b=source.ind
 const nodes=new Map(),events=new Map();
 function node(id){if(nodes.has(id))return nodes.get(id);const classes=new Set();const n={tagName:'CANVAS',style:{},hidden:false,classList:{add:x=>classes.add(x),remove:x=>classes.delete(x),contains:x=>classes.has(x),toggle(x,on){if(on===undefined)on=!classes.has(x);on?classes.add(x):classes.delete(x);return on;}},addEventListener(type,fn){const key=id+':'+type;events.set(key,[...(events.get(key)||[]),fn]);},getBoundingClientRect:()=>({left:0,top:0,width:100,height:100}),setPointerCapture(){},closest:()=>null};nodes.set(id,n);return n;}
 const canvas=node('canvas'),app=node('app'),document=node('document'),window=node('window');
+app.dataset={};
 document.querySelectorAll=()=>[...nodes.values()].filter(n=>n.classList.contains('pressed'));
 document.documentElement={};document.exitPointerLock=()=>{document.pointerLockElement=null;emit('document','pointerlockchange');};
 canvas.requestPointerLock=()=>{document.pointerLockElement=canvas;return Promise.resolve();};
@@ -20,6 +21,7 @@ const idle=()=>{assert.equal(t.input.fire,false);assert.equal(t.input.firePresse
 emit('window','keydown',{code:'KeyW'});emit('window','keydown',{code:'ShiftLeft'});t.player.vel.set(3,0,4);t.input.fire=t.input.firePressed=true;
 t.pause();idle();emit('window','keydown',{code:'KeyD'});assert.notEqual(t.keys.KeyD,true,'paused key presses cannot queue movement');t.resume();idle();
 emit('window','keydown',{code:'KeyA'});t.input.fire=t.input.firePressed=true;emit('window','blur');assert.equal(game.state,'pause');idle();t.resume();
+app.dataset.introPlaying='true';emit('window','blur');assert.equal(game.state,'play','fullscreen blur cannot pause the intro launch');idle();document.hidden=true;emit('document','visibilitychange');assert.equal(game.state,'pause','hidden-tab safety still pauses during intro');delete app.dataset.introPlaying;document.hidden=false;t.resume();
 emit('#stick','pointerdown',{pointerId:11});emit('#stick','pointermove',{pointerId:11,clientX:100});assert.equal(t.input.moveX,1);
 emit('#stick','lostpointercapture',{pointerId:11});assert.equal(t.input.moveX,0);emit('#stick','pointermove',{pointerId:11,clientX:0});assert.equal(t.input.moveX,0,'stale stick pointer ignored');
 emit('canvas','pointerdown',{pointerId:12});emit('canvas','pointermove',{pointerId:12,clientX:80});const look=t.player.yaw;

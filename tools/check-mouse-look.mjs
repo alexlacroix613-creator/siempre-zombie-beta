@@ -24,7 +24,7 @@ function setup(query='',api='success',touch=false) {
     return Promise.resolve();
   };
   class Vector3 { constructor(x=0,y=0,z=0){Object.assign(this,{x,y,z});} set(x,y,z){Object.assign(this,{x,y,z});return this;} }
-  const context={canvas,document,game,buggy:null,THREE:{Vector3},PARAMS:new URLSearchParams(query),TOUCH:touch,
+  const context={canvas,document,game,app:{dataset:{}},buggy:null,THREE:{Vector3},PARAMS:new URLSearchParams(query),TOUCH:touch,
     store:{get:(_key,fallback)=>fallback},clamp:(x,a,b)=>Math.max(a,Math.min(b,x)),
     addEventListener:(type,fn)=>events.set('window:'+type,fn),
     pause:()=>{pauses++;game.state='pause';},initAudio:()=>{},setScreen:s=>{game.state=s;},setAim:()=>{},swap:()=>{},nextOwned:()=>0,toggleDrive:()=>{driveToggles++;},swapBottle:()=>{},WEAPONS:[{}],SLOT_ORDER:[0],$:()=>({classList:{toggle:()=>false}})};
