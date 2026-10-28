@@ -8,7 +8,7 @@ import { LOCAL_SCORE_KEY } from './leaderboard-config.js';
 import { REFILL_SPOTS } from './refill-layout.js';
 import { SERGIO, tickBossMelee, createBossHud } from './sergio-boss.js';
 import { createDualViewmodel } from './dual-viewmodel.js';
-import { createDriverViewmodel } from './driver-viewmodel.js';
+import { createDriverViewmodel } from './driver-viewmodel.js?v=20261028-rzr5';
 import { createCoaViewmodel } from './coa-viewmodel.js';
 import { createAuthoredWeaponViews } from './authored-weapon-views.js';
 import { createGatlingSourceViews } from './gatling-source-views.js?v=20261028-source1';
@@ -16,7 +16,7 @@ import { createFieldProps } from './new-field-props.js';
 import { createSourceGlassProjectiles } from './source-glass-projectile.js';
 import {segmentBoxTime,segmentCylinderTime} from './combat-trace.js';
 import { siteGpsPosition, gpsHeading } from './minimap-gps.js';
-import { preloadRzr6, makeRzr6, RZR6_FOOTPRINT } from './rzr6-loader.js';
+import { preloadRzr6, makeRzr6, RZR6_FOOTPRINT } from './rzr6-loader.js?v=20261028-rzr5';
 import { createBoundaryFog } from './boundary-fog.js';
 import { createOutOfBounds, softMovementBlockers } from './out-of-bounds.js';
 import { createTacoTruck } from './taco-truck.js';
@@ -1669,7 +1669,7 @@ function nextWave() {
   if (bossWave) {
     showBanner('Solo encounter · watch the hands before the strike', 'SERGIO CRUZ', 3.2); sfx('sergio_roar');
   } else if (buggyReady) {
-    showBanner(TOUCH ? 'Red RZR Pro R ready · tap Drive beside it' : 'Red RZR Pro R ready · press E beside it', 'Wave ' + game.wave, 3.2); sfx('levelup');
+    showBanner(TOUCH ? 'RZR ready · tap Drive beside it' : 'RZR ready · press E beside it', 'Wave ' + game.wave, 3.2); sfx('levelup');
   } else showBanner('Noche de Muertos', 'Wave ' + game.wave, 2.6);
   sfx('bell');
 }
@@ -2265,7 +2265,7 @@ function spawnBuggy() {
   removeBuggy();
   let g;
   if (RZR6) {
-    if (!rzr6GLTF) { showBanner('Vehicle asset still loading', 'RZR6 review', 2); return; }
+    if (!rzr6GLTF) { showBanner('Vehicle asset still loading', 'RZR', 2); return; }
     g = makeRzr6(rzr6GLTF);
   } else g = buildBuggy();
   scene.add(g);
@@ -2332,7 +2332,7 @@ function damageBuggy(amount, kind) {
   const ex = Math.abs(Math.cos(b.h)) * RZR_HALF_WIDTH + Math.abs(Math.sin(b.h)) * RZR_HALF_LENGTH;
   const ez = Math.abs(Math.sin(b.h)) * RZR_HALF_WIDTH + Math.abs(Math.cos(b.h)) * RZR_HALF_LENGTH;
   b.blocker = { minX: b.x - ex, maxX: b.x + ex, minZ: b.z - ez, maxZ: b.z + ez }; blockers.push(b.blocker);
-  sfx('crash'); showBanner('Damaged · replacement ready on wave ' + nextBuggyWave(), 'RZR Pro R 4', 3);
+  sfx('crash'); showBanner('Damaged · replacement ready on wave ' + nextBuggyWave(), 'RZR', 3);
 }
 function updateBuggy(dt) {
   const b = buggy; if (!b) return;
@@ -3023,7 +3023,7 @@ function frame() {
   if (game.banner > 0) { game.banner -= dt; if (game.banner <= 0) $('#banner').classList.remove('on'); }
   distilleryLevel?.updateLighting(camera.position);
   buggy?.g.userData.setDriverViewActive?.(game.state === 'play' && buggy.state === 'driving');
-  driverVM.update({ visible: game.state === 'play' && buggy?.state === 'driving', steer: -(buggy?.steer || 0), vehicle: buggy?.g, skin });
+  driverVM.update({ visible: game.state === 'play' && buggy?.state === 'driving', steer: -(buggy?.steer || 0), vehicle: buggy?.g, skin, dt, speed:buggy?.speed||0, action:game.shake>.15?'grip':null });
   boundaryFog?.update(dt);
   renderer.render(scene, camera);
   if (gatlingCapture) gatlingCapture(dt);

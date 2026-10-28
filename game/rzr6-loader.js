@@ -2,7 +2,7 @@
 import * as THREE from './vendor/three.module.min.js';
 import { GLTFLoader } from './vendor/GLTFLoader.js';
 
-export const RZR6_URL = './assets/rzr-white-black-two-seat.glb';
+export const RZR6_URL = './assets/rzr-white-black-two-seat.glb?v=d26f97dc-rzr4';
 export const RZR6_WHEEL_RADIUS = 0.4064;
 // Measured from the current GLB including tire lugs, bumpers and root transform.
 export const RZR6_FOOTPRINT = Object.freeze({
@@ -18,6 +18,7 @@ export function makeRzr6(gltf, { mounts = [], mountMaterials = [] } = {}) {
   const g = new THREE.Group(); g.name = 'RZR white-black two-seat reconstruction';
   const src = gltf.scene.clone(true);
   const steering = src.getObjectByName('driver_steering');
+  const cockpitOccluders=src.getObjectByName('driver_overlay_occluders');
   if (!steering) throw new Error('rzr6: missing isolated steering wheel and spokes');
   const wheels = ['wheel_FL', 'wheel_FR', 'wheel_RL', 'wheel_RR'].map(name => {
     const wheel = src.getObjectByName(name);
@@ -36,6 +37,10 @@ export function makeRzr6(gltf, { mounts = [], mountMaterials = [] } = {}) {
   });
   const body = materials.find(m => m.name === 'paint_white');
   if (!body) { materials.forEach(m => m.dispose()); throw new Error('rzr6: missing paint material'); }
+  // Existing wreck code tints body.color. Keep authored paint surfaces on that
+  // per-instance color, without touching the shared GLB or another vehicle.
+  const measuredPaint=['measured original white door','measured original white black quarter graphic','measured original bonnet'];
+  for(const material of materials)if(/^approved original (white-black side panels|formed bonnet|white nose surfaces|upper-quarter white-black graphic)/.test(material.name)||measuredPaint.includes(material.name))material.color=body.color;
   g.add(src);
   const wheelData = wheels.map((wheel, index) => {
     const pivot = new THREE.Group(); pivot.name = wheel.name + '_steer';
@@ -61,7 +66,7 @@ export function makeRzr6(gltf, { mounts = [], mountMaterials = [] } = {}) {
     setSteering(value) {
       steering.quaternion.copy(steeringBase).multiply(steeringTurn.setFromAxisAngle(steeringAxis,THREE.MathUtils.clamp(value,-1,1)*1.0));
     },
-    setDriverViewActive(active) { steering.visible = !active; },
+    setDriverViewActive(active) { steering.visible = !active; if(cockpitOccluders)cockpitOccluders.visible=!active; },
     dispose() {
       if (disposed) return;
       disposed = true;

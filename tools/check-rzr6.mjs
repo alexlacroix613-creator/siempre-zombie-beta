@@ -1,9 +1,9 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import { GLTFLoader } from '../game/vendor/GLTFLoader.js';
-import { makeRzr6, RZR6_WHEEL_RADIUS } from '../game/rzr6-loader.js';
+import { makeRzr6, RZR6_WHEEL_RADIUS, RZR6_URL, RZR6_FOOTPRINT } from '../game/rzr6-loader.js';
 import * as THREE from '../game/vendor/three.module.min.js';
-const raw = fs.readFileSync(new URL('../game/assets/rzr-pro-r-6-steering-separated.glb', import.meta.url));
+const raw = fs.readFileSync(new URL('../game/'+RZR6_URL, import.meta.url));
 const jsonLength = raw.readUInt32LE(12), json = JSON.parse(raw.subarray(20, 20 + jsonLength));
 // Node geometry/lifetime check only: omit image decoding; keep all actual GLB nodes and binary geometry.
 delete json.images; delete json.textures;
@@ -19,17 +19,17 @@ const b = Buffer.concat([head, padded, bin]);
 const gltf = await new GLTFLoader().parseAsync(b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength), '');
 gltf.scene.updateMatrixWorld(true);
 const size = new THREE.Box3().setFromObject(gltf.scene).getSize(new THREE.Vector3());
-assert(Math.abs(size.z - 4.22) < .05); assert(Math.abs(size.x - 1.89) < .05);
+assert(Math.abs(size.z - RZR6_FOOTPRINT.halfLength*2) < .01); assert(Math.abs(size.x - RZR6_FOOTPRINT.halfWidth*2) < .01);
 const a = makeRzr6(gltf), c = makeRzr6(gltf);
-const aWheel=a.getObjectByName('steering_wheel_and_spokes'),cWheel=c.getObjectByName('steering_wheel_and_spokes');
+const aWheel=a.getObjectByName('driver_steering'),cWheel=c.getObjectByName('driver_steering');
 assert(aWheel && cWheel);assert.equal(aWheel.visible,true);
 const originalVisible=new Map();a.traverse(o=>originalVisible.set(o,o.visible));
 a.userData.setDriverViewActive(true);assert.equal(aWheel.visible,false);assert.equal(cWheel.visible,true);
-for(const [o,v]of originalVisible)if(o!==aWheel)assert.equal(o.visible,v,'only wheel/spokes node visibility changes');
+for(const [o,v]of originalVisible)if(o!==aWheel && o.name!=='driver_overlay_occluders')assert.equal(o.visible,v,'only wheel and dedicated cockpit occluders change visibility');
 a.userData.setDriverViewActive(false);assert.equal(aWheel.visible,true);
-const wheelBox=new THREE.Box3().setFromObject(aWheel);
-assert(wheelBox.min.x>.149&&wheelBox.max.x<.511&&wheelBox.min.y>1.160&&wheelBox.max.y<1.461&&wheelBox.min.z>.648&&wheelBox.max.z<.872);
-let steeringTriangles=0;aWheel.traverse(o=>{if(o.isMesh)steeringTriangles+=o.geometry.index.count/3;});assert.equal(steeringTriangles,584);
+const wheelBox=new THREE.Box3().setFromObject(aWheel),wheelCenter=wheelBox.getCenter(new THREE.Vector3());
+assert(wheelCenter.distanceTo(new THREE.Vector3(...a.userData.driverWheelCenter))<.13,'wheel remains at declared driver reach');
+const beforeSteer=aWheel.quaternion.clone();a.userData.setSteering(.5);assert(beforeSteer.angleTo(aWheel.quaternion)>.4,'wheel actually turns');a.userData.setSteering(0);assert(aWheel.quaternion.equals(beforeSteer),'zero steering restores exact authored base orientation');
 assert.equal(a.userData.wheels.length, 4); assert.equal(a.userData.wheelRadius, RZR6_WHEEL_RADIUS);
 assert.notEqual(a.userData.body, c.userData.body); assert.notEqual(a.userData.body, gltf.scene.getObjectByName('body')?.material);
 for (const w of a.userData.wheels) {
