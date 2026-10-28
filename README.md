@@ -12,7 +12,7 @@ Serve `game/` over HTTP for local play. Global scores require the provider-manag
 
 ## Deploy
 
-Vercel project `siempre-zombie-beta`, repository root directory `game`. Install from `game/package-lock.json`; no client build step. Node server functions provide the shared leaderboard using the existing Siempre Neon database and a restricted Zombie role.
+Vercel project `siempre-zombie-beta`, repository root directory `game`. Run CLI deploys from the repository root (not from game), or push a reviewed main commit through the connected GitHub integration. Install from `game/package-lock.json`; no client build step. Node server functions provide the shared leaderboard using the existing Siempre Neon database and a restricted Zombie role.
 
 Official launch starts a new identifier in `game/leaderboard-config.js` only when Alex authorizes launch. Keep beta score history separate from the active board.
 

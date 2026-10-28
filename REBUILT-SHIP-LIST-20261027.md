@@ -166,7 +166,7 @@ Recovered 27 October 2026 from SHIP-TRACKER.md, HANDOFF-RECONCILIATION.md, curre
 
 | Q09 | PASS - LIVE TRAFFIC | Set up Vercel Web Analytics for the public beta using the actual game stack. Added from Alex's 28 October screenshot of the analytics setup screen; do not assume the Next.js selector describes this game. Owner: Main. | Deploy, visit the live game and confirm visitor/page-view data in Vercel. Analytics failure cannot block game loading or controls; no paid plan changes without authorization. |
 
-| Q10 | BUILDING - PRIVATE BACKUP | Reconcile the authoritative game source/assets into the intended GitHub repository and link it to the existing Vercel beta project. Added from the screenshot's Missing GitHub Connection notice. Owner: Main. | Review tracked content for secrets and generated bulk; verify repository identity, current approved assets, Vercel repository connection and a reproducible deployment. Preserve repository visibility/access unless Alex authorizes changes. |
+| Q10 | VERIFY - GIT CONNECTED | Reconcile the authoritative game source/assets into the intended GitHub repository and link it to the existing Vercel beta project. Added from the screenshot's Missing GitHub Connection notice. Owner: Main. | Review tracked content for secrets and generated bulk; verify repository identity, current approved assets, Vercel repository connection and a reproducible deployment. Preserve repository visibility/access unless Alex authorizes changes. |
 
 
 
@@ -240,3 +240,5 @@ No item is dropped because a method failed or the work was handed off. Record th
 Production dpl_8o8z5jsrReEFBWiGNPaGnPgirZfk is READY. See public-beta-20261028-source-controls2/RELEASE.json and swarm-20261028/PROGRESS.md. Captured wheel/RZR-exit checks pass; source glass/balloons, detailed NASA moon and four refill sites are live. User acceptance remains open. Six corrected shared-body skins run only in local fittedReview until heads/hair/physical death pass final review. RZR broad Muerto arm rejected by Alex; narrow single-arm join and dimensional dashboard correction remain owned. Truck/eating/healing hashes unchanged. Private GitHub backup exists; Git connection still pending. Analytics script HTTP200; provider pageview pending. RPG artwork provider rejection and Facebook legal-terms gate remain explicit unresolved items.
 
 Q09 verification: official analytics script HTTP200; authenticated Vercel query for 28-29 October reports1visitor/2pageviews. Receipt swarm-20261028/ANALYTICS-VERIFIED.json. No plan or billing changes.
+
+Q10: private repo alexlacroix613-creator/siempre-zombie-beta contains source commit0b6f854; Vercel connection verified github/main/rootDirectory game. Reproducible Git deployment pending. No repository visibility/access expansion.

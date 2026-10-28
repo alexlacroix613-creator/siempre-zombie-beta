@@ -1,0 +1,8 @@
+*
+!game/
+!game/**
+game/node_modules/
+game/.vercel/
+game/.env*
+game/*-review.html
+game/*.artifact.json
