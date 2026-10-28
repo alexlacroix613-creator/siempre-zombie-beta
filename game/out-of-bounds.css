@@ -1,0 +1,10 @@
+.out-of-bounds { position:absolute; inset:0; pointer-events:none; z-index:18; }
+.out-of-bounds { animation:fog-breath 2.1s ease-in-out infinite; }
+@keyframes fog-breath { 0%,100% { filter:brightness(.82); } 50% { filter:brightness(1.13); } }
+@media (prefers-reduced-motion:reduce) { .out-of-bounds { animation:none; } }
+.out-of-bounds::before { content:''; position:absolute; inset:0; opacity:var(--oob-opacity,0); background:radial-gradient(ellipse at center,transparent 26%,#6d120d55 58%,#900b07dc 100%); box-shadow:inset 0 0 9vw 3vw #990b0899; }
+.out-of-bounds-warning { position:absolute; left:50%; top:34%; transform:translateX(-50%); width:min(520px,calc(100% - 48px)); padding:14px 18px; background:#260b0bed; border:1px solid #ffc5a6; border-radius:3px; color:#fff1e9; text-align:center; font:16px/1.45 Arial,sans-serif; text-shadow:0 1px 2px #000; }
+.out-of-bounds-warning strong,.out-of-bounds-warning span { display:block; }
+.out-of-bounds-warning span { margin-top:5px; font-size:14px; color:#ffd1bf; }
+.out-of-bounds[hidden],.out-of-bounds-warning[hidden],.app:not([data-screen="play"]) .out-of-bounds { display:none; }
+@media (max-width:600px) { .out-of-bounds-warning { top:28%; font-size:14px; padding:12px 14px; } }

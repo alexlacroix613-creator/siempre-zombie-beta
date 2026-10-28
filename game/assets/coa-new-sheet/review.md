@@ -1,0 +1,17 @@
+# New chat Coa FPS bullet: local reference implementation
+
+Current runtime update: Coa2 now integrated into main slot/inventory/attack flow and field acquisition. game/new-field-props.js supplies a source-derived edge-socket Coa pickup with wood-grain/patina materials. Earlier no-pickup statement below is historical; latest shared integration provenance is ../new-held-weapons/provenance.md. Independent actual-game visual acceptance remains root-owned.
+
+Status: PROTOTYPE; maker inspected; independent parent visual/browser review required. One native generation, no retake or paid/API fallback. Not a mesh/rig or continuous animation. Existing source game and axe untouched.
+
+Authority: outputs/game-asset-sheets-20261027/12-coa/sheet.png in this workspace, actual image viewed. New design has aged circular thin steel blade, edge tang/socket and rivet, warm wood shaft, plain rounded wooden butt, Vivo teal/ivory gloves and ivory/purple rose sleeves.
+
+Compared actual original-game review-evidence/agave-coa-v3/{coa-v3-hero-3quarter.png,coa-v3-side-profile.png,coa-v3-socket-closeup.png}. Rejected v3 for THIS integration because its shaft passes through blade centre and it has a large silver butt grip/ferrule; these differ materially from new chat sheet. Old v1 also remains excluded. No improvement of an incorrect old prop.
+
+Native output: C:/Users/alexl/.codex/generated_images/01a17d3d-019b-74b1-98f2-62faea5e67c1/exec-d7117f09-9ebc-4b61-9618-c6aea665e638.png, copied here as poses-native.png. Exact request in prompt.txt. Output 1254x1254 RGBA8. Pixel inspection confirms alpha0 background (1,124,930 pixels), 446,444 partially transparent pixels and 1,142 alpha255 pixels. Partial-alpha count alone does not establish opaque-interior quality; actual game compositing needs review. Rows725-775 have zero pixels with alpha>128, providing a clean separation between two pose regions.
+
+Visible findings: aged blade/edge socket/wood and glove/sleeve identities substantially follow new sheet. Two hands hold one coherent shaft in each pose, opposed grips look plausible. Strike advances blade and lowers grips without becoming an axe. Fine finger topology not certified. Provider ignored requested square2048 dimensions and equal-row atlas layout; READY occupies top~735px and STRIKE lower514px. Module uses measured source regions and same pixel scale, placing lower image at destination y221; no stretching or equal-half cut. Top sleeves meet lower canvas edge and butt remains wood. Native image shows light/colored edge speckle/halos near sleeve silhouettes; no claim of clean final matte. No automatic correction or blind rerun after this diagnosis.
+
+Module: game/coa-viewmodel.js uses measured two-key playback (strike phase .30-.66, includes existing .42 impact event), native alpha, per-frame visibility and resize/dispose lifecycle. Narrow portrait treatment is a smaller lower-screen view; ultrawide may reveal sleeve-side cuts because image aspect is finite. No generic 3D substitute. Node check verifies crops/aspect/phase/visibility/lifetime but not art quality.
+
+Parent must independently view actual output against sheet12 and in game before accepting. A discrete two-key reference is less fluid than requested full authored motion; no misleading animation-ready claim. World-space dropped/pickup 3D prop remains unavailable for this new design. Do not reintroduce old v1/v3 as pickup to fill that gap.

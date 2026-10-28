@@ -1,0 +1,26 @@
+/* Both authentic soldiers share a stage; no portrait panels or baked backgrounds. */
+.screen.title h1.supplied-title { width:min(45vw,70vh,680px); margin:0 0 20px; line-height:0; }
+.supplied-title img { display:block; width:100%; height:auto; }
+.screen.title .skins { width:min(100%,900px); }
+.screen.title .skins legend { display:block; text-align:center; margin:0 0 12px; color:#e6efdf; }
+.screen.title .skins-in { grid-template-columns:1fr 1fr; gap:clamp(10px,2vw,36px); align-items:end; }
+.screen.title .skins-in::before,.screen.title .skins-in::after { display:none; }
+.screen.title .skins-in .skin { display:flex; flex-direction:column; align-items:center; max-width:none; min-width:0; position:relative; }
+.screen.title .skins-in .soldier { width:100%; height:min(66vh,680px); object-fit:contain; object-position:center bottom; display:block; filter:brightness(.7); transform:translateY(5px) scale(.96); transform-origin:center bottom; transition:filter .2s,transform .2s; }
+.screen.title .soldier { mask-repeat:no-repeat; mask-size:contain; mask-position:center bottom; }
+.screen.title .skin:nth-of-type(1) .soldier { mask-image:url('assets/player-vivo-cutout.png'); }
+.screen.title .skin:nth-of-type(2) .soldier { mask-image:url('assets/player-muerto-cutout.png'); }
+.screen.title .skin:has(input:checked) .soldier { filter:brightness(1); transform:none; }
+.screen.title .skin:hover .soldier { filter:brightness(.95); }
+.screen.title .skin-name { margin-top:12px; width:100%; text-align:center; color:#b4b9b2; }
+.screen.title .skin:has(input:checked) .skin-name { color:#e8ffc1; border-color:#a5d34b; }
+.screen.title .btn.primary { background:#c5e55a; color:#0c170b; }
+body:has(#app[data-screen="title"]) .asset-review-tools { display:none !important; }
+@media (max-width:600px) and (orientation:portrait) {
+  .screen.title h1.supplied-title { width:min(68vw,32vh); margin:10px auto 14px; }
+  .screen.title .skins-in .soldier { height:36vh; }
+  .screen.title .skins-in { gap:14px; }
+  .screen.title .skins legend { margin-bottom:4px; }
+}
+@media (max-height:520px) { .screen.title .skins-in .soldier { height:57vh; } }
+@media (prefers-reduced-motion:reduce) { .screen.title .skins-in .soldier { transition:none; transform:none; } }

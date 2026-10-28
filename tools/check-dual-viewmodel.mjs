@@ -1,0 +1,41 @@
+import assert from 'node:assert/strict';
+import { createDualViewmodel } from '../game/dual-viewmodel.js';
+const draws=[],clears=[],events=new Map(),children=[],images=[];
+const canvas={style:{},setAttribute(){},getContext(kind){assert.equal(kind,'2d');return{clearRect:(...a)=>clears.push(a),drawImage:(...a)=>draws.push(a)};}};
+globalThis.innerWidth=1920;globalThis.innerHeight=1080;
+globalThis.addEventListener=(name,fn)=>events.set(name,fn);
+globalThis.document={createElement(tag){assert.equal(tag,'canvas');return canvas;}};
+globalThis.Image=class{constructor(){images.push(this);this.complete=true;this.naturalWidth=1672;}decode(){return Promise.resolve();}};
+const vm=createDualViewmodel({append:c=>children.push(c)});await vm.ready;
+assert.equal(images.length,2);assert.deepEqual(images.map(i=>i.src),['./assets/dual-wide-alpha.png','./assets/dual-wide-reload-alpha.png']);
+assert.equal(canvas.width,1672);assert.equal(canvas.height,941);assert.equal(canvas.hidden,true);assert.deepEqual(children,[canvas]);
+const approx=(a,b,t=1e-8)=>assert(Math.abs(a-b)<=t,`${a} != ${b}`);
+const update=(flags={})=>vm.update({reloading:false,phase:-1,x:0,y:0,...flags});
+function checkLayout(w,h){
+ globalThis.innerWidth=w;globalThis.innerHeight=h;events.get('resize')();update();
+ const width=parseFloat(canvas.style.width),height=parseFloat(canvas.style.height),left=parseFloat(canvas.style.left),top=parseFloat(canvas.style.top),scale=width/1672;
+ approx(height/941,scale);assert(left<0&&left+width>w,'sleeve image sides beyond viewport');assert(top+height>h,'lower image edge below viewport');
+ approx(left+836*scale,w/2);approx(top+348*scale,h/2);
+ const right=vm.muzzle(1),lm=vm.muzzle(2);
+ assert(lm[0]<w/2&&right[0]>w/2);approx(lm[1],right[1]);assert(right[1]>h/2,'nozzles below sight');
+ // Both lower barrel outlets are exactly symmetric about the measured axis intersection.
+ approx(lm[0],left+716*scale);approx(right[0],left+956*scale);approx(right[1],top+405*scale);
+ approx((lm[0]+right[0])/2,w/2);
+ assert(Math.abs((w/2-lm[0])-(right[0]-w/2))<.04*(right[0]-lm[0]),'near-symmetric muzzles');
+ const before=vm.muzzle(1);update({x:6,y:5});const after=vm.muzzle(1);approx(after[0]-before[0],6);approx(after[1]-before[1],5);
+ assert(left+6<=0&&left+width-6>=w,'side cuts outside during sway');assert(top+height-5>=h,'lower cut outside during sway');
+}
+for(const [w,h]of[[1920,1080],[1366,768],[390,844],[844,390],[360,800]])checkLayout(w,h);
+update();assert.equal(draws.at(-1)[0],images[0]);assert.equal(canvas.hidden,false);
+const readyDraws=draws.length;update({firing:true});assert.equal(draws.length,readyDraws,'first shot uses same ready geometry');
+const readyMuzzle=vm.muzzle(1);update({firing:true});assert.deepEqual(vm.muzzle(1),readyMuzzle);
+update({reloading:true,phase:.119});assert.equal(draws.at(-1)[0],images[0]);
+update({reloading:true,phase:.12});assert.equal(draws.at(-1)[0],images[1]);
+const reloadDraws=draws.length;update({reloading:true,phase:.9});assert.equal(draws.length,reloadDraws);
+update({reloading:true,phase:.901});assert.equal(draws.at(-1)[0],images[0]);
+vm.hide();assert.equal(canvas.hidden,true);update();assert.equal(canvas.hidden,false);
+images[1].complete=false;const before=draws.length;update({reloading:true,phase:.5});assert.equal(draws.length,before);
+images[1].complete=true;update({reloading:true,phase:.5});assert.equal(draws.length,before+1,'late decode retries desired pose');
+assert.equal(clears.length,draws.length);assert(clears.every(a=>a.join()==='0,0,1672,941'));
+assert(draws.every(a=>a.slice(1).join()==='0,0,1672,941'),'full wide pose, no atlas crop or mirroring');
+console.log('PASS: desktop/portrait overscan and sway, reticle anchor, nozzle geometry, stable first-shot pose, reload/hide, delayed decode, alpha clears. Pixel alpha/main-loop order need browser review.');

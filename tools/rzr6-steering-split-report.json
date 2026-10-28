@@ -1,0 +1,22 @@
+{
+  "inputBytes": 2592620,
+  "outputBytes": 2649252,
+  "sourceTriangles": 584,
+  "matchedExactTriangles": 584,
+  "bodyOriginalTriangles": 36438,
+  "bodyRetainedTriangles": 35854,
+  "steeringBounds": {
+    "min": [
+      0.14914870262145996,
+      1.1604334115982056,
+      0.648852527141571
+    ],
+    "max": [
+      0.5107749700546265,
+      1.4602832794189453,
+      0.8718640804290771
+    ]
+  },
+  "method": "exact source triangle-coordinate multiset at 1e-5 m; no bounding-box deletion; all original final attributes/materials/textures retained",
+  "node": "steering_wheel_and_spokes"
+}

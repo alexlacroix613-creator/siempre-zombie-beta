@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<script src="no-zoom.js?v=1"></script>
+<title>Siempre Zombie</title>
+<meta name="description" content="Hold the old hacienda cemetery against waves of the restless dead on Halloween night. A first-person shooter from Siempre Games.">
+<link rel="stylesheet" href="siempre-zombie.css?release=20261025T033704Z">
+<link rel="stylesheet" href="mobile-hud.css?v=11-beta">
+<link rel="stylesheet" href="soldier-selection.css?v=1">
+<link rel="stylesheet" href="landing-leaderboard.css?v=20261028-1">
+<style id="minimap-gps-style">
+/* Position dot stays centered on registered ground point; arrow gives heading. */
+.minimap.map-3d #minimap-player { display:block !important; z-index:5; width:10px; height:10px; clip-path:none; background:#8dfff4; border:2px solid #fff; border-radius:50%; box-shadow:0 0 0 2px #06100f; filter:drop-shadow(0 1px 3px #000); pointer-events:none; }
+.minimap.map-3d #minimap-player::before { content:''; position:absolute; left:50%; top:-13px; width:12px; height:13px; transform:translateX(-50%); background:#8dfff4; clip-path:polygon(50% 0,100% 100%,50% 78%,0 100%); }
+.minimap.map-3d.expanded #minimap-player { width:13px; height:13px; }
+.minimap.map-3d.expanded #minimap-player::before { top:-17px; width:16px; height:17px; }
+#minimap-tacos { position:absolute; z-index:4; transform:translate(-50%,-50%); background:#112e24; border:1px solid #c6e9b0; border-radius:3px; padding:6px 8px; font:700 11px Arial; color:#f3ffda; white-space:nowrap; pointer-events:none; }
+</style>
+<style id="vehicle-controls-style">
+.driving #t-fire,.driving #t-fire-l,.driving #t-reload,.driving #t-aim,.driving #t-swap,.driving #aim-btn,.driving .hud-br,.driving #crosshair,.driving #keyhint .on-foot { display:none !important; }
+</style>
+</head>
+<body>
+<div class="app" id="app" data-screen="title">
+  <canvas id="scene" data-od-id="scene" class="scene" aria-label="Game scene"></canvas>
+
+  <!-- HUD -->
+  <div class="hud" id="hud">
+    <div class="vignette" id="vignette"></div>
+    <div class="zglow" id="zglow" aria-hidden="true"><b id="zglow-t"></b></div>
+    <div class="crosshair" id="crosshair"><i></i><i></i><i></i><i></i></div>
+    <div class="hitmarker" id="hitmarker"></div>
+    <div class="hint" id="hint"></div>
+    <div class="banner" id="banner"><small id="banner-sub"></small><b id="banner-main"></b></div>
+    <div class="interlude" id="interlude" aria-live="polite"><small id="il-sub"></small><b id="il-main"></b><span class="il-next" id="il-next"></span><i class="il-bar"><i id="il-bar"></i></i></div>
+    <div class="hud-tl">
+      <div class="minimap" id="minimap">
+        <div class="minimap-heading"><span>Distillery</span><button class="minimap-mode" id="minimap-mode" data-od-id="minimap-mode" type="button">3D VIEW</button><b>N ↑</b></div>
+        <div class="minimap-view">
+          <img src="assets/minimap-distillery-mobile.jpg" alt="Aerial layout of the Siempre distillery" draggable="false">
+          <div class="minimap-grid" aria-hidden="true"></div>
+          <span class="minimap-poi minimap-poi-ovens" aria-hidden="true">OVENS</span>
+          <span class="minimap-poi minimap-poi-agave" aria-hidden="true">AGAVE FIELD</span>
+          <span class="minimap-poi minimap-poi-pond" aria-hidden="true">POND</span>
+          <i class="minimap-player" id="minimap-player" aria-hidden="true"></i>
+          <span id="minimap-tacos" title="Taco truck · restore health" hidden>+ TACOS</span>
+        </div>
+        <button class="minimap-toggle" id="minimap-toggle" data-od-id="minimap-toggle" type="button" aria-expanded="false" aria-label="Expand distillery map"><span id="minimap-location">YOU · DISTILLERY</span><span id="minimap-toggle-label">M · MAP ↗</span></button>
+      </div>
+      <div class="score"><b id="hud-score">0</b><small>score</small></div>
+      <div class="wave">Wave <b id="hud-wave">1</b> · <span id="hud-left">0</span> left</div>
+    </div>
+    <div class="hud-bl">
+      <div class="keyhint" id="keyhint" aria-hidden="true">
+        <span><kbd>WASD</kbd>move</span><span><kbd>Shift</kbd>sprint</span><span><kbd>Space</kbd>jump</span>
+        <span class="on-foot"><kbd>Click</kbd>fire</span><span class="on-foot"><kbd>R</kbd>reload</span>
+        <span class="on-foot"><kbd>1</kbd>–<kbd>7</kbd>weapon</span><span id="keyhint-drive"><kbd>E</kbd>drive</span><span><kbd>M</kbd>map</span>
+        <span><kbd>Esc</kbd>pause</span><span><kbd>H</kbd>hide keys</span>
+      </div>
+      <div class="hp"><span>Health</span><div class="bar"><i id="hud-hp"></i></div></div>
+      <div class="hp veh" id="hud-veh" hidden><span id="hud-veh-label">Side-by-side</span><div class="bar"><i id="hud-veh-bar"></i></div></div>
+    </div>
+    <button class="aim-btn" id="aim-btn" data-od-id="aim-btn" type="button">Aim <small>F</small></button>
+    <div class="hud-br">
+      <div class="weapon" id="hud-weapon">Vivo Soaker</div>
+      <div class="tankbar"><i id="hud-tank"></i></div>
+      <div class="ammo"><b id="hud-ammo">100%</b><small id="hud-reserve">Vivo</small></div>
+      <div class="reloading" id="hud-reload">Refilling at the barrel…</div>
+    </div>
+  </div>
+
+  <!-- TITLE -->
+  <section class="screen title" id="screen-title" data-od-id="screen-title">
+    <header class="title-top">
+      <span class="brand">Siempre Games · Public beta</span>
+      <a class="top-ten-link" href="#title-board">Top 10 ↘</a>
+    </header>
+    <div class="title-wrap">
+      <h1 class="supplied-title" aria-label="Ken and Keith's Siempre Tequila Zombie"><img src="assets/siempre-zombie-title-alex.png" alt="Ken &amp; Keith's Siempre Tequila Zombie!" draggable="false"></h1>
+      <form class="start" id="start-form" autocomplete="off">
+        <fieldset class="skins">
+          <legend>Choose your soldier</legend>
+          <div class="skins-in">
+            <label class="skin"><input type="radio" name="skin" value="vivo"><img class="soldier" src="assets/player-vivo.png" alt="Vivo soldier, ivory rose suit and teal gloves" draggable="false"><span class="skin-name">Vivo</span></label>
+            <label class="skin"><input type="radio" name="skin" value="muerto"><img class="soldier" src="assets/player-muerto.png" alt="Muerto soldier, black rose and web suit with copper gloves" draggable="false"><span class="skin-name">Muerto</span></label>
+          </div>
+        </fieldset>
+        <label for="name" class="sr">Instagram handle</label>
+        <div class="row">
+          <input id="name" data-od-id="name" name="name" maxlength="31" pattern="@?[A-Za-z0-9_]+([.][A-Za-z0-9_]+)*" placeholder="@instagram_handle" title="Enter your Instagram handle: letters, numbers, periods or underscores." autocapitalize="none" spellcheck="false" required>
+          <button type="submit" class="btn primary">Play</button>
+          <small class="public-handle-note">Your handle and score appear on the public leaderboard.</small>
+        </div>
+      </form>
+    </div>
+    <aside class="landing-leaderboard" id="title-board" aria-labelledby="board-title">
+      <img class="leaderboard-frame" src="assets/leaderboard-gas-chrome.png" alt="" aria-hidden="true" draggable="false">
+      <div class="leaderboard-content">
+        <p class="board-season">Hall of survivors</p>
+        <h2 id="board-title" data-od-id="board-title">Top 10</h2>
+        <p class="board-note" id="board-note" role="status">Loading scores…</p>
+        <ol class="board" id="board" aria-label="Top ten players"></ol>
+        <p id="player-rank" class="player-rank"></p>
+      </div>
+    </aside>
+  </section>
+
+  <!-- PAUSE -->
+  <section class="screen pause" id="screen-pause" data-od-id="screen-pause" hidden>
+    <h2>Paused</h2>
+    <p id="pointer-help" role="status" hidden>Mouse released. Click Resume to keep looking around.</p>
+    <button class="btn primary" data-action="resume">Resume</button>
+    <button class="btn" data-action="quit">Quit to title</button>
+  </section>
+
+  <!-- GAME OVER -->
+  <section class="screen over" id="screen-over" data-od-id="screen-over" hidden>
+    <p class="kicker">The dead took the courtyard</p>
+    <h2>Game over</h2>
+    <dl class="stats">
+      <div><dt>Score</dt><dd id="over-score">0</dd></div>
+      <div><dt>Wave</dt><dd id="over-wave">1</dd></div>
+      <div><dt>Kills</dt><dd id="over-kills">0</dd></div>
+      <div><dt>Headshots</dt><dd id="over-heads">0</dd></div>
+    </dl>
+    <p class="save" id="over-save"></p>
+    <div class="row">
+      <button class="btn primary" data-action="again">Play again</button>
+      <button class="btn" data-action="quit">Leaderboard</button>
+    </div>
+  </section>
+
+  <!-- TOUCH: icon-only mobile controls (Claude mobile HUD) -->
+  <div class="touch" id="touch" hidden>
+    <div class="stick" id="stick"><i id="stick-knob"></i></div>
+    <button class="tbtn fire" id="t-fire" data-od-id="t-fire" aria-label="Fire"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h11l2-2h3v4h-3l-2 2H9l-1 6H5l1-6H4z" fill="currentColor"/><path d="M19 9h2M19 12h2" stroke="currentColor" stroke-width="1.5"/></svg></button>
+    <button class="tbtn fire-l" id="t-fire-l" data-od-id="t-fire-l" aria-label="Fire"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h11l2-2h3v4h-3l-2 2H9l-1 6H5l1-6H4z" fill="currentColor"/></svg></button>
+    <button class="tbtn aim" id="t-aim" data-od-id="t-aim" aria-label="Aim"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v6M12 16v6M2 12h6M16 12h6" stroke="currentColor" stroke-width="2"/></svg></button>
+    <button class="tbtn reload" id="t-reload" data-od-id="t-reload" aria-label="Swap bottle"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2h4v3l1.5 2.5V20a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2V7.5L10 5z" fill="currentColor"/><path d="M19 8a7 7 0 0 1 0 8M5 16a7 7 0 0 1 0-8" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><i class="ring" aria-hidden="true"></i></button>
+    <button class="tbtn jump" id="t-jump" data-od-id="t-jump" aria-label="Jump"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l7 8h-4v8H9v-8H5z" fill="currentColor"/></svg></button>
+    <button class="tbtn sprint" id="t-sprint" data-od-id="t-sprint" aria-label="Sprint"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="14" cy="4" r="2" fill="currentColor"/><path d="M8 21l3-6 3 2v4M6 12l3-4h4l2 3h3M11 8l-1 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="tbtn swap" id="t-swap" data-od-id="t-swap" aria-label="Swap weapon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13l-3-3M20 16H7l3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="tbtn drive" id="t-drive" data-od-id="t-drive" aria-label="Drive" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M4 11h6M14 11h6M12 14v6" stroke="currentColor" stroke-width="2"/></svg></button>
+    <button class="tbtn mini pause" id="t-pause" data-od-id="t-pause" aria-label="Pause"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z" fill="currentColor"/></svg></button>
+    <div class="slots" id="t-slots">
+      <button class="slot" id="t-slot-5" data-od-id="t-slot-5" aria-label="Cognac glass"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 4h9.6c.9 2 1.4 3.8 1.4 5.4 0 3.2-2.6 5.6-6.2 5.6s-6.2-2.4-6.2-5.6C5.8 7.8 6.3 6 7.2 4z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M6.4 10h11.2c-.3 2.6-2.6 4.2-5.6 4.2S6.7 12.6 6.4 10z" fill="currentColor"/><path d="M12 15v4.6M8.4 20.2h7.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      <button class="slot" id="t-slot-0" data-od-id="t-slot-0" aria-label="Vivo Soaker"><span class="slot-art" id="t-slot-art"></span></button>
+      <button class="slot slot-dual" id="t-slot-3" data-od-id="t-slot-3" aria-label="Double Soaker"><span class="slot-art" id="t-slot-art-l"></span><span class="slot-art" id="t-slot-art-r"></span></button>
+      <button class="slot" id="t-slot-4" data-od-id="t-slot-4" aria-label="Vivo Gatling"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor"><circle cx="12" cy="6.2" r="2.3"/><circle cx="17" cy="9.1" r="2.3"/><circle cx="17" cy="14.9" r="2.3"/><circle cx="12" cy="17.8" r="2.3"/><circle cx="7" cy="14.9" r="2.3"/><circle cx="7" cy="9.1" r="2.3"/></g><circle cx="12" cy="12" r="1.6" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></button>
+      <button class="slot" id="t-slot-1" data-od-id="t-slot-1" aria-label="Tequila balloons"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3.9 0 6 3 6 6.5S15 17 12 17s-6-4-6-7.5S8.1 3 12 3z" fill="currentColor"/><path d="M12 17l-1.5 2h3zM12 19c0 1.5-1 2-1 3" fill="none" stroke="currentColor" stroke-width="1.2"/></svg><b id="t-balloons">0</b></button>
+      <button class="slot" id="t-slot-2" data-od-id="t-slot-2" aria-label="Agave Coa" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20L15.2 8.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/><ellipse cx="17.6" cy="6.4" rx="4.2" ry="3.4" transform="rotate(-42 17.6 6.4)" fill="currentColor"/></svg></button>
+      <button class="slot" id="t-slot-6" data-od-id="t-slot-6" aria-label="Jimador axe"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20.5L15 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M12.6 6.2l3.2-3 5.4 5.4c-1.6 2.4-4.4 3.2-6.4 2.2l-.9.9-2.6-2.6.9-.9c-.5-.7-.4-1.4.4-2z" fill="currentColor"/></svg></button>
+      <div class="ammo-m"><b id="t-ammo">100%</b><span class="spare"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2h4v3l1.5 2.5V20a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2V7.5L10 5z" fill="currentColor"/></svg><b id="t-spare">2</b></span></div>
+    </div>
+  </div>
+  <div class="rotate" id="t-rotate" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 15a9 9 0 0 0 6 6M21 9a9 9 0 0 0-6-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M15 1l0 3 3-1M9 23l0-3-3 1" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></div>
+</div>
+<!-- LOADING: covers everything until the world, zombies and Alex's soakers are ready -->
+<div class="loader" id="loader" role="status" aria-live="polite">
+  <p class="loader-mark">Siempre <span>Zombie</span></p>
+  <div class="loader-foot">
+    <div>
+      <p class="loader-step" id="loader-step">Opening the gates</p>
+      <p class="loader-note" id="loader-error" role="alert" hidden style="max-width:660px;overflow-wrap:anywhere;color:#ffd6c2;white-space:pre-line"></p>
+      <p class="loader-note">Cartoon undead, flashing light and sudden sounds.</p>
+    </div>
+    <p class="loader-pct"><b id="loader-pct">0</b><small>%</small></p>
+  </div>
+  <i class="loader-bar"><i id="loader-bar"></i></i>
+  <button class="btn loader-retry" id="loader-retry" data-od-id="loader-retry" type="button">Reload game</button>
+</div>
+<script>
+// Loading screen: the game module reports real download progress through window.__szLoader and calls done()
+// once required assets decode. Errors retain their real cause; no timeout pretends success.
+(function () {
+  var el = document.getElementById('loader'), num = document.getElementById('loader-pct'), bar = document.getElementById('loader-bar'), step = document.getElementById('loader-step');
+  var errorText = document.getElementById('loader-error'), retry = document.getElementById('loader-retry'), lastError = null;
+  var STEPS = [[0, 'Opening the gates'], [.25, 'Raising the distillery'], [.6, 'Waking the dead'], [.86, 'Filling the soakers'], [1, 'Ready']];
+  var target = 0, shown = 0, finished = false, last = performance.now(), lastActivity = last, failed = false;
+  function detail(error) {
+    if (!error) return { message: 'Game startup stopped without an error detail.' };
+    var value = error.reason || error.error || error, resource = error.target;
+    var file = error.filename || value.filename || value.response && value.response.url || (resource && (resource.src || resource.href));
+    return { message: value.message || (typeof value === 'string' ? value : file ? 'Could not load this file.' : 'Game startup failed.'), file: file || '', line: error.lineno || value.lineNumber || 0 };
+  }
+  // The existing game catch logs its Error then calls fail() without an argument.
+  // Remember that cause, but a console message by itself never fails the loader.
+  var consoleError = console.error;
+  console.error = function () {
+    if (!finished && arguments.length) lastError = arguments[0];
+    return consoleError.apply(console, arguments);
+  };
+  window.__szLoader = {
+    progress: function (p) { if (!failed && Number.isFinite(p)) { lastActivity = performance.now(); if (p > target) target = Math.min(.97, p); } },
+    done: function () { if (failed) return; target = 1; finished = true; },
+    fail: function (error) {
+      if (finished || failed) return;
+      failed = true; var cause = detail(error || lastError); window.__szLoader.error = cause;
+      step.textContent = 'The game could not start.';
+      errorText.textContent = cause.message + (cause.file ? '\nFile: ' + cause.file + (cause.line ? ':' + cause.line : '') : '');
+      errorText.hidden = false; retry.textContent = 'Retry loading';
+    }
+  };
+  retry.onclick = function () { var url = new URL(location.href); url.searchParams.delete('p03Failure'); url.searchParams.set('bootRetry', String(Date.now())); location.assign(url.href); };
+  window.addEventListener('error', function (event) {
+    if (event.target && String(event.target.rel || '').toLowerCase().includes('icon')) return;
+    window.__szLoader.fail(event);
+  }, true);
+  window.addEventListener('unhandledrejection', function (event) { window.__szLoader.fail(event); });
+  function tick(now) {
+    if (failed) return;
+    if (!finished && now - lastActivity > 120000) { window.__szLoader.fail({ message: 'Loading stopped making progress. Retry loading to try again.' }); return; }
+    var dt = Math.min(.1, (now - last) / 1000); last = now;
+    if (!finished && target < .08) target += dt * .02;           // the scripts themselves, before any bytes are counted
+    shown += (target - shown) * (1 - Math.pow(1 - (finished ? .14 : .06), dt * 60));
+    var p = finished && shown > .995 ? 1 : shown, s = STEPS[0][1];
+    for (var i = 0; i < STEPS.length; i++) if (p >= STEPS[i][0]) s = STEPS[i][1];
+    num.textContent = Math.floor(p * 100); bar.style.transform = 'scaleX(' + p + ')'; if (!failed) step.textContent = s;
+    if (p === 1) {
+      document.getElementById('app').classList.add('is-ready'); el.classList.add('out');
+      setTimeout(function () { el.hidden = true; }, 1200); return;
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+<script src="siempre-audio.js"></script>
+<script>
+// Entry-module retry uses a new URL too, rather than replaying the same cache key.
+(function () {
+  var params = new URL(location.href).searchParams;
+  var localDiagnostics = ['localhost', '127.0.0.1', '[::1]'].includes(new URL(location.href).hostname);
+  var module = document.createElement('script'), url = new URL(localDiagnostics && params.has('p03Review') && params.has('p03Failure') ? 'p03-intentionally-missing-module.js' : 'siempre-zombie.js?boot=20261028-leaderboard1', location.href);
+  var retry = params.get('bootRetry');
+  if (retry) url.searchParams.set('bootRetry', retry);
+  module.type = 'module'; module.src = url.href;
+  module.onerror = function () { window.__szLoader.fail({ message: 'The game module could not be loaded.', filename: module.src }); };
+  document.body.appendChild(module);
+})();
+</script>
+</body>
+</html>
+
+
+

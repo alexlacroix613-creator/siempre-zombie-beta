@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import * as THREE from '../game/vendor/three.module.min.js';
+import {createBalloonVisuals} from '../game/balloon-visuals.js';
+const api=createBalloonVisuals(THREE),b=api.balloon(),scene=new THREE.Scene();
+scene.add(b);const bounds=new THREE.Box3().setFromObject(b),size=bounds.getSize(new THREE.Vector3());
+assert(size.y>size.x*1.5,'teardrop + neck taller than width');
+const body=b.userData.body, p=body.geometry.attributes.position;
+const radiusAt=(y)=>{let r=0;for(let i=0;i<p.count;i++)if(Math.abs(p.getY(i)-y)<.002)r=Math.max(r,Math.hypot(p.getX(i),p.getZ(i)));return r;};
+assert(radiusAt(.13)<radiusAt(-.025)*.6,'tapered shoulders');
+api.animateBalloon(b,.12);assert(Math.abs(b.scale.x-b.scale.y)>.01,'elastic deformation');
+api.popLatex(scene,new THREE.Vector3(1,2,3));api.updateLatex(.1);
+const burst=scene.children.find(x=>x!==b);assert(burst.children.some(x=>x.isInstancedMesh&&x.count===64));
+assert(burst.children.filter(x=>x.material?.side===THREE.DoubleSide).length>=8);
+for(let i=0;i<100;i++)api.updateLatex(.02);assert.equal(scene.children.length,1,'impact visuals expire');
+for(let i=0;i<12;i++)api.popLatex(scene,new THREE.Vector3());assert.equal(scene.children.length,9,'bounded bursts');
+api.clearLatex();assert.equal(scene.children.length,1);let disposed=0;body.geometry.addEventListener('dispose',()=>disposed++);b.userData.dispose();assert.equal(disposed,1);
+let tris=0,draws=0;b.traverse(o=>{if(o.isMesh){draws++;tris+=(o.geometry.index?.count||o.geometry.attributes.position.count)/3*(o.isInstancedMesh?o.count:1);}});
+console.log(JSON.stringify({pass:true,size:size.toArray(),triangles:tris,draws,burstCap:8}));

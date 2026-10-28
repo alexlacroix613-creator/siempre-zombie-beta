@@ -1,0 +1,105 @@
+{
+  "nativeOnly": true,
+  "acceptedPilot": "Muerto balloon, root review",
+  "runtimeAssets": [
+    {
+      "file": "axe-alpha.png",
+      "width": 1536,
+      "height": 1024,
+      "sha256": "b39b0ce4fed71041ab8fa51689ab56e2cd49dba88fa07142db5d83ac484950ff",
+      "bottleNeckTop": null
+    },
+    {
+      "file": "axe-muerto-alpha.png",
+      "width": 1536,
+      "height": 1024,
+      "sha256": "f28e31b53f7cfaf27878c7cf0a9d11a688b6caebbbbcd5c4b92a984c1d36492d",
+      "bottleNeckTop": null
+    },
+    {
+      "file": "balloon-alpha.png",
+      "width": 1536,
+      "height": 1024,
+      "sha256": "e1b6701e91a41273d69beeaa00cc6dbaaafd944aad306f8b7ca2a87a757cbd17",
+      "bottleNeckTop": null
+    },
+    {
+      "file": "balloon-muerto-alpha.png",
+      "width": 1536,
+      "height": 1024,
+      "sha256": "0921cb0f640cdfbe556edd373a9964a9e94d826ede5e2aa9cf44c85a8b87192b",
+      "bottleNeckTop": null
+    },
+    {
+      "file": "glass-wide-empty-muerto.png",
+      "width": 1671,
+      "height": 941,
+      "sha256": "8de8328bb7da70d3d885c0312d205acec6d82cc6e81ebb987ddb162d88cf92b8",
+      "bottleNeckTop": 72
+    },
+    {
+      "file": "glass-wide-empty-vivo.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "8540352980c5fc089ef2eb8f69f8ec33903f0449edc5e29d129d68196559aa30",
+      "bottleNeckTop": 73
+    },
+    {
+      "file": "glass-wide-flick-muerto.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "846b6479fffc261bdd325ad97c6f8a13f7bdf919b1f9e9958441b26719f75c9b",
+      "bottleNeckTop": 72
+    },
+    {
+      "file": "glass-wide-flick-vivo.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "7c6a7bac61181c957d4a8344b672a4acecb8cf9cb97d46ddf79ee5f474cf7c82",
+      "bottleNeckTop": 73
+    },
+    {
+      "file": "glass-wide-full-muerto.png",
+      "width": 1671,
+      "height": 941,
+      "sha256": "2adcabda01d2b80b1c97daa54691e19b1eb1041396915be24dca5d770d02cada",
+      "bottleNeckTop": 66
+    },
+    {
+      "file": "glass-wide-full-vivo.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "642dd97bf5f96631708af08a9839592ffe04769e04bbca5cca571e6a4c060db3",
+      "bottleNeckTop": 75
+    },
+    {
+      "file": "glass-wide-pour-muerto.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "0ec6186c55ef80287e4b2b3f388752cf6fde5023b829cd94ef5164001b92fe72",
+      "bottleNeckTop": 207
+    },
+    {
+      "file": "glass-wide-pour-vivo.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "9a21fb4e223e3709b9544d5cc51acade29bce8dc6704621850ba3e50ae095b94",
+      "bottleNeckTop": 210
+    },
+    {
+      "file": "glass-wide-release-muerto.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "1cbd0451abb0fa36b6f79255bf62627d91e04693a0550033b4a943522b1b8d24",
+      "bottleNeckTop": 71
+    },
+    {
+      "file": "glass-wide-release-vivo.png",
+      "width": 1671,
+      "height": 941,
+      "sha256": "53c0167e8cd6ed8a33cfbfb07066f4a9bfaa146fe7e7fd603485b19638565dce",
+      "bottleNeckTop": 74
+    }
+  ],
+  "note": "Wide glass drawn at native1:1 pixels in1672x941 canvas; threeframes1671wide leave1transparentcolumn, not stretched. Root renderer acceptance pending."
+}

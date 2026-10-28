@@ -1,0 +1,5 @@
+.env*
+.vercel/
+*.artifact.json
+taco-truck-review.html
+gatling-model-review.html

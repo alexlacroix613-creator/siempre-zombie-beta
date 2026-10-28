@@ -1,0 +1,17 @@
+# Keep source, runtime assets, checks and the authoritative release list only.
+/*
+!/.gitignore
+!/README.md
+!/SHIP-TRACKER.md
+!/REBUILT-SHIP-LIST-20261027.md
+!/game/
+!/game/**
+!/tools/
+!/tools/**
+**/node_modules/
+**/.vercel/
+**/.env*
+**/__pycache__/
+**/*.artifact.json
+/game/*-review.html
+/game/calibrated-minimap.before-3d-restore.js

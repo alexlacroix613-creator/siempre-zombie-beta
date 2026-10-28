@@ -1,0 +1,273 @@
+/* Mobile HUD (touch only): console-shooter layout.
+   Left stick + left fire, right cluster of round icon buttons, minimap top right,
+   weapon slots + ammo + HP bottom centre. No text on any button. */
+.touch .slots, .rotate { display: none; }
+.tbtn svg { width: 54%; height: 54%; display: block; margin: auto; pointer-events: none; }
+
+.app.touch-ui .touch .slots { display: flex; }
+.app.touch-ui .tbtn {
+  display: grid; place-items: center; padding: 0; font-size: 0; color: #f3f6f4;
+  border: 1.5px solid #ffffff55; background: radial-gradient(circle at 50% 40%, #2a2f33aa, #0d1012cc);
+  box-shadow: 0 2px 10px #0006, inset 0 0 0 1px #0004; -webkit-tap-highlight-color: transparent; user-select: none;
+  transition: transform .06s, background .1s;
+}
+.app.touch-ui .tbtn.pressed, .app.touch-ui .tbtn:active { transform: scale(.92); background: radial-gradient(circle at 50% 40%, #4a5258cc, #1a1e21dd); }
+.app.touch-ui .tbtn[hidden] { display: none; }
+.app.touch-ui .tbtn.on { background: radial-gradient(circle at 50% 40%, #1fb3adcc, #0d4f4ccc); border-color: #8fe6e0; }
+
+/* left side */
+.app.touch-ui .stick { left: calc(28px + env(safe-area-inset-left)); bottom: 26px; width: 136px; height: 136px; border: 1.5px solid #ffffff40; background: radial-gradient(circle, #ffffff10, #0003 70%); }
+.app.touch-ui .stick i { left: 43px; top: 43px; width: 50px; height: 50px; background: radial-gradient(circle at 50% 40%, #ffffffaa, #ffffff55); box-shadow: 0 2px 8px #0007; }
+.app.touch-ui .tbtn.fire-l { left: calc(46px + env(safe-area-inset-left)); bottom: 196px; width: 58px; height: 58px; }
+
+/* right cluster */
+.app.touch-ui .tbtn.fire { right: calc(104px + env(safe-area-inset-right)); bottom: 92px; width: 88px; height: 88px; background: radial-gradient(circle at 50% 40%, #3a2a20cc, #140c08dd); border-color: #ffb15fa8; }
+.app.touch-ui .tbtn.aim { right: calc(22px + env(safe-area-inset-right)); bottom: 168px; width: 62px; height: 62px; }
+.app.touch-ui .tbtn.jump { right: calc(22px + env(safe-area-inset-right)); bottom: 22px; width: 62px; height: 62px; }
+.app.touch-ui .tbtn.sprint { right: calc(100px + env(safe-area-inset-right)); bottom: 18px; width: 52px; height: 52px; }
+.app.touch-ui .tbtn.reload { right: calc(206px + env(safe-area-inset-right)); bottom: 104px; width: 54px; height: 54px; }
+.app.touch-ui .tbtn.swap { right: calc(176px + env(safe-area-inset-right)); bottom: 30px; width: 46px; height: 46px; }
+.app.touch-ui .tbtn.drive { right: calc(22px + env(safe-area-inset-right)); bottom: 246px; width: 62px; height: 62px; border-color: #ffb15f; }
+.app.touch-ui .tbtn.mini { width: 38px; height: 38px; }
+.app.touch-ui .tbtn.pause { right: calc(152px + env(safe-area-inset-right)); top: 12px; }
+.tbtn .ring { position: absolute; inset: -4px; border-radius: 50%; border: 3px solid transparent; pointer-events: none; }
+.app.touch-ui .tbtn.reload.busy .ring { border-color: #8fe6e0 transparent; animation: mhud-spin .7s linear infinite; }
+.app.touch-ui .tbtn.reload.low { border-color: #ff3d7f; }
+@keyframes mhud-spin { to { transform: rotate(1turn); } }
+
+/* minimap: small square, top right, tap to expand. No labels. */
+.app.touch-ui .hud-tl .minimap:not(.expanded) {
+  position: fixed; top: 10px; right: calc(10px + env(safe-area-inset-right)); width: 132px; margin: 0;
+  border: 1.5px solid #ffffff40; background: #07100fcc;
+}
+.app.touch-ui .minimap:not(.expanded) .minimap-heading { display: none; }
+.app.touch-ui .minimap:not(.expanded) .minimap-view { aspect-ratio: 1 / 1; }
+.app.touch-ui .minimap:not(.expanded) .minimap-view img { object-fit: cover; }
+.app.touch-ui .minimap .minimap-toggle { position: absolute; inset: 0; min-height: 0; border: 0; padding: 0; background: transparent; opacity: 0; }
+.app.touch-ui .minimap.expanded .minimap-heading .minimap-mode { display: none; }
+
+/* top left: compact score + wave */
+.app.touch-ui .hud-tl { left: calc(14px + env(safe-area-inset-left)); top: 10px; }
+.app.touch-ui .score b { font-size: 24px; }
+.app.touch-ui .score small { font-size: 9px; }
+.app.touch-ui .wave { font-size: 11px; }
+
+/* bottom centre: weapon slots, ammo, HP */
+.app.touch-ui .touch .slots {
+  position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%); align-items: stretch; gap: 4px; pointer-events: auto;
+}
+.app.touch-ui .slot {
+  position: relative; width: 74px; height: 42px; padding: 0; border: 1.5px solid #ffffff38; background: #0d1012b8; color: #f3f6f4;
+  display: grid; place-items: center; -webkit-tap-highlight-color: transparent; touch-action: none;
+}
+.app.touch-ui .slot svg { width: 24px; height: 24px; }
+.app.touch-ui .slot b { position: absolute; right: 4px; bottom: 2px; font: 700 11px/1 Arial, sans-serif; }
+.app.touch-ui .slot.on { border-color: #ffd23a; box-shadow: inset 0 0 0 1px #ffd23a66; background: #2a2410c8; }
+.app.touch-ui .slot-art { width: 100%; height: 100%; background: center / cover no-repeat; opacity: .92; }
+.app.touch-ui .ammo-m { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; min-width: 64px; padding: 0 8px; background: #0d1012b8; border: 1.5px solid #ffffff38; }
+.app.touch-ui .ammo-m > b { font: italic 900 20px/1 var(--font); color: #f3f6f4; }
+.app.touch-ui .ammo-m .spare { display: flex; align-items: center; gap: 2px; color: #8fe6e0; font: 700 11px/1 Arial, sans-serif; }
+.app.touch-ui .ammo-m .spare svg { width: 12px; height: 12px; }
+.app.touch-ui .ammo-m.low > b { color: #ff3d7f; }
+.app.touch-ui .hud-bl { left: 50%; top: auto; bottom: 10px; transform: translateX(-50%); }
+.app.touch-ui .hud-bl .hp > span { display: none; }
+.app.touch-ui .hud-bl .bar { width: 236px; height: 6px; margin: 0; border-width: 1px; transform: none; }
+.app.touch-ui .hud-bl .hp.veh { display: none; }
+.app.touch-ui .hud-br { display: none; }
+.app.touch-ui .hint { bottom: 92px; font-size: 12px; }
+.app.touch-ui .banner { top: 18%; }
+
+/* keep the build label out of the weapon bar */
+.app.touch-ui ~ div[style*="bottom:7px"] { top: 6px; bottom: auto !important; opacity: .7; }
+
+/* small phones in landscape */
+@media (max-height: 400px) {
+  .app.touch-ui .stick { width: 118px; height: 118px; bottom: 18px; }
+  .app.touch-ui .stick i { left: 36px; top: 36px; width: 46px; height: 46px; }
+  .app.touch-ui .tbtn.fire-l { bottom: 162px; width: 52px; height: 52px; }
+  .app.touch-ui .tbtn.fire { width: 80px; height: 80px; bottom: 80px; right: calc(96px + env(safe-area-inset-right)); }
+  .app.touch-ui .tbtn.aim { bottom: 150px; width: 56px; height: 56px; }
+  .app.touch-ui .tbtn.jump { width: 56px; height: 56px; bottom: 16px; }
+  .app.touch-ui .tbtn.sprint { bottom: 12px; right: calc(92px + env(safe-area-inset-right)); width: 48px; height: 48px; }
+  .app.touch-ui .tbtn.reload { right: calc(188px + env(safe-area-inset-right)); bottom: 92px; width: 50px; height: 50px; }
+  .app.touch-ui .tbtn.swap { right: calc(160px + env(safe-area-inset-right)); bottom: 22px; width: 42px; height: 42px; }
+  .app.touch-ui .tbtn.drive { bottom: 216px; width: 54px; height: 54px; }
+  .app.touch-ui .hud-tl .minimap:not(.expanded) { width: 108px; }
+  .app.touch-ui .tbtn.pause { right: calc(128px + env(safe-area-inset-right)); }
+  .app.touch-ui .touch .slots { bottom: 20px; }
+  .app.touch-ui .slot { height: 38px; }
+}
+
+/* portrait: this plays in landscape, like console shooters on phones */
+@media (orientation: portrait) {
+  .app.touch-ui[data-screen="play"] .rotate {
+    display: grid; place-items: center; position: fixed; inset: 0; z-index: 60; background: #0b0716f2; color: #f3e9d2;
+  }
+  .rotate svg { width: 96px; height: 96px; animation: mhud-tilt 1.6s ease-in-out infinite; }
+}
+@keyframes mhud-tilt { 0%, 30% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
+.app.touch-ui, .app.touch-ui * { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+.app.touch-ui input { -webkit-user-select: text; user-select: text; }
+.app.touch-ui .scene { touch-action: none; }
+/* no browser zoom: no double-tap zoom anywhere, no pan/pinch on the game itself */
+html, body { touch-action: manipulation; -webkit-text-size-adjust: 100%; overscroll-behavior: none; }
+.app[data-screen="play"], .app[data-screen="play"] *, .app[data-screen="pause"] .hud, .app[data-screen="pause"] .hud * { touch-action: none; }
+/* narrow phones: five weapon slots and the ammo box must clear the joystick and the swap button */
+/* up to seven slots plus the ammo box, sized and centred in the gap between the stick and the swap button */
+.app.touch-ui .slot { width: clamp(30px, calc((100vw - 500px) / 7), 74px); }
+.app.touch-ui .touch .slots { left: calc(50% - 36px); }
+/* weapons you haven't found yet have no slot */
+.app.touch-ui .slot[hidden] { display: none !important; }
+/* desktop: faint key hints bottom left, above health. Bright for the first 20 s of a run, then dim; H hides them. */
+.keyhint { margin-bottom: 14px; display: grid; grid-template-columns: repeat(3, auto); gap: 5px 14px; justify-items: start;
+  font: 600 10px/1 var(--font); letter-spacing: .06em; text-transform: uppercase; color: #f3e9d2; opacity: .72; pointer-events: none;
+  text-shadow: 0 1px 2px #000a; animation: keyhint-dim 1.2s ease 20s forwards; }
+.keyhint span { display: flex; align-items: center; gap: 3px; white-space: nowrap; }
+.keyhint kbd { padding: 2px 4px; margin: 0; font-size: 9px; line-height: 1; background: #0006; border-color: #fff4; }
+.keyhint #keyhint-drive { display: none; }
+.keyhint #keyhint-drive.on { display: flex; color: #ffb15f; }
+.keyhint.off { display: none; }
+@keyframes keyhint-dim { to { opacity: .34; } }
+.app.touch-ui .keyhint { display: none; }
+@media (max-height: 640px) { .keyhint { display: none; } }
+/* ---------- title: the wordmark and Play bottom-left, Alex's soaker turning on the right, scores tucked away ----------
+   sharp corners everywhere, marigold is the only accent; everything fits the screen, nothing scrolls */
+.sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.screen.title { display: grid; overflow: hidden; gap: 0 4vw;
+  padding: max(22px, env(safe-area-inset-top)) max(5vw, env(safe-area-inset-right)) max(6vh, 20px) max(5vw, env(safe-area-inset-left));
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); grid-template-rows: auto 1fr auto auto;
+  grid-template-areas: "top top" ". hero" "word hero" "form hero"; align-items: end;
+  background: linear-gradient(90deg, #0b0716e0 0%, #0b071699 40%, #0b071640 64%, #0b071699 100%),
+              linear-gradient(0deg, #0b0716d9 0%, transparent 50%); }
+.screen.title .title-wrap, .screen.title .start { display: contents; }
+.title-top { grid-area: top; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 3; }
+.title-top .brand, .scores summary { font: 700 11px system-ui, sans-serif; letter-spacing: .28em; text-transform: uppercase; color: #f3e9d2a6; }
+/* wordmark: each line rises out of its own mask once loading is done */
+.screen.title h1 { grid-area: word; margin: 0 0 3.2vh; font-size: clamp(64px, min(10.5vw, 17vh), 184px); line-height: .86; text-shadow: none; }
+.screen.title h1 .ln { display: block; overflow: hidden; padding: 0 .14em .03em 0; margin-right: -.14em; color: var(--bone); -webkit-text-stroke: 0; }
+.screen.title h1 .ln em { display: block; font-style: italic; color: var(--bone); -webkit-text-stroke: 0; transform: translateY(108%); transition: transform 1.1s cubic-bezier(.16, 1, .3, 1) .1s; }
+.screen.title h1 .ln.o em { color: transparent; -webkit-text-stroke: 2px var(--bone); transition-delay: .2s; }
+.app.is-ready .screen.title h1 .ln em { transform: none; }
+.screen.title .row { grid-area: form; width: min(460px, 100%); margin: 0; flex-wrap: nowrap; gap: 8px; opacity: 0; transform: translateY(14px); transition: opacity .8s ease .45s, transform 1s cubic-bezier(.16, 1, .3, 1) .45s; }
+.app.is-ready .screen.title .row { opacity: 1; transform: none; }
+.screen.title input { min-width: 0; padding: 16px 16px; border: 1px solid #f3e9d233; background: #0b0716a6; font-family: system-ui, sans-serif; font-size: 16px; }
+.screen.title input:focus { border-color: var(--marigold); }
+.screen.title .btn.primary { flex: none; padding: 16px 38px; font-size: 16px; transition: filter .2s, transform .2s; }
+.screen.title .btn.primary:active { transform: translateY(1px) scale(.99); }
+/* hero: only the chosen soaker shows, big, turning through Alex's six views; the two names pick it */
+.screen.title .skins { display: block; grid-area: hero; align-self: center; justify-self: center; width: min(100%, 560px); margin: 0; padding: 0; border: 0; min-width: 0;
+  opacity: 0; transform: scale(.96); transition: opacity 1.2s ease .3s, transform 1.4s cubic-bezier(.16, 1, .3, 1) .3s; }
+.app.is-ready .screen.title .skins { opacity: 1; transform: none; }
+.skins-in { display: grid; grid-template-columns: 1fr 1fr; column-gap: 28px; }
+.skins-in::before { content: ''; grid-row: 1; grid-column: 1 / -1; place-self: center; width: 86%; aspect-ratio: 1.6; background: radial-gradient(closest-side, #ff8a1c3d, #0b071680 60%, transparent); }
+.skins-in::after { content: ''; grid-row: 1; grid-column: 1 / -1; align-self: end; justify-self: center; width: 44%; height: 14px; margin-bottom: 3%; border-radius: 50%; background: radial-gradient(#000c, transparent 70%); animation: spin-shadow 3.2s ease-in-out infinite; }
+.screen.title .skins-in .skin { display: contents; }
+.screen.title .skin::after { content: none; }
+.screen.title .skins-in .spin { grid-row: 1; grid-column: 1 / -1; width: 100%; z-index: 1; transition: opacity .6s ease, translate .9s cubic-bezier(.16, 1, .3, 1), scale .9s cubic-bezier(.16, 1, .3, 1); }
+.screen.title .skins-in .skin:not(:has(input:checked)) .spin, .screen.title .skins-in .skin:not(:has(input:checked)):hover .spin { opacity: 0; translate: 5% 0; scale: .94; pointer-events: none; filter: none; }
+.screen.title .skin-name { grid-row: 2; margin: 2px 0 0; padding: 10px 2px 7px; border: 0; border-bottom: 2px solid transparent; cursor: pointer;
+  font: 700 12px system-ui, sans-serif; letter-spacing: .22em; text-transform: uppercase; color: #f3e9d273; transition: color .2s, border-color .2s; }
+.screen.title .skin:nth-of-type(1) .skin-name { grid-column: 1; justify-self: end; }
+.screen.title .skin:nth-of-type(2) .skin-name { grid-column: 2; justify-self: start; }
+.screen.title .skin:hover .skin-name { color: var(--bone); }
+.screen.title .skin:has(input:checked) .skin-name { color: var(--bone); border-color: var(--marigold); }
+.screen.title .skin:has(input:focus-visible) .skin-name { outline: 2px solid var(--bone); outline-offset: 4px; }
+/* scores: a quiet list behind one word */
+.scores summary { list-style: none; cursor: pointer; padding: 8px 0 8px 14px; transition: color .2s; }
+.scores summary::-webkit-details-marker { display: none; }
+.scores summary::after { content: '+'; display: inline-block; margin-left: 8px; color: var(--marigold); transition: transform .3s; }
+.scores[open] summary::after { transform: rotate(45deg); }
+.scores summary:hover, .scores[open] summary { color: var(--bone); }
+.scores .board-wrap { position: absolute; right: 0; top: 100%; z-index: 5; width: min(320px, 86vw); max-height: 70vh; overflow: auto; margin-top: 6px; padding: 18px 20px 12px;
+  background: #0b0716e8; border: 0; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.screen.title .board-wrap h2 { font-size: 13px; font-style: normal; letter-spacing: .2em; color: var(--bone); }
+.screen.title .board-note { margin: 2px 0 10px; color: #f3e9d266; font-size: 11px; }
+.screen.title .board li { grid-template-columns: 22px 1fr auto; padding: 8px 0; border-top-color: #f3e9d21a; }
+.screen.title .board .rk { font-size: 12px; }
+.screen.title .board .nm b { font-size: 13px; }
+.screen.title .board .sc { font-size: 15px; }
+.screen.title .board li.me .nm b, .screen.title .board li.me .sc { color: var(--marigold); }
+.screen.title .board li.empty { padding: 10px 0; font-size: 12px; line-height: 1.45; color: #f3e9d280; }
+/* film grain over the menu and the loader (a still noise tile, moved in steps) */
+.screen.title::before, .loader::after { content: ''; position: absolute; inset: -50%; z-index: 0; pointer-events: none; opacity: .065;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain .9s steps(5) infinite; }
+@keyframes grain { 0% { transform: translate(0, 0); } 20% { transform: translate(-4%, 3%); } 40% { transform: translate(3%, -5%); } 60% { transform: translate(5%, 2%); } 80% { transform: translate(-2%, 5%); } 100% { transform: translate(0, 0); } }
+/* phones held upright: soaker on top, wordmark and Play below */
+@media (max-width: 600px) and (orientation: portrait) {
+  .screen.title { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr auto auto; grid-template-areas: "top" "hero" "word" "form"; padding-bottom: max(28px, env(safe-area-inset-bottom)); }
+  .screen.title .skins { width: min(100%, 440px); }
+  .screen.title h1 { font-size: clamp(56px, 18vw, 100px); margin-bottom: 22px; }
+  .screen.title .row { width: 100%; }
+}
+/* short screens (phones on their side) */
+@media (max-height: 520px) {
+  .screen.title { padding-top: max(12px, env(safe-area-inset-top)); padding-bottom: 16px; }
+  .screen.title h1 { font-size: clamp(40px, 15vh, 76px); margin-bottom: 12px; }
+  .screen.title .skins { width: min(100%, 340px); }
+  .screen.title .skin-name { padding: 6px 2px 5px; font-size: 11px; }
+  .screen.title input, .screen.title .btn.primary { padding-top: 12px; padding-bottom: 12px; }
+}
+
+/* ---------- loading screen ---------- */
+.loader { position: fixed; inset: 0; z-index: 100; overflow: hidden; display: grid; grid-template-rows: 1fr auto; background: var(--night); color: var(--bone);
+  padding: max(24px, 5vh, env(safe-area-inset-top)) max(24px, 5vw) max(28px, 6vh); clip-path: inset(0 0 0 0); transition: clip-path 1s cubic-bezier(.76, 0, .24, 1); }
+.loader.out { clip-path: inset(0 0 100% 0); pointer-events: none; }
+.loader[hidden] { display: none; }
+.loader > * { position: relative; z-index: 1; }
+.loader-mark { margin: 0; align-self: start; font-size: 13px; font-style: italic; letter-spacing: .14em; text-transform: uppercase; }
+.loader-mark span { color: transparent; -webkit-text-stroke: 1px var(--bone); }
+.loader-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+.loader-step { margin: 0 0 8px; font: 700 13px system-ui, sans-serif; letter-spacing: .18em; text-transform: uppercase; }
+.loader-note { margin: 0; font: 12px system-ui, sans-serif; color: #f3e9d266; }
+.loader-pct { margin: 0 -.04em -.06em 0; line-height: .78; font-style: italic; white-space: nowrap; }
+.loader-pct b { display: inline-block; min-width: 2.1ch; text-align: right; font-size: clamp(96px, 19vw, 260px); letter-spacing: -.04em; }
+.loader-pct small { margin-left: .1em; font-size: clamp(20px, 3vw, 40px); color: var(--marigold); vertical-align: top; }
+.loader-bar { position: absolute !important; left: 0; right: 0; bottom: 0; height: 3px; background: #f3e9d214; }
+.loader-bar i { display: block; height: 100%; background: var(--marigold); transform-origin: 0 50%; transform: scaleX(0); }
+.loader-retry { position: absolute !important; left: max(24px, 5vw); top: 45%; }
+@media (max-height: 520px) { .loader-pct b { font-size: clamp(72px, 30vh, 150px); } }
+
+/* ---------- between waves: what just happened and a countdown; play carries on underneath ---------- */
+.interlude { position: absolute; left: 50%; top: 19%; width: min(560px, 86vw); transform: translate(-50%, 10px); text-align: center; opacity: 0; pointer-events: none;
+  text-shadow: 0 3px 18px #000c; transition: opacity .35s ease, transform .6s cubic-bezier(.16, 1, .3, 1); }
+.interlude.on { opacity: 1; transform: translate(-50%, 0); }
+.interlude small { display: block; font: 700 12px system-ui, sans-serif; letter-spacing: .22em; text-transform: uppercase; color: var(--marigold); }
+.interlude b { display: block; margin: 8px 0 12px; font-size: clamp(34px, 5.6vw, 76px); font-style: italic; text-transform: uppercase; line-height: .95; }
+.interlude .il-next { display: block; font: 700 13px system-ui, sans-serif; letter-spacing: .2em; text-transform: uppercase; color: var(--bone); }
+.interlude .il-bar { display: block; width: min(240px, 50vw); height: 2px; margin: 12px auto 0; background: #f3e9d22e; }
+.interlude .il-bar i { display: block; height: 100%; background: var(--marigold); transform-origin: 50% 50%; }
+@media (max-height: 520px) { .interlude { top: 14%; } .interlude b { font-size: 34px; margin: 4px 0 8px; } .interlude small, .interlude .il-next { font-size: 10px; } }
+@media (prefers-reduced-motion: reduce) {
+  .screen.title::before, .loader::after, .skins-in::after { animation: none; }
+  .screen.title h1 .ln em, .screen.title .row, .screen.title .skins { transition: opacity .4s ease; transform: none; }
+  .loader { transition: opacity .4s; } .loader.out { clip-path: none; opacity: 0; }
+}
+/* no aim button (hip fire only): drive takes its spot beside fire */
+.app.touch-ui .tbtn.drive { bottom: 168px; }
+@media (max-height: 400px) { .app.touch-ui .tbtn.drive { bottom: 150px; } }
+
+/* Double Soaker slot: both cards, half each */
+.app.touch-ui .slot-dual { display: flex; }
+.app.touch-ui .slot-dual .slot-art { width: 50%; }
+.app.touch-ui .slot-dual #t-slot-art-l { transform: scaleX(-1); }
+/* zombie mode: the rare zombie bottle makes you glow green for 10 s */
+.zglow { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .5s; box-shadow: inset 0 0 140px 36px #2bff40a6; }
+.zglow b { position: absolute; left: 50%; top: 9%; transform: translateX(-50%); font: italic 900 clamp(30px, 4vw, 52px)/1 var(--font); color: #c9ffd0; text-shadow: 0 0 20px #2bff40, 0 2px 8px #000a; }
+.app.zombie-mode .zglow { opacity: 1; animation: zglow-pulse .9s ease-in-out infinite alternate; }
+.app.zombie-mode.zombie-ending .zglow { animation-duration: .22s; }
+.app.zombie-mode .vm-img > img { filter: drop-shadow(0 0 12px #2bff40cc); }
+@keyframes zglow-pulse { from { opacity: .6; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .app.zombie-mode .zglow { animation: none; } }
+/* Double Soaker: the mirrored plate in the left hand; each plate keeps only its trigger hand */
+.vm-left > img { transform: scaleX(-1); }
+.app.dual .vm-img > img { -webkit-mask-image: linear-gradient(81deg, transparent 56.5%, #000 60.5%); mask-image: linear-gradient(81deg, transparent 56.5%, #000 60.5%); }
+
+/* Calibrated map. */
+.minimap.map-calibrated.map-3d .minimap-view{aspect-ratio:var(--site-map-aspect)}
+.minimap.map-calibrated.map-3d img{object-fit:contain}
+:focus-visible{outline:3px solid var(--bone);outline-offset:3px}
+/* Keep small helper text readable against the live scene and loading background. */
+.screen.title .board-note,.screen.title .board li.empty,.screen.title .skin-name,.loader-note{color:var(--bone)}
+.keyhint{background:oklch(from var(--night) l c h / .9);padding:8px;opacity:1}
+@keyframes keyhint-dim{to{opacity:.9}}

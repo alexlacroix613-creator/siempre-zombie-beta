@@ -1,0 +1,33 @@
+{
+  "width": 1536,
+  "height": 1024,
+  "zero": 1058260,
+  "solid": 464488,
+  "rows": [
+    {
+      "frame": 0,
+      "alphaIoU": 0.9419590558487502
+    },
+    {
+      "frame": 1,
+      "alphaIoU": 0.9252963727514008
+    },
+    {
+      "frame": 2,
+      "alphaIoU": 0.9577839335180055
+    },
+    {
+      "frame": 3,
+      "alphaIoU": 0.9515093749534603
+    },
+    {
+      "frame": 4,
+      "alphaIoU": 0.9129749005623371
+    },
+    {
+      "frame": 5,
+      "alphaIoU": 0.9486478661184782
+    }
+  ],
+  "note": "Alpha IoU measures silhouette differences, not visual approval. Costume replacement changes cuff/sleeve edges; exact pixel-registration is not guaranteed. Blue segmentation omitted because Vivo glove color contaminates it."
+}
