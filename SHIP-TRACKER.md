@@ -2,7 +2,7 @@
 
 
 
-Updated 28 October 2026. Owner: main integration agent. This is the authoritative open list; earlier completion notes do not override it. The dedicated Vercel project is `siempre-zombie-beta`, ID `prj_OcfrCPlPeGKfWqsA9v5p2kTP62ze`. Current production deployment `dpl_8o8z5jsrReEFBWiGNPaGnPgirZfk` is READY at [siempre-zombie-beta.vercel.app](https://siempre-zombie-beta.vercel.app/); the existing Siempre main site is unchanged. Deployment is confirmed; Alex's gameplay approval remains pending.
+Updated 28 October 2026. Owner: main integration agent. This is the authoritative open list; earlier completion notes do not override it. The dedicated Vercel project is `siempre-zombie-beta`, ID `prj_OcfrCPlPeGKfWqsA9v5p2kTP62ze`. Current production deployment `dpl_2n9PhhMDqkKPUDgmwav6iaTzW5aC` is READY at [siempre-zombie-beta.vercel.app](https://siempre-zombie-beta.vercel.app/); the existing Siempre main site is unchanged. Deployment is confirmed; Alex's gameplay approval remains pending.
 
 
 
@@ -60,7 +60,7 @@ Status: **OPEN** = unresolved; **BUILDING** = assigned and being changed; **VERI
 
 | A12 | PASS - USER APPROVED | Main | Approved original Muerto launcher and bottle are preserved. Native loading/hip/aim/fire sheets, contextual aim, one loaded/two reserve, 1.65-second reload and 6-metre cover-aware blast are live in release 49c6887. Alex approved the RPG on 28 October. Twenty checks pass; aimed and hip shots each killed three actors for 300 points. | User approval received 28 October. Freeze authentic RPG design and preserve aim/fire/reload, six-metre cluster blast and switching. Release 49c6887 / dpl_56pGWpbkC4xXuquiXHtKQn3H73WD; swarm-20261028/rpg/LIVE-VERIFICATION.json. |
 
-| A13 | LIVE / USER REVIEW | Main | Always-visible landing-page global top 10 in imagegen green-gas/chrome frame matching the supplied logo. Instagram handle required. Private persistent shared storage; beta and official-launch seasons separate. | Actual landing page at desktop/phone sizes; two-client score persistence and ranking, concurrency/replay checks, real public-score save; official launch selects fresh season without deleting beta. Existing Siempre Neon Free database reused with isolated schema/runtime role. Concurrent real persistence and fresh-season checks pass. Live deployment dpl_8o8z5jsrReEFBWiGNPaGnPgirZfk verified: shared API, handle validation, impossible-score rejection, exact remote asset hashes. User gameplay approval pending. |
+| A13 | LIVE / USER REVIEW | Main | Always-visible landing-page global top 10 in imagegen green-gas/chrome frame matching the supplied logo. Instagram handle required. Private persistent shared storage; beta and official-launch seasons separate. | Actual landing page at desktop/phone sizes; two-client score persistence and ranking, concurrency/replay checks, real public-score save; official launch selects fresh season without deleting beta. Existing Siempre Neon Free database reused with isolated schema/runtime role. Concurrent real persistence and fresh-season checks pass. Live deployment dpl_2n9PhhMDqkKPUDgmwav6iaTzW5aC verified: shared API, handle validation, impossible-score rejection, exact remote asset hashes. User gameplay approval pending. |
 
 | A14 | INVESTIGATE | Main | Optional verified Meta/Facebook or Instagram sign-in with real profile photo, name and score, per Alex's conditional request. | Verify supported account types, existing Meta app, allowed callback domains, permissions and review. Never mark manual handles verified or fetch guessed profile photos. No non-working sign-in button in public UI. |
 
@@ -114,7 +114,7 @@ Status: **OPEN** = unresolved; **BUILDING** = assigned and being changed; **VERI
 
 | Q03 | OPEN | Main | Inventory and handoff must distinguish generated sheets from implemented assets. | Current runtime asset manifest, source provenance, rollback copy, stale notes superseded. |
 
-| Q04 | VERIFY — DEPLOYED | Main | Current public beta includes the no-crank source-image Gatling and shared landing leaderboard at [siempre-zombie-beta.vercel.app](https://siempre-zombie-beta.vercel.app/). Production deployment `dpl_8o8z5jsrReEFBWiGNPaGnPgirZfk` is READY. | Public HTML, runtime, leaderboard module/frame and Gatling view module match local hashes; `leaderboard-work/LIVE-VERIFICATION.json` and earlier `gatling-repair/RELEASE.json`. Earlier 27 October release evidence remains historical. Alex's full gameplay approval is separate and pending. |
+| Q04 | VERIFY — DEPLOYED | Main | Current public beta includes the no-crank source-image Gatling and shared landing leaderboard at [siempre-zombie-beta.vercel.app](https://siempre-zombie-beta.vercel.app/). Production deployment `dpl_2n9PhhMDqkKPUDgmwav6iaTzW5aC` is READY. | Public HTML, runtime, leaderboard module/frame and Gatling view module match local hashes; `leaderboard-work/LIVE-VERIFICATION.json` and earlier `gatling-repair/RELEASE.json`. Earlier 27 October release evidence remains historical. Alex's full gameplay approval is separate and pending. |
 
 | Q05 | VERIFY | Main | Recover/check complete audio event hookups; 40 sound files alone do not establish runtime playback. | Real browser audio unlock, weapon/pour/glass/balloon, footsteps/enemies/boss, vehicle/taco/UI events, mute/volume and remote loading. |
 
@@ -223,7 +223,7 @@ When a row changes, keep its ID, status, exact evidence and any remaining limita
 
 
 ## Current root release receipt - 28 October
-Production dpl_8o8z5jsrReEFBWiGNPaGnPgirZfk is READY. See public-beta-20261028-source-controls2/RELEASE.json and swarm-20261028/PROGRESS.md. Captured wheel/RZR-exit checks pass; source glass/balloons, detailed NASA moon and four refill sites are live. User acceptance remains open. Six corrected shared-body skins run only in local fittedReview until heads/hair/physical death pass final review. RZR broad Muerto arm rejected by Alex; narrow single-arm join and dimensional dashboard correction remain owned. Truck/eating/healing hashes unchanged. Private GitHub backup exists; Git connection still pending. Analytics script HTTP200; provider pageview pending. RPG artwork provider rejection and Facebook legal-terms gate remain explicit unresolved items.
+Production dpl_2n9PhhMDqkKPUDgmwav6iaTzW5aC is READY. See public-beta-20261028-source-controls2/RELEASE.json and swarm-20261028/PROGRESS.md. Captured wheel/RZR-exit checks pass; source glass/balloons, detailed NASA moon and four refill sites are live. User acceptance remains open. Six corrected shared-body skins run only in local fittedReview until heads/hair/physical death pass final review. RZR broad Muerto arm rejected by Alex; narrow single-arm join and dimensional dashboard correction remain owned. Truck/eating/healing hashes unchanged. Private GitHub backup exists; Git connection still pending. Analytics script HTTP200; provider pageview pending. RPG artwork provider rejection and Facebook legal-terms gate remain explicit unresolved items.
 
 Q09 verification: official analytics script HTTP200; authenticated Vercel query for 28-29 October reports1visitor/2pageviews. Receipt swarm-20261028/ANALYTICS-VERIFIED.json. No plan or billing changes.
 
@@ -259,3 +259,18 @@ Q10 complete: private GitHub main commit65e2e30 deployed automatically as dpl_38
 - Official launch score-season switch remains pending actual launch authorization; retain beta history.
 
 - Latest Alex correction: Top 10 belongs ONLY inside the game page. Remove board from Games listing and Halloween splash. Listing is authentic image + short copy + Play. This supersedes the earlier outside-board redesign assignment.
+
+## Current launch receipt — supersedes older release notes
+
+- Live cda4548 / dpl_2n9PhhMDqkKPUDgmwav6iaTzW5aC (READY): https://siempre-zombie-beta.vercel.app/ and /halloween/. Ten served files match Git. Real shared board has three players and stays ONLY inside game.
+- Direct original Play -> film -> gameplay, one Skip; no Welcome/Ready/Watch/Enter step. Portrait/mobile touch emulation passes natural end and Skip. Physical mobile and heard-audio acceptance remain separate.
+- Banner is standard Games art + description + Play; no board. Halloween treatment is restricted to Games/game, no main-homepage takeover or main-site deployment. Package at swarm-20261028/launch/site-package; review at http://127.0.0.1:8796/swarm-20261028/launch/games-banner-review.html.
+- User-approved RZR/RPG/truck assets unchanged; seven fitted character runtime unchanged. No scores erased and no Meta app created.
+- Evidence: swarm-20261028/launch/LIVE-VERIFICATION.json and ASSET-PROVENANCE.json. Earlier local/unpublished notes are historical; pending unrelated QA rows remain open.
+
+## OFFICIAL SITE LAUNCH COMPLETE — 28 October 2026
+
+- Alex authorized launch. Published approved Games banner at https://siempretequila.com/games; Play opens https://siempretequila.com/games/siempre-zombie/ with current authentic game, original intro and inside-game Top 10.
+- Website production dpl_6HGxhrKC7FRhZ9boTXcnPK1dg9CN promoted and verified on apex/www. Only two original website files changed plus three art assets; homepage/server functions preserved. Current canonical game release content abf99f6 is forwarded through game/API path rewrites, preventing stale site copies on future game updates.
+- Fresh launch-20261028 board confirmed zero players; beta season history retained, no probe score saved. Signed-run and invalid-score checks pass.
+- Source/receipts/route rules saved in site-launch-20261028/. Actual full recovered website artifact is swarm-20261028/launch/site-release-20261028/.vercel/output. This supersedes earlier banner waiting/publication pending notes. Unrelated open QA rows remain open.

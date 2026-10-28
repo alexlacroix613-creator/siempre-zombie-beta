@@ -237,7 +237,7 @@ No item is dropped because a method failed or the work was handed off. Record th
 
 
 ## Current root release receipt - 28 October
-Production dpl_8o8z5jsrReEFBWiGNPaGnPgirZfk is READY. See public-beta-20261028-source-controls2/RELEASE.json and swarm-20261028/PROGRESS.md. Captured wheel/RZR-exit checks pass; source glass/balloons, detailed NASA moon and four refill sites are live. User acceptance remains open. Six corrected shared-body skins run only in local fittedReview until heads/hair/physical death pass final review. RZR broad Muerto arm rejected by Alex; narrow single-arm join and dimensional dashboard correction remain owned. Truck/eating/healing hashes unchanged. Private GitHub backup exists; Git connection still pending. Analytics script HTTP200; provider pageview pending. RPG artwork provider rejection and Facebook legal-terms gate remain explicit unresolved items.
+Production dpl_2n9PhhMDqkKPUDgmwav6iaTzW5aC is READY. See public-beta-20261028-source-controls2/RELEASE.json and swarm-20261028/PROGRESS.md. Captured wheel/RZR-exit checks pass; source glass/balloons, detailed NASA moon and four refill sites are live. User acceptance remains open. Six corrected shared-body skins run only in local fittedReview until heads/hair/physical death pass final review. RZR broad Muerto arm rejected by Alex; narrow single-arm join and dimensional dashboard correction remain owned. Truck/eating/healing hashes unchanged. Private GitHub backup exists; Git connection still pending. Analytics script HTTP200; provider pageview pending. RPG artwork provider rejection and Facebook legal-terms gate remain explicit unresolved items.
 
 Q09 verification: official analytics script HTTP200; authenticated Vercel query for 28-29 October reports1visitor/2pageviews. Receipt swarm-20261028/ANALYTICS-VERIFIED.json. No plan or billing changes.
 
@@ -271,3 +271,18 @@ Q10 complete: private GitHub main commit65e2e30 deployed automatically as dpl_38
 - Alex rejected intro menus: Play must run the video then reveal gameplay automatically, with one Skip control. Original Play gesture retains pointer capture; simulation/input freeze during film, no extra start menu. Native browser focus/capture failure retains existing Pause/Resume safety.
 - Alex rejected the plain/offline website Top 10 strip. Launch-page builder owns rich chrome-frame correction and real-score review via read-only local proxy; do not mark an offline placeholder as complete.
 - Official launch score-season switch remains pending actual launch authorization; retain beta history.
+
+## Current launch receipt — supersedes older release notes
+
+- Live cda4548 / dpl_2n9PhhMDqkKPUDgmwav6iaTzW5aC (READY): https://siempre-zombie-beta.vercel.app/ and /halloween/. Ten served files match Git. Real shared board has three players and stays ONLY inside game.
+- Direct original Play -> film -> gameplay, one Skip; no Welcome/Ready/Watch/Enter step. Portrait/mobile touch emulation passes natural end and Skip. Physical mobile and heard-audio acceptance remain separate.
+- Banner is standard Games art + description + Play; no board. Halloween treatment is restricted to Games/game, no main-homepage takeover or main-site deployment. Package at swarm-20261028/launch/site-package; review at http://127.0.0.1:8796/swarm-20261028/launch/games-banner-review.html.
+- User-approved RZR/RPG/truck assets unchanged; seven fitted character runtime unchanged. No scores erased and no Meta app created.
+- Evidence: swarm-20261028/launch/LIVE-VERIFICATION.json and ASSET-PROVENANCE.json. Earlier local/unpublished notes are historical; pending unrelated QA rows remain open.
+
+## OFFICIAL SITE LAUNCH COMPLETE — 28 October 2026
+
+- Alex authorized launch. Published approved Games banner at https://siempretequila.com/games; Play opens https://siempretequila.com/games/siempre-zombie/ with current authentic game, original intro and inside-game Top 10.
+- Website production dpl_6HGxhrKC7FRhZ9boTXcnPK1dg9CN promoted and verified on apex/www. Only two original website files changed plus three art assets; homepage/server functions preserved. Current canonical game release content abf99f6 is forwarded through game/API path rewrites, preventing stale site copies on future game updates.
+- Fresh launch-20261028 board confirmed zero players; beta season history retained, no probe score saved. Signed-run and invalid-score checks pass.
+- Source/receipts/route rules saved in site-launch-20261028/. Actual full recovered website artifact is swarm-20261028/launch/site-release-20261028/.vercel/output. This supersedes earlier banner waiting/publication pending notes. Unrelated open QA rows remain open.

@@ -1,0 +1,14 @@
+{
+  "fromDeployment": "dpl_4LpVAJmFEjPtUX4CsPkgsFcR59Tr",
+  "onlyOriginalFilesChanged": [
+    "/src/.vercel/output/config.json",
+    "/src/.vercel/output/static/games/siempre-zombie/games-feature.mjs"
+  ],
+  "addedArtAssets": 3,
+  "unchangedOriginalFiles": 5918,
+  "homepageAndServerFunctionsUnchanged": true,
+  "gameAndScorePathsForwardToSingleCurrentCanonical": true,
+  "rollback": "dpl_4LpVAJmFEjPtUX4CsPkgsFcR59Tr",
+  "target": "cantina-chronicles-explorers",
+  "stageBeforePromotion": true
+}

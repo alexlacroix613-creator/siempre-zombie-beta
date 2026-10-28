@@ -1,0 +1,42 @@
+{
+  "websiteDeployment": "dpl_6HGxhrKC7FRhZ9boTXcnPK1dg9CN",
+  "gameCommit": "abf99f62fe1d9c0fa05bcac7ed2f456f9026b884",
+  "gameDeployment": "dpl_2qJLM374xuewCckbEZuT3DKftJL6",
+  "gamesUrl": "https://siempretequila.com/games",
+  "gameUrl": "https://siempretequila.com/games/siempre-zombie/",
+  "homepageRuntimeUnchanged": true,
+  "assets": [
+    {
+      "path": "/games/siempre-zombie/",
+      "sha256": "913d35597688fee46ed9244a6ac7cd919fcba35687ed86c2cecc9bd8e15b7e7e",
+      "matchesApprovedRelease": true
+    },
+    {
+      "path": "/games/siempre-zombie/games-feature.mjs",
+      "sha256": "e4ea765995b8188321eb24ba25df2e1705fd5ca84b31c6ee637d53ff8ca4e55d",
+      "matchesApprovedRelease": true
+    },
+    {
+      "path": "/assets/cantina-zombie-launch-20261028-r1/index-CZAJgtvm.js",
+      "sha256": "67ed8e13b95b595791e1a65719a00e9654894d351e983afa0f1e8b741023baa4",
+      "matchesApprovedRelease": true
+    }
+  ],
+  "sharedBoard": {
+    "season": "launch-20261028",
+    "players": 0
+  },
+  "videoRange": {
+    "status": 206,
+    "type": "video/mp4",
+    "contentRange": "bytes 0-127/3921529",
+    "firstBytesMp4": true
+  },
+  "games200": true,
+  "www": {
+    "url": "https://siempretequila.com/games",
+    "status": 200
+  },
+  "betaHistoryPreserved": true,
+  "promoted": true
+}

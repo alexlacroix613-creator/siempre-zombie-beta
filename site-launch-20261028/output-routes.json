@@ -1,0 +1,197 @@
+{
+  "version": 3,
+  "framework": {
+    "name": "nitro",
+    "version": "3.0.260429-beta"
+  },
+  "overrides": {},
+  "routes": [
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/blog"
+      },
+      "src": "/category/uncategorized/"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/blog"
+      },
+      "src": "/hello-world/"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/find"
+      },
+      "src": "/find-siempre/"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/"
+      },
+      "src": "/our-tequila/"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/distributors"
+      },
+      "src": "/trade/"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/shop"
+      },
+      "src": "/merch/"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/shop"
+      },
+      "src": "/swag/"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/legend"
+      },
+      "src": "/about/"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/legal"
+      },
+      "src": "/terms-and-conditions/"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/privacy"
+      },
+      "src": "/privacy-policy/"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/blog"
+      },
+      "src": "/category/uncategorized"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/blog"
+      },
+      "src": "/hello-world"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/find"
+      },
+      "src": "/find-siempre"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/"
+      },
+      "src": "/our-tequila"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/distributors"
+      },
+      "src": "/trade"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/shop"
+      },
+      "src": "/merch"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/shop"
+      },
+      "src": "/swag"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/legend"
+      },
+      "src": "/about"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/legal"
+      },
+      "src": "/terms-and-conditions"
+    },
+    {
+      "status": 301,
+      "headers": {
+        "Location": "/privacy"
+      },
+      "src": "/privacy-policy"
+    },
+    {
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      },
+      "src": "/assets/(.*)"
+    },
+    {
+      "src": "^/games/siempre-zombie$",
+      "status": 308,
+      "headers": {
+        "Location": "/games/siempre-zombie/"
+      }
+    },
+    {
+      "src": "^/games/siempre-zombie/(?:index\\.html)?$",
+      "dest": "https://siempre-zombie-beta.vercel.app/",
+      "headers": {
+        "Cache-Control": "no-store"
+      }
+    },
+    {
+      "src": "^/games/siempre-zombie/(?!games-feature\\.mjs$|launch-assets/)(.*)$",
+      "dest": "https://siempre-zombie-beta.vercel.app/$1"
+    },
+    {
+      "src": "^/api/siempre-zombie/(leaderboard|runs|scores)$",
+      "dest": "https://siempre-zombie-beta.vercel.app/api/siempre-zombie/$1"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "^/api/agave-racing(?:/.*)?$",
+      "dest": "/__finish_rzr_20261022_r5"
+    },
+    {
+      "src": "^/api/siempre-zombie(?:/.*)?$",
+      "dest": "/__finish_rzr_20261022_r5"
+    },
+    {
+      "src": "^/(?:api(?:/.*)?|_serverFn(?:/.*)?|admin(?:/.*)?)$",
+      "dest": "/__server"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/__finish_rzr_20261022_r5"
+    }
+  ]
+}

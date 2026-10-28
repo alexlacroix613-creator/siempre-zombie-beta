@@ -1,0 +1,44 @@
+{
+  "deployment": "dpl_6HGxhrKC7FRhZ9boTXcnPK1dg9CN",
+  "url": "https://cantina-chronicles-explorers-fayp2o7vj-alexbridgedidit.vercel.app",
+  "assets": [
+    {
+      "path": "/games/siempre-zombie/",
+      "sha256": "913d35597688fee46ed9244a6ac7cd919fcba35687ed86c2cecc9bd8e15b7e7e",
+      "contentType": "text/html; charset=utf-8",
+      "match": true
+    },
+    {
+      "path": "/games/siempre-zombie/siempre-zombie.js",
+      "sha256": "fed19137cc6f164ecf46dd62d6454c1e1f14b4630ac13d89550e927e6681d636",
+      "contentType": "application/javascript; charset=utf-8",
+      "match": true
+    },
+    {
+      "path": "/games/siempre-zombie/leaderboard-config.js",
+      "sha256": "863ad2abb47ef3db844e16fe4cdaff0707cf7aba166cb6e147660f40a23dfbb4",
+      "contentType": "application/javascript; charset=utf-8",
+      "match": true
+    },
+    {
+      "path": "/games/siempre-zombie/games-feature.mjs",
+      "sha256": "e4ea765995b8188321eb24ba25df2e1705fd5ca84b31c6ee637d53ff8ca4e55d",
+      "contentType": "application/javascript; charset=utf-8",
+      "match": true
+    },
+    {
+      "path": "/games/siempre-zombie/launch-assets/main-lockup-20261028.png",
+      "sha256": "0f31d2ce7ef5a7f7c65988ac792cac61f4f699a40be76df8e9b20b9e1d77b89a",
+      "contentType": "image/png",
+      "match": true
+    }
+  ],
+  "leaderboard": {
+    "season": "launch-20261028",
+    "totalPlayers": 0
+  },
+  "signedRunIssued": true,
+  "impossibleScoreRejected": true,
+  "probeScoreSaved": false,
+  "gamesRoute200": true
+}
