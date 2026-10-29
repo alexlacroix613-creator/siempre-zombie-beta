@@ -1,0 +1,23 @@
+/* All additions are confined to the results screen. */
+#screen-over { overflow-y:auto; padding:max(24px,env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left)); }
+#screen-over > * { flex-shrink:0; }
+#screen-over .row { justify-content:center; }
+#screen-over .btn { min-height:48px; }
+#screen-over .copy-game-link { background:transparent; border:0; color:var(--bone); text-decoration:underline; text-underline-offset:4px; font:14px system-ui,sans-serif; cursor:pointer; min-height:44px; padding:10px 16px; }
+#screen-over .share-status { margin:0; max-width:36em; min-height:1.4em; font:14px/1.45 system-ui,sans-serif; color:var(--signal); }
+#screen-over .share-manual { width:min(100%,460px); text-align:left; }
+#screen-over .share-manual[hidden] { display:none; }
+#screen-over .share-manual label { display:block; margin-bottom:8px; font:14px system-ui,sans-serif; }
+#screen-over .share-manual textarea { width:100%; padding:12px; border:1px solid var(--bone); background:var(--night); color:var(--bone); font:14px/1.5 system-ui,sans-serif; resize:vertical; user-select:text; }
+#screen-over button:focus-visible { outline:3px solid var(--signal); outline-offset:4px; }
+@media(max-width:480px) {
+  #screen-over .stats { gap:18px; }
+  #screen-over .stats dd { font-size:28px; }
+  #screen-over .row { width:100%; max-width:340px; }
+  #screen-over .row .btn { width:100%; }
+}
+@media(max-height:600px) {
+  #screen-over { justify-content:flex-start; gap:8px; }
+  #screen-over h2 { margin-bottom:0; }
+  #screen-over .save { margin:4px 0; }
+}

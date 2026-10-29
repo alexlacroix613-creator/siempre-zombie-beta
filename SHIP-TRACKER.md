@@ -274,3 +274,12 @@ Q10 complete: private GitHub main commit65e2e30 deployed automatically as dpl_38
 - Website production dpl_6HGxhrKC7FRhZ9boTXcnPK1dg9CN promoted and verified on apex/www. Only two original website files changed plus three art assets; homepage/server functions preserved. Current canonical game release content abf99f6 is forwarded through game/API path rewrites, preventing stale site copies on future game updates.
 - Fresh launch-20261028 board confirmed zero players; beta season history retained, no probe score saved. Signed-run and invalid-score checks pass.
 - Source/receipts/route rules saved in site-launch-20261028/. Actual full recovered website artifact is swarm-20261028/launch/site-release-20261028/.vercel/output. This supersedes earlier banner waiting/publication pending notes. Unrelated open QA rows remain open.
+
+
+## Social sharing correction — 28 October 2026
+
+- Owner: root. User asked for game-over score sharing and authentic Zombie banner previews at https://siempretequila.com/games/siempre-zombie/.
+- Added user-initiated native Share score, copy link and accessible clipboard fallback, scoped to the results screen. Native picker opened locally and was cancelled without posting. Real local death -> sharing -> leaderboard return verified; portrait and short-landscape layouts reviewed.
+- Static Open Graph/Twitter metadata points to a 1200x630, 244704-byte banner rendered from the approved original logo and gas/yard artwork in OpenDesign. No image generation or source replacement.
+- Focused six sharing checks, input release check and nine intro checks pass. No gameplay module, character/vehicle/weapon assets, intro logic or score season changed. Live verification is recorded in site-launch-20261028/SOCIAL-SHARING-RECEIPT.json after deployment.
+- Mobile lag: analysis/plan ONLY, as Alex explicitly requested. Compression affects transfer/startup; sustained lag requires phone frame-time measurements. Source-only plan: swarm-20261028/launch/MOBILE-PERFORMANCE-PLAN.md. No performance changes or claimed measured FPS.

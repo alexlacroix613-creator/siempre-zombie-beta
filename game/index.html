@@ -7,13 +7,32 @@
 <script id="vercel-analytics" defer src="/_vercel/insights/script.js"></script>
 <script src="no-zoom.js?v=1"></script>
 <title>Siempre Zombie</title>
-<meta name="description" content="Hold the old hacienda cemetery against waves of the restless dead on Halloween night. A first-person shooter from Siempre Games.">
+<meta name="description" content="Choose Vivo or Muerto. Defend the distillery, survive the horde and claim your place in the global Top 10.">
+<link rel="canonical" href="https://siempretequila.com/games/siempre-zombie/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Siempre Games">
+<meta property="og:url" content="https://siempretequila.com/games/siempre-zombie/">
+<meta property="og:title" content="Ken &amp; Keith’s Siempre Zombie">
+<meta property="og:description" content="Choose Vivo or Muerto. Defend the distillery, survive the horde and claim your place in the global Top 10.">
+<meta property="og:image" content="https://siempretequila.com/games/siempre-zombie/assets/social/siempre-zombie-share-v1.jpg">
+<meta property="og:image:secure_url" content="https://siempretequila.com/games/siempre-zombie/assets/social/siempre-zombie-share-v1.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ken &amp; Keith’s Siempre Tequila Zombie logo in green smoke over the moonlit agave yard.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ken &amp; Keith’s Siempre Zombie">
+<meta name="twitter:description" content="Choose Vivo or Muerto. Defend the distillery, survive the horde and claim your place in the global Top 10.">
+<meta name="twitter:image" content="https://siempretequila.com/games/siempre-zombie/assets/social/siempre-zombie-share-v1.jpg">
+<meta name="twitter:image:alt" content="Ken &amp; Keith’s Siempre Tequila Zombie logo in green smoke over the moonlit agave yard.">
 <link rel="stylesheet" href="siempre-zombie.css?release=20261025T033704Z">
 <link rel="stylesheet" href="mobile-hud.css?v=11-beta">
 <link rel="stylesheet" href="soldier-selection.css?v=1">
 <link rel="stylesheet" href="landing-leaderboard.css?v=20261028-1">
 <link rel="stylesheet" href="zombie-intro.css?v=20261028-v2">
 <script defer src="zombie-intro.js?v=20261028-v2"></script>
+<link rel="stylesheet" href="score-sharing.css?v=20261028-1">
+<script defer src="score-sharing.js?v=20261028-1"></script>
 <style id="minimap-gps-style">
 /* Position dot stays centered on registered ground point; arrow gives heading. */
 .minimap.map-3d #minimap-player { display:block !important; z-index:5; width:10px; height:10px; clip-path:none; background:#8dfff4; border:2px solid #fff; border-radius:50%; box-shadow:0 0 0 2px #06100f; filter:drop-shadow(0 1px 3px #000); pointer-events:none; }
@@ -132,7 +151,14 @@
     <p class="save" id="over-save"></p>
     <div class="row">
       <button class="btn primary" data-action="again">Play again</button>
+      <button class="btn" id="share-score" type="button">Share score ↗</button>
       <button class="btn" data-action="quit">Leaderboard</button>
+    </div>
+    <button class="copy-game-link" id="copy-game-link" type="button">Copy game link</button>
+    <p class="share-status" id="share-status" role="status" aria-live="polite"></p>
+    <div class="share-manual" id="share-manual" hidden>
+      <label for="share-text">Copy and share</label>
+      <textarea id="share-text" rows="3" readonly></textarea>
     </div>
   </section>
 
