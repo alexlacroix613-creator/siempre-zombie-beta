@@ -1,0 +1,109 @@
+{
+  "publicUrl": "https://siempretequila.com/games/siempre-zombie/",
+  "commit": "68283906becce1282872b70f25a6600413efbdfa",
+  "deploymentId": "dpl_BqUgbBPexhjx5QxfdWGjAZmJQEkL",
+  "crawlerResponses": [
+    {
+      "userAgent": "facebookexternalhit/1.1",
+      "status": 200,
+      "finalUrl": "https://siempretequila.com/games/siempre-zombie/",
+      "title": "Ken & Keith\u2019s Siempre Zombie",
+      "image": "https://siempretequila.com/games/siempre-zombie/assets/social/siempre-zombie-share-v1.jpg"
+    },
+    {
+      "userAgent": "WhatsApp/2.24.0",
+      "status": 200,
+      "finalUrl": "https://siempretequila.com/games/siempre-zombie/",
+      "title": "Ken & Keith\u2019s Siempre Zombie",
+      "image": "https://siempretequila.com/games/siempre-zombie/assets/social/siempre-zombie-share-v1.jpg"
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "contentType": "text/html",
+      "bytes": 22774,
+      "sha256": "4c577832a526b6998897ee380265650d4a7056032f5c6a959914d76cc0ffb790",
+      "matchesLocal": true
+    },
+    {
+      "path": "score-sharing.js",
+      "status": 200,
+      "contentType": "application/javascript",
+      "bytes": 2382,
+      "sha256": "a794f449c8f042f13febed93e97ab4fba2e33468fe474a74a4d092f0a0270605",
+      "matchesLocal": true
+    },
+    {
+      "path": "score-sharing.css",
+      "status": 200,
+      "contentType": "text/css",
+      "bytes": 1618,
+      "sha256": "55c9bd6ab37101e930e67713738dce5eb2ddadbbbca139ba2aa3add4a09d2c37",
+      "matchesLocal": true
+    },
+    {
+      "path": "assets/social/siempre-zombie-share-v1.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "bytes": 244704,
+      "sha256": "dabb20b88e3fc7a21cd277693f2a70e3a2720e0d5b2768e08dd4aaedab97fa89",
+      "matchesLocal": true
+    },
+    {
+      "path": "siempre-zombie.js",
+      "status": 200,
+      "contentType": "application/javascript",
+      "bytes": 217359,
+      "sha256": "fed19137cc6f164ecf46dd62d6454c1e1f14b4630ac13d89550e927e6681d636",
+      "matchesLocal": true
+    },
+    {
+      "path": "zombie-intro.js",
+      "status": 200,
+      "contentType": "application/javascript",
+      "bytes": 3749,
+      "sha256": "ff159db4c3e020fe111506a7146461308d8a93f69051a0161637c35489cc059d",
+      "matchesLocal": true
+    },
+    {
+      "path": "leaderboard-config.js",
+      "status": 200,
+      "contentType": "application/javascript",
+      "bytes": 192,
+      "sha256": "863ad2abb47ef3db844e16fe4cdaff0707cf7aba166cb6e147660f40a23dfbb4",
+      "matchesLocal": true
+    },
+    {
+      "path": "driver-viewmodel.js",
+      "status": 200,
+      "contentType": "application/javascript",
+      "bytes": 6836,
+      "sha256": "2ac1ecf3170eee5abd48223c11e0ee4510ca518863dbfdad238fc8647d28ad63",
+      "matchesLocal": true
+    },
+    {
+      "path": "muerto-rpg-runtime.js",
+      "status": 200,
+      "contentType": "application/javascript",
+      "bytes": 3561,
+      "sha256": "6e37cecb5066e86af3ab168fc33c229a9a9e17a8c832d20e0ce6c5da53eceda2",
+      "matchesLocal": true
+    }
+  ],
+  "slashRedirect": true,
+  "socialContentPosted": false,
+  "mobilePerformance": "Plan only; no performance edits or physical-phone measurements.",
+  "validation": {
+    "shareTests": 6,
+    "introTests": 9,
+    "inputRelease": "passed",
+    "realLocalGameOver": "Death -> native score-share picker -> cancelled without posting -> leaderboard return passed.",
+    "clipboard": "Expected score and canonical URL pasted successfully into isolated local UI fixture.",
+    "responsive": "390x844 portrait and844x390 short landscape checked; no horizontal overflow, results screen scrolls vertically when necessary.",
+    "independentReview": "CLEAR; missing preview-file finding resolved and public bytes verified.",
+    "mobileChangesExecuted": false,
+    "publicBoardTestScoresWritten": false
+  }
+}

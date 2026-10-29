@@ -295,3 +295,5 @@ Q10 complete: private GitHub main commit65e2e30 deployed automatically as dpl_38
 - Static Open Graph/Twitter metadata points to a 1200x630, 244704-byte banner rendered from the approved original logo and gas/yard artwork in OpenDesign. No image generation or source replacement.
 - Focused six sharing checks, input release check and nine intro checks pass. No gameplay module, character/vehicle/weapon assets, intro logic or score season changed. Live verification is recorded in site-launch-20261028/SOCIAL-SHARING-RECEIPT.json after deployment.
 - Mobile lag: analysis/plan ONLY, as Alex explicitly requested. Compression affects transfer/startup; sustained lag requires phone frame-time measurements. Source-only plan: swarm-20261028/launch/MOBILE-PERFORMANCE-PLAN.md. No performance changes or claimed measured FPS.
+
+- SHARING LIVE VERIFIED: commit6828390 / READY dpl_BqUgbBPexhjx5QxfdWGjAZmJQEkL; official Siempre game URL serves all nine checked release files and correct Facebook/WhatsApp crawler metadata. Preview JPEG200 image/jpeg, exact source hash. Independent review CLEAR. No social post or live test score submitted.
