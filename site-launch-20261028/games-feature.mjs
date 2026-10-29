@@ -39,7 +39,7 @@ class SiempreZombieFeature extends HTMLElement {
             <h2 id="zombie-heading">Siempre Zombie</h2>
             <p class="description">Ken and Keith brought Vivo and Muerto together. Now their creation has a game of its own. Defend the distillery and survive the horde.</p>
             <a class="play" href="${GAME}" aria-label="Play Siempre Zombie"><span class="play-fallback">Play</span><img src="${ASSET('chrome-play-v1.webp')}" width="640" height="256" alt="" aria-hidden="true" draggable="false"></a>
-            <p class="support">Public beta · Desktop &amp; mobile</p>
+            <p class="support">Desktop &amp; mobile</p>
           </div>
         </div>
       </article>`;
