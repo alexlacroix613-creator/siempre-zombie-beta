@@ -17,7 +17,7 @@ Read [references/source-map.md](references/source-map.md) for repository access 
 
 ## Get the complete reference
 
-Use an authorized checkout of `alexlacroix613-creator/siempre-zombie-beta`. If none exists, clone it with Git's normal authentication. The repository is private; do not expose it or put a token in a command to bypass access.
+Use a checkout of `alexlacroix613-creator/siempre-zombie-beta`. The source repository is public and can be cloned anonymously; do not request credentials for this read.
 
 ```text
 git clone https://github.com/alexlacroix613-creator/siempre-zombie-beta.git reference-source
