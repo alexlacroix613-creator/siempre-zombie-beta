@@ -1,0 +1,4 @@
+interface:
+  display_name: "First-Person Shooter"
+  short_description: "Build and repair Three.js browser FPS games"
+  default_prompt: "Use $first-person-shooter to build or improve a browser FPS using the verified game foundation and approved artwork."

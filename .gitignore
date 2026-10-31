@@ -8,6 +8,8 @@
 !/game/**
 !/tools/
 !/tools/**
+!/skills/
+!/skills/**
 **/node_modules/
 **/.vercel/
 **/.env*

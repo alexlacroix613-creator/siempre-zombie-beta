@@ -1,0 +1,1161 @@
+{
+  "schemaVersion": 1,
+  "repository": "https://github.com/alexlacroix613-creator/siempre-zombie-beta",
+  "revision": "35c7a2b5f768aa7603e4a0a6706e6fde37f61d4f",
+  "sourceDate": "2026-10-31",
+  "referenceOnly": true,
+  "checkGroups": {
+    "controls": [
+      "tools/check-mouse-look.mjs",
+      "tools/check-input-release.mjs",
+      "tools/check-ground-and-rzr-exit.mjs",
+      "tools/check-weapon-scroll.mjs",
+      "tools/check-boot-loader.mjs"
+    ],
+    "combat": [
+      "tools/check-combat-fairness.mjs",
+      "tools/check-zombie-targeting.mjs",
+      "tools/check-driving-unarmed.mjs",
+      "tools/check-sergio-boss.mjs"
+    ],
+    "visuals": [
+      "tools/check-held-frame-edges.mjs",
+      "tools/check-balloon-visuals.mjs",
+      "tools/check-minimap-gps.mjs",
+      "tools/check-out-of-bounds.mjs"
+    ],
+    "scores": [
+      "tools/leaderboard.test.mjs"
+    ],
+    "sharing": [
+      "tools/score-sharing.test.mjs"
+    ]
+  },
+  "files": {
+    "game/.gitignore": {
+      "bytes": 45,
+      "sha256": "057515ac95d7eee969e8fd2a9ec4945d44e53c69730a10b6689eef1a9479b896"
+    },
+    "game/.vercelignore": {
+      "bytes": 80,
+      "sha256": "351846edbfeeb48d743836fffdf5b5736e404d30f435b52aba71daca06162caf"
+    },
+    "game/accessory-death-settle.mjs": {
+      "bytes": 2421,
+      "sha256": "ee5b0c94862abb5993150d0fdb61794408d6cbbf7a6558dd93544d0a7f74aa3c"
+    },
+    "game/api/siempre-zombie/leaderboard.js": {
+      "bytes": 556,
+      "sha256": "13e0b6d52ed659274ce8af7532ed3ade234a04f797fbfa8658bf807b56f80230"
+    },
+    "game/api/siempre-zombie/runs.js": {
+      "bytes": 126,
+      "sha256": "a586624fb65e3783bea8026a84af517554873cfa9383d8d71eef3507893158ad"
+    },
+    "game/api/siempre-zombie/scores.js": {
+      "bytes": 127,
+      "sha256": "157c00edf4cb8ec4f02c7725ffd1045f226aad75d31e13179115fa6b8f2151fe"
+    },
+    "game/assets/balloon-reference-alpha.png": {
+      "bytes": 1675305,
+      "sha256": "b217c5a8aa126adf4ad7c919ecfd39a8ede66fb138c79aa7702e4e55b5b9ca2a"
+    },
+    "game/assets/balloon-reference.png": {
+      "bytes": 2011547,
+      "sha256": "e5f06fa3d27c129397d3dc3894556c92a54a8cd36c05288059580f326ff87bf9"
+    },
+    "game/assets/card-muerto.webp": {
+      "bytes": 31948,
+      "sha256": "b03e510cfeb2f946db6f71ef3d19d2000d38eaeb1c77401cdd5849224cc614f6"
+    },
+    "game/assets/card-vivo.webp": {
+      "bytes": 28458,
+      "sha256": "1bcf01ff82f180ed9fd9f2d8176189e3e7e3c896a2315ee5a697286eccc67719"
+    },
+    "game/assets/character-originals/alex.png": {
+      "bytes": 1769420,
+      "sha256": "aff0aee54889569df1693d69591b2ea3950ca4b19aca0752d530f088a1e10ab4"
+    },
+    "game/assets/character-originals/dan.png": {
+      "bytes": 1685441,
+      "sha256": "0b9ae73bed01c32f840e341f1cd6bace7d02c7445ab4b0e2f9198a578c594401"
+    },
+    "game/assets/character-originals/ken-alpha.png": {
+      "bytes": 1838148,
+      "sha256": "e76207796af63d620e5b7345fd7e5e093f406cec5c156bf2846e08ede910a03b"
+    },
+    "game/assets/character-originals/ken.png": {
+      "bytes": 1876607,
+      "sha256": "6e1c5e1b0237f2b19ec8ebc163893eb6b2f33175cc9d8b22139678e7142fe85d"
+    },
+    "game/assets/character-originals/monica-motion.png": {
+      "bytes": 1947743,
+      "sha256": "15e3aa63c19abf4afac332f8d0709c19bdc900ea9d6f673dc59b37e1d93b3cb3"
+    },
+    "game/assets/character-originals/monica.png": {
+      "bytes": 1618714,
+      "sha256": "1aa08bdb94146060b23819192cd00ed20b7ec5e9145b113e30fe3301fd1c1dbd"
+    },
+    "game/assets/character-originals/rick.png": {
+      "bytes": 2175959,
+      "sha256": "a510575a1021ed950ffc8e435fc51d6a0b79fd3a9a20632f0d02a03037cba345"
+    },
+    "game/assets/character-originals/sergio-alpha.png": {
+      "bytes": 1727664,
+      "sha256": "477dbf82702470874f2314bc8fa2733e4279f8bf87ef5c6f4c77992f0fd2d302"
+    },
+    "game/assets/character-originals/sergio.png": {
+      "bytes": 1777844,
+      "sha256": "ed2f793eeb73fb26f444a6551b2d6c646f9d9d039674da337575f378767fbddc"
+    },
+    "game/assets/characters/fitted-20261028/alex/body_albedo.png": {
+      "bytes": 1079676,
+      "sha256": "86f125762b6292588516e6982620ac30cff2e3b103ab756ef829d1fc7652d036"
+    },
+    "game/assets/characters/fitted-20261028/alex/head.glb": {
+      "bytes": 2948920,
+      "sha256": "72ec3e265dee7d3058bd44cef104893da95afc22c8411b578fac40b4f4644fcc"
+    },
+    "game/assets/characters/fitted-20261028/dan/body_albedo.png": {
+      "bytes": 1220816,
+      "sha256": "a2e5464a579894871c314b2f9d8c3281c2c8279b7dc460634b16ecdee249032f"
+    },
+    "game/assets/characters/fitted-20261028/dan/head.glb": {
+      "bytes": 2837864,
+      "sha256": "6b66d9000399338c9e9380148d02d4f112d976f504b73760053329bb9de8a893"
+    },
+    "game/assets/characters/fitted-20261028/keith/body_albedo.png": {
+      "bytes": 1024116,
+      "sha256": "6469ef75baf974d01631554376ae01c8e1ececc8621d7ae9b7c303302b1c93bf"
+    },
+    "game/assets/characters/fitted-20261028/keith/head.glb": {
+      "bytes": 1349472,
+      "sha256": "77db3f42559faf4d2b04e1ef8fb174dd24d2855ec868355c06e06adb5a5bd6ca"
+    },
+    "game/assets/characters/fitted-20261028/monica/body_albedo.png": {
+      "bytes": 1124099,
+      "sha256": "7034be23009e2123bd9754741b7964017299f066c2ceedfd7f1cec06bc018e7f"
+    },
+    "game/assets/characters/fitted-20261028/monica/head.glb": {
+      "bytes": 4606056,
+      "sha256": "9da79a2b4a9e950e7ffd8ad3e1633d6a9cfc2561bf6426b06f4a183a360bbd04"
+    },
+    "game/assets/characters/fitted-20261028/rick/body_albedo.png": {
+      "bytes": 1125293,
+      "sha256": "d464b20b2c2ed0e71235c94b7da93c68138b0a2011005f2bcab89d4cc8db58d2"
+    },
+    "game/assets/characters/fitted-20261028/rick/head.glb": {
+      "bytes": 929508,
+      "sha256": "e7fdaf6db9ba6404d53bc4728ee67a6bf73354f1e2ac5dfb5c41c7db4f4c46f8"
+    },
+    "game/assets/characters/fitted-20261028/sergio/body_albedo.png": {
+      "bytes": 862470,
+      "sha256": "10aeaa2bf4a35c0c628b38164091b18f434ccf59b96861703ba51aa094db2732"
+    },
+    "game/assets/characters/fitted-20261028/sergio/head.glb": {
+      "bytes": 1035036,
+      "sha256": "e1dc8eada7ea883df0f434545349ce35fee72f46b6857276a0e88144cbb2efc2"
+    },
+    "game/assets/characters/physical-death-v1.json": {
+      "bytes": 483894,
+      "sha256": "318bcc469d481cab2e5e8aff65e6c66321cd6bbfeef63a1f9b8b027e4bf49588"
+    },
+    "game/assets/characters/shared-zombie-body-ken-v1.glb": {
+      "bytes": 7668896,
+      "sha256": "41fb25aa968684c22e04bc9b5063b7a5b9fb8c5c76c282bb3eee8c1bdce9cf17"
+    },
+    "game/assets/coa-new-sheet/hashes.json": {
+      "bytes": 461,
+      "sha256": "2baa21e20580adce49a8668b28372cf7df235b9cf513529e59e5a9f75a16ae6b"
+    },
+    "game/assets/coa-new-sheet/poses-muerto.png": {
+      "bytes": 1136060,
+      "sha256": "a4c7e89b6b8eb72947bc56241f9dbce76b1f693b3262ce98c670daf0b2f7c129"
+    },
+    "game/assets/coa-new-sheet/poses-native.png": {
+      "bytes": 1067276,
+      "sha256": "8ade6d79271e8fc676931323522f96ca67cf0bd0e3ee15c0c289fca5a312337c"
+    },
+    "game/assets/coa-new-sheet/prompt.txt": {
+      "bytes": 2835,
+      "sha256": "4d0635643435c1a8d5451f00a9221693a9e3812c8fd07dd542a6d7afc8d4540e"
+    },
+    "game/assets/coa-new-sheet/review.md": {
+      "bytes": 3427,
+      "sha256": "b5b56f7017a86e5bfa5cbf496eb836d45c55b19e8f9631219eec71e6337e2588"
+    },
+    "game/assets/driver-hands-alpha.png": {
+      "bytes": 2340110,
+      "sha256": "c786ae4e6548a8c1c1a1a209d6fb4aad92bc5cbd9943f66414b84219d3be7d7b"
+    },
+    "game/assets/driver-hands-muerto-alpha.png": {
+      "bytes": 2406390,
+      "sha256": "a02583228bbaa5cf17758a21b37ec06ce605574a5ceaaf2b38acce145dbc376b"
+    },
+    "game/assets/dual-muerto-ready-alpha.png": {
+      "bytes": 1193336,
+      "sha256": "47790f82f426545aa4707261cec3547a226107bc5d89c0b29413157ea6569310"
+    },
+    "game/assets/dual-muerto-reload-alpha.png": {
+      "bytes": 1160849,
+      "sha256": "5a3fb1aa92016daed666039b91e9d3416dd32b6e485028de8f5de7990d12e4d5"
+    },
+    "game/assets/dual-pistols-alpha.png": {
+      "bytes": 2307107,
+      "sha256": "8d77c138f3bc2e198665f46869910efd936ed1606092c76180306d4fb8d5fb51"
+    },
+    "game/assets/dual-vivo-ready-alpha.png": {
+      "bytes": 1098311,
+      "sha256": "538549e1055151e8024212277a76024a0b893be5ac271d992684f325f35f4b7f"
+    },
+    "game/assets/dual-vivo-reload-alpha.png": {
+      "bytes": 1201748,
+      "sha256": "c853fde931de037ecef5b7db385141d0569deec8288c30938ab14c22fc2e8a5c"
+    },
+    "game/assets/dual-wide-alpha.png": {
+      "bytes": 1124639,
+      "sha256": "32055d9d05faf80db5acf8d13e2a954e90e2a8dc414771bacbe9b217af8d39de"
+    },
+    "game/assets/dual-wide-reload-alpha.png": {
+      "bytes": 1138223,
+      "sha256": "01a40f8ce6d38e8f7903ad6b298918e8dd6ec0f2bc35e81858189038b4b830f5"
+    },
+    "game/assets/fuerte-fanatics-zombie-label.jpeg": {
+      "bytes": 563208,
+      "sha256": "9e88481d4f2c66274dce3761f5f0c9ead7efbb251f81c00e5040dd81efb063c9"
+    },
+    "game/assets/fx-muerto-empty.webp": {
+      "bytes": 19814,
+      "sha256": "1ea84cdd91588fc1154e4f61739fb1890dc7c4c84c8d1b83a9c06fa731c212fd"
+    },
+    "game/assets/fx-muerto-full.webp": {
+      "bytes": 207990,
+      "sha256": "ef943fd3654930b957cb3819b93010933f78966fafd413f682ff47e3990c81e5"
+    },
+    "game/assets/fx-muerto-low.webp": {
+      "bytes": 113998,
+      "sha256": "a9862f2da93d3726d7d3f1315c242c861e957a405603a68367a5324186585f63"
+    },
+    "game/assets/fx-vivo-empty.webp": {
+      "bytes": 20110,
+      "sha256": "5d2c97e3e7ccd0f3732e41f1cecc16a52ff5f677a8c3db2d71103a3aa7e971e5"
+    },
+    "game/assets/fx-vivo-full.webp": {
+      "bytes": 182938,
+      "sha256": "35fbd66f9813aa77501b93f4a45dad047be853474af0ce1482bce8feaf7c9258"
+    },
+    "game/assets/fx-vivo-low.webp": {
+      "bytes": 102058,
+      "sha256": "750337aa7c89063789942cb24f56ae71fbb731566561a3f8f1de16eb66576d59"
+    },
+    "game/assets/gatling-source/approved-original.png": {
+      "bytes": 2446986,
+      "sha256": "131d1fda55612ad65b717474ae11af500afcb757fff27d287e41dadf299f17e4"
+    },
+    "game/assets/gatling-source/forward-fire.png": {
+      "bytes": 2343051,
+      "sha256": "da894bb6432268b06fe16d85253ea5f2915898d62bb66911ebf9402cb28d09b9"
+    },
+    "game/assets/hand-costume-reference.png": {
+      "bytes": 2094413,
+      "sha256": "892a7eb5062fb0cdc50066c9941de647fc33498a5e744f0630f5bff40ff50664"
+    },
+    "game/assets/industrial-sunset.hdr": {
+      "bytes": 1610744,
+      "sha256": "43ad8b5ae5de42a6d0123ed063ba6867488c2f90adf24efdf051781952b5e9cb"
+    },
+    "game/assets/keith-faithful/keith-source-combined-01-webp.glb": {
+      "bytes": 9592060,
+      "sha256": "c7bf81195396f3a2d38b98ad3b8325998c80d4cee55d5050cf93c4f7c8a7acf2"
+    },
+    "game/assets/leaderboard-gas-chrome.png": {
+      "bytes": 1342419,
+      "sha256": "90847a16ff74d697babc95395b50e4771c035e353a467bb9202e3e8f2afbec50"
+    },
+    "game/assets/minimap-distillery-mobile.jpg": {
+      "bytes": 139065,
+      "sha256": "efe86ac7ba85efebb16a3757e307d4cdd804e8e7b6ed94a3098c9d27d2c3108d"
+    },
+    "game/assets/minimap-distillery-v74-candidate.jpg": {
+      "bytes": 88571,
+      "sha256": "c811d18486c0fa3eeab1f5bfb248e078126c555fb4891cd75763e0d74ef08bf7"
+    },
+    "game/assets/minimap-distillery-v75-candidate.jpg": {
+      "bytes": 95758,
+      "sha256": "28a481f5512d0e31b995baf40b21d4ca56cd8574a4f116b78fef5d8b5120bdb6"
+    },
+    "game/assets/minimap-distillery-v76-candidate.jpg": {
+      "bytes": 111376,
+      "sha256": "d1a1f6f7cb435978323e6952adfd0f540f195398b1af7b804b93941fab9e2ef8"
+    },
+    "game/assets/minimap-distillery-wip-3d-v80.webp": {
+      "bytes": 116254,
+      "sha256": "a58a50781e8e5ba0b7ae95a7dfcaa94e527a75b76b508cf5fa063e89660709da"
+    },
+    "game/assets/moon/SOURCE.md": {
+      "bytes": 469,
+      "sha256": "b2cf5c24bf9bd9c7607ca502a53d720509414734b1c24504d40f44d3b9252345"
+    },
+    "game/assets/moon/nasa-lroc-color-1k.jpg": {
+      "bytes": 139068,
+      "sha256": "b246064f217f8d479df78c49c7c8595a8f5fbda008a72fd539978d2e121e0109"
+    },
+    "game/assets/muerto-pilot/balloon-check.json": {
+      "bytes": 735,
+      "sha256": "000ea3605b8e748e2462d7cc72977df0b7b46a953a1752297fa1af104845bab1"
+    },
+    "game/assets/muerto-pilot/balloon-muerto-alpha.png": {
+      "bytes": 2151439,
+      "sha256": "0921cb0f640cdfbe556edd373a9964a9e94d826ede5e2aa9cf44c85a8b87192b"
+    },
+    "game/assets/muerto-pilot/balloon-prompt.txt": {
+      "bytes": 1927,
+      "sha256": "84143f85358ba3ed81ae8677045323854ed84535e7fd4b5f6cad6c87e4ab3e96"
+    },
+    "game/assets/muerto-pilot/review.md": {
+      "bytes": 2113,
+      "sha256": "1bb9fd5e589cfdddee1c5f451c08125acaa1989984007bdc7506a187cf3122a3"
+    },
+    "game/assets/new-held-weapons/axe-alpha.png": {
+      "bytes": 2213090,
+      "sha256": "b39b0ce4fed71041ab8fa51689ab56e2cd49dba88fa07142db5d83ac484950ff"
+    },
+    "game/assets/new-held-weapons/axe-muerto-alpha.png": {
+      "bytes": 2220162,
+      "sha256": "f28e31b53f7cfaf27878c7cf0a9d11a688b6caebbbbcd5c4b92a984c1d36492d"
+    },
+    "game/assets/new-held-weapons/axe-prompt.txt": {
+      "bytes": 1046,
+      "sha256": "7133779b40234eee16f7422c6efac7ad7c95da6f176a71ca40d06323d6f82365"
+    },
+    "game/assets/new-held-weapons/balloon-alpha.png": {
+      "bytes": 2126361,
+      "sha256": "e1b6701e91a41273d69beeaa00cc6dbaaafd944aad306f8b7ca2a87a757cbd17"
+    },
+    "game/assets/new-held-weapons/balloon-muerto-alpha.png": {
+      "bytes": 2151439,
+      "sha256": "0921cb0f640cdfbe556edd373a9964a9e94d826ede5e2aa9cf44c85a8b87192b"
+    },
+    "game/assets/new-held-weapons/balloon-prompt.txt": {
+      "bytes": 888,
+      "sha256": "20f24d821400dd9c41197d46cae5e6acac395806f8bebfdd6ebc5f6a3e5c7117"
+    },
+    "game/assets/new-held-weapons/glass-alpha.png": {
+      "bytes": 2131985,
+      "sha256": "ac46075250f1b282792e18db115bb997db6294f5c39f8b8e1999c968077711db"
+    },
+    "game/assets/new-held-weapons/glass-muerto-alpha.png": {
+      "bytes": 2135185,
+      "sha256": "97bc57645426b11baa5c37667c1b1510ef5e989ce1067b6812cc0b713dbf5497"
+    },
+    "game/assets/new-held-weapons/glass-prompt.txt": {
+      "bytes": 1155,
+      "sha256": "c8e95d50054218078d2ad883b3c4dc673bdf13e6d9218777b08277efe05524dc"
+    },
+    "game/assets/new-held-weapons/glass-wide-empty-muerto.png": {
+      "bytes": 1132979,
+      "sha256": "8de8328bb7da70d3d885c0312d205acec6d82cc6e81ebb987ddb162d88cf92b8"
+    },
+    "game/assets/new-held-weapons/glass-wide-empty-vivo.png": {
+      "bytes": 1067911,
+      "sha256": "8540352980c5fc089ef2eb8f69f8ec33903f0449edc5e29d129d68196559aa30"
+    },
+    "game/assets/new-held-weapons/glass-wide-flick-muerto.png": {
+      "bytes": 1194911,
+      "sha256": "846b6479fffc261bdd325ad97c6f8a13f7bdf919b1f9e9958441b26719f75c9b"
+    },
+    "game/assets/new-held-weapons/glass-wide-flick-vivo.png": {
+      "bytes": 1127909,
+      "sha256": "7c6a7bac61181c957d4a8344b672a4acecb8cf9cb97d46ddf79ee5f474cf7c82"
+    },
+    "game/assets/new-held-weapons/glass-wide-full-muerto.png": {
+      "bytes": 1195666,
+      "sha256": "2adcabda01d2b80b1c97daa54691e19b1eb1041396915be24dca5d770d02cada"
+    },
+    "game/assets/new-held-weapons/glass-wide-full-vivo.png": {
+      "bytes": 1118519,
+      "sha256": "642dd97bf5f96631708af08a9839592ffe04769e04bbca5cca571e6a4c060db3"
+    },
+    "game/assets/new-held-weapons/glass-wide-pour-muerto.png": {
+      "bytes": 1430980,
+      "sha256": "0ec6186c55ef80287e4b2b3f388752cf6fde5023b829cd94ef5164001b92fe72"
+    },
+    "game/assets/new-held-weapons/glass-wide-pour-vivo.png": {
+      "bytes": 1340929,
+      "sha256": "9a21fb4e223e3709b9544d5cc51acade29bce8dc6704621850ba3e50ae095b94"
+    },
+    "game/assets/new-held-weapons/glass-wide-ready-vivo-before-headroom.png": {
+      "bytes": 1309856,
+      "sha256": "d48f3b97113540e4dc333708239647e8844604d1687bf98b39521f8525443838"
+    },
+    "game/assets/new-held-weapons/glass-wide-release-muerto.png": {
+      "bytes": 1019791,
+      "sha256": "1cbd0451abb0fa36b6f79255bf62627d91e04693a0550033b4a943522b1b8d24"
+    },
+    "game/assets/new-held-weapons/glass-wide-release-vivo.png": {
+      "bytes": 972914,
+      "sha256": "53c0167e8cd6ed8a33cfbfb07066f4a9bfaa146fe7e7fd603485b19638565dce"
+    },
+    "game/assets/new-held-weapons/muerto-axe-prompt.txt": {
+      "bytes": 1235,
+      "sha256": "0346139a24e496dfd388a04889414dc6a5b735b6b4b1ab1bf54bc18ab8af023a"
+    },
+    "game/assets/new-held-weapons/muerto-coa-prompt.txt": {
+      "bytes": 1355,
+      "sha256": "fcb70bb6dd40de3c49de79c1f4a274c992100fd101e390fa2efc2ac558ea3486"
+    },
+    "game/assets/new-held-weapons/muerto-glass-prompt.txt": {
+      "bytes": 1355,
+      "sha256": "b01a71e952b7a012a237dfda23c0be68681320eee9a50a013bde93be6197ca2a"
+    },
+    "game/assets/new-held-weapons/provenance.md": {
+      "bytes": 4308,
+      "sha256": "71078adeeea67a6b2180048654099b124c94ead3729b50286eba22df110d4d48"
+    },
+    "game/assets/new-held-weapons/rejected-wide-atlas-prompt.txt": {
+      "bytes": 2209,
+      "sha256": "9a9d5155ede61b043b53daf4cd0e4a280b3007a1ba9be4628dd0170a7e891259"
+    },
+    "game/assets/new-held-weapons/runtime-manifest.json": {
+      "bytes": 3172,
+      "sha256": "d9a9f2e57cc9d1d09a24f48fa7c2b276c3bdb081f968410d12512601785af02e"
+    },
+    "game/assets/new-held-weapons/wide-empty-prompt.txt": {
+      "bytes": 1165,
+      "sha256": "76204805b878c1ad5cf29eaffd3ae6026b28712760370808cafe1661f67a2bb5"
+    },
+    "game/assets/new-held-weapons/wide-flick-prompt.txt": {
+      "bytes": 1231,
+      "sha256": "e95ed886d710c0c5331e0cb596730c8b1b6b62bf6a8d54bfb6a06b02f9735805"
+    },
+    "game/assets/new-held-weapons/wide-headroom-fix-prompt.txt": {
+      "bytes": 1537,
+      "sha256": "7f11e8aa6c39608feb06c509e84289f41101c1ab85b31b9e516e239d1abfe527"
+    },
+    "game/assets/new-held-weapons/wide-muerto-costume-prompt.txt": {
+      "bytes": 1081,
+      "sha256": "6cf1798eb64adadf8d832bcf9c67bb4a789ba66329174daa6498ae504f9b9444"
+    },
+    "game/assets/new-held-weapons/wide-pour-prompt.txt": {
+      "bytes": 1601,
+      "sha256": "03befceca5cfb8192fea9f114facbc8c90d08b525280b06988cf2ab3dddd77de"
+    },
+    "game/assets/new-held-weapons/wide-release-prompt.txt": {
+      "bytes": 1391,
+      "sha256": "6dead768ec7df8b8882bc33dcb69a9063efefdf730a0a595efcabeb5dd285ae4"
+    },
+    "game/assets/new-held-weapons/wide-single-before-headroom-prompt.txt": {
+      "bytes": 1548,
+      "sha256": "14e4c28bea8a935acebe61f4a6f4e52bd77b73ccd1ed1f06c00323fbd90c698b"
+    },
+    "game/assets/pbr/embedded-nom1414-leaf-albedo-v84.jpg": {
+      "bytes": 354529,
+      "sha256": "28a97871bb26dbdcc2d2d382c39fd7e2780606606217392f48726b4ac6b8e304"
+    },
+    "game/assets/pbr/nom1414-drone-ground-v90.jpg": {
+      "bytes": 9362,
+      "sha256": "2914286fd457b7449e12ea7da0981de7e3aba2f28a403005ea7fbc6137ba1d44"
+    },
+    "game/assets/pbr/review-source-64.jpg": {
+      "bytes": 509824,
+      "sha256": "e418f722246310a705b33d26ac45a3a7e97f4d366c0e25999a76533cc153cbf9"
+    },
+    "game/assets/player-muerto-cutout.png": {
+      "bytes": 1925171,
+      "sha256": "315f2a8f7cc73b769a26ffb5db2752ffd88e8de8b7544eaf3928fb7ac930f267"
+    },
+    "game/assets/player-muerto.png": {
+      "bytes": 2111175,
+      "sha256": "24c0db2e9c3587bcc726bc007fec193db481d2f4fed36907344a7eaeef804645"
+    },
+    "game/assets/player-vivo-cutout.png": {
+      "bytes": 1964429,
+      "sha256": "15c540c81cb7d21c1be92776f508a1df750d0cb62e83199ee34f588481ad8cd9"
+    },
+    "game/assets/player-vivo.png": {
+      "bytes": 2048096,
+      "sha256": "4a89c395aa670e0cf99f419f92431fffbd22c4fe3bbf3ca74166448164347fd8"
+    },
+    "game/assets/rose-decal.png": {
+      "bytes": 42778,
+      "sha256": "53e6f2449b490efa89bf01222aaa6afdd3a2ad2a898b0d56db7eaae981801367"
+    },
+    "game/assets/rzr-cockpit-approved-muerto.png": {
+      "bytes": 2517348,
+      "sha256": "1d72061a5311c1480b3988845304775f04cdaa14514b3228573afeab8eaf3ea9"
+    },
+    "game/assets/rzr-cockpit-approved-vivo.png": {
+      "bytes": 2658749,
+      "sha256": "0c8dd944088bab7cb4d4ad3441234eec34ad4ed56233ef1b1da0d4b1f2dca5ea"
+    },
+    "game/assets/rzr-driver-foreground-mask.png": {
+      "bytes": 53282,
+      "sha256": "b0fbf150dbeb2772726a9caaae6d8c11fdfcc643b2ab14fc4954c191338e1180"
+    },
+    "game/assets/rzr-muerto-grip-extension.png": {
+      "bytes": 19365,
+      "sha256": "0eab30f0fb2327422a5890433a563da890f9a9a72d10f75c50bfc6054099d8b4"
+    },
+    "game/assets/rzr-pro-r-6-steering-separated.glb": {
+      "bytes": 2649252,
+      "sha256": "82b3aa69bfbc8cb417f32545106e470486271463e5ae5b660451942dbcfd3ffe"
+    },
+    "game/assets/rzr-pro-r-6.glb": {
+      "bytes": 2592620,
+      "sha256": "c8b4bd0228709df9982147d5c90a5b10b4d2d9cf975a607f40e81766432bf71a"
+    },
+    "game/assets/rzr-vivo-grip-extension.png": {
+      "bytes": 51927,
+      "sha256": "c02f99ac80482d026c1a585e41eb25a4f875510df960599a6b191aa820cfdcbf"
+    },
+    "game/assets/rzr-white-black-two-seat.glb": {
+      "bytes": 8847848,
+      "sha256": "d26f97dce3956951d0241d72b9c874bd9f9d89843ba568946d2807a06f4dc93e"
+    },
+    "game/assets/siempre-zombie-title-alex.png": {
+      "bytes": 2863557,
+      "sha256": "0f31d2ce7ef5a7f7c65988ac792cac61f4f699a40be76df8e9b20b9e1d77b89a"
+    },
+    "game/assets/social/siempre-zombie-share-v1.jpg": {
+      "bytes": 244704,
+      "sha256": "dabb20b88e3fc7a21cd277693f2a70e3a2720e0d5b2768e08dd4aaedab97fa89"
+    },
+    "game/assets/source-field-props/axe-sheet.png": {
+      "bytes": 2297284,
+      "sha256": "1066d434937c829c551328ae2bd639ecc3fbdb845c12d5240de66e32c5321485"
+    },
+    "game/assets/source-field-props/coa-sheet.png": {
+      "bytes": 2321755,
+      "sha256": "2d218c636aa19e678a2e3e6e5c2cfa1cfa005d8b002b351535e4f9dab1466562"
+    },
+    "game/assets/source-vivo/flick-hand-mask-native.png": {
+      "bytes": 735366,
+      "sha256": "49e5077b2b7748bf7b27d4f9bf9cb2372ab215e8e300e438d59b55a8db906e6d"
+    },
+    "game/assets/source-vivo/glass-optics-native.png": {
+      "bytes": 978157,
+      "sha256": "44350fa85924e0b1ce5a7f6e5fcc5a08de03a2fb0acb00b3e9d5e52b3a544acf"
+    },
+    "game/assets/source-vivo/hold-hand-mask-native.png": {
+      "bytes": 703964,
+      "sha256": "005d65ebf8d606f7b3f0be5d12972226bcd35b940baa788f519908f84056ea2c"
+    },
+    "game/assets/source-vivo/official-front.png": {
+      "bytes": 10362324,
+      "sha256": "beaa1b7335c73e7fc5c4a4d33a8864843645920c475a123bcdd780fe58358b78"
+    },
+    "game/assets/source-vivo/official-three-quarter-right.jpg": {
+      "bytes": 1570992,
+      "sha256": "7a115ab788649a007ae3b77dfe7a05c8d4838d2f68a1d8a1d8cf3246555abbdf"
+    },
+    "game/assets/source-vivo/pour-hand-mask-native.png": {
+      "bytes": 957290,
+      "sha256": "337b0d0ecffd52380317614edd81f831a5d16cca672adcd5c021f0d517197f61"
+    },
+    "game/assets/source-vivo/pour-sleeve-muerto-native.png": {
+      "bytes": 902084,
+      "sha256": "485a05a822dbd956a2113a95ef3fcaf87660068f2fb1d068ea4ca35e375e0f5f"
+    },
+    "game/assets/source-vivo/pour-sleeve-vivo-native.png": {
+      "bytes": 808743,
+      "sha256": "7563da6a6dc02743a4c666f674014e08ff148749a79abf93251ed68c7b87e3ad"
+    },
+    "game/assets/source-vivo/sleeve-registration.json": {
+      "bytes": 411,
+      "sha256": "66dcb1452e04167da82c56fcc55b0104a14f75c594822fe7585d765d9a615ff8"
+    },
+    "game/assets/spin-muerto.webp": {
+      "bytes": 242506,
+      "sha256": "bfacd7e467cd959936f7326e0831cb33a4c1b9beaee7d80910bee9cada81d51f"
+    },
+    "game/assets/spin-vivo.webp": {
+      "bytes": 267466,
+      "sha256": "e038c37f644d9330d9780cd692ba73313e1eb9fa306bf3aebebd06aa7a6e840e"
+    },
+    "game/assets/taco-eating/muerto.png": {
+      "bytes": 2543065,
+      "sha256": "55a80c61b15f87ccdfe0b767bba3aed2776be417e86b05e1fbf523ef42a76a04"
+    },
+    "game/assets/taco-eating/vivo.png": {
+      "bytes": 2690593,
+      "sha256": "0d9ce12c0b1bfa2153d1e8e79e2af16ef940eaec41c85e8b9c47be8e7d86007e"
+    },
+    "game/assets/taco-truck-approved-source.glb": {
+      "bytes": 9686220,
+      "sha256": "b8ea97dcc9633f7811534c8f7ab12174756d8a755eec06868c19eb11c818c64a"
+    },
+    "game/assets/taco-truck-front-back-generated.png": {
+      "bytes": 1340511,
+      "sha256": "81927f5d3dd3e22892dd43833c5ec352f234ff07435287a01dd53e914130938c"
+    },
+    "game/assets/taco-truck-reference.png": {
+      "bytes": 2334596,
+      "sha256": "61aa3a57e08246c4bfcbfd67aec1bb8c72db03a2b48bd0f87e58cbf328a9b69a"
+    },
+    "game/assets/taco-truck-three-view-alpha.png": {
+      "bytes": 1183862,
+      "sha256": "f3d00f2a5e6d90ddd9cbe420cdda3897ad0e8a53604ce73ebc781dd0049872d9"
+    },
+    "game/assets/vivo-label.jpg": {
+      "bytes": 50865,
+      "sha256": "f90a61483a5382494be8ead3febe279dd5e129796c7e611b96194cf96fc9e636"
+    },
+    "game/assets/vm-aim.webp": {
+      "bytes": 800056,
+      "sha256": "3d2d40067a7b98c46207aba4c33ea96a72eb0d02acfe5cede7b9a5d123ec3d50"
+    },
+    "game/assets/vm-fwd-muerto.webp": {
+      "bytes": 98846,
+      "sha256": "f88c8c5e68b6ff9850c51f53b54db9e62c4eed29be06fc2e65309477d9c51382"
+    },
+    "game/assets/vm-fwd-vivo.webp": {
+      "bytes": 103268,
+      "sha256": "fc31a5651b903288935eea103896120400d5bde8c76539659e772788d9250dbc"
+    },
+    "game/assets/vm-pump-muerto.webp": {
+      "bytes": 1767884,
+      "sha256": "ff11f6b1ac0c3795d941b6d71ca5573a796f07a47483cc5525ef0dd1720e5198"
+    },
+    "game/assets/vm-pump.webp": {
+      "bytes": 1487764,
+      "sha256": "5eb0a143a9fe39678abd53ebb8725b4807c4d143fcf860561682041d263b9e7c"
+    },
+    "game/assets/vm-reload-muerto.webp": {
+      "bytes": 1728876,
+      "sha256": "0bbc1ea0a8a8bb16aadb7c195fea0f8ead464fb66a7ad738116b01be63c521f1"
+    },
+    "game/assets/vm-reload.webp": {
+      "bytes": 1546548,
+      "sha256": "2518be2abcd2fd41a2cd13c83e92f9f141c6fbd85e7079a68a5dda27d53b8d66"
+    },
+    "game/assets/weapons/muerto-rpg/PROVENANCE.json": {
+      "bytes": 3322,
+      "sha256": "b563bd0685868843c0fdfed2d569793e8286d33f096e094570f8a646117fbbbb"
+    },
+    "game/assets/weapons/muerto-rpg/aim-actions.png": {
+      "bytes": 2178570,
+      "sha256": "de0166394ff45c139e1eb50c7dc5ee348d2c4afd2a6edd0c5efe1a85c695548e"
+    },
+    "game/assets/weapons/muerto-rpg/approved-original.png": {
+      "bytes": 2341206,
+      "sha256": "76a74977af579571722eaea12ecf2039924c49dd95b378791b20a63ff3be3729"
+    },
+    "game/assets/weapons/muerto-rpg/forward-actions.png": {
+      "bytes": 2546076,
+      "sha256": "f9baf902f8be21112fb30b4555f45a50e8983c8cb6fd7d11f7d068ed833ff1e6"
+    },
+    "game/assets/weapons/muerto-rpg/loading-sheet.png": {
+      "bytes": 2651925,
+      "sha256": "22e9bdfd4628198fce2dcfc5fb4e63e7eec77d7c9307f78d1758a4d35259336c"
+    },
+    "game/assets/weapons/plus-v1/axe.js": {
+      "bytes": 2154,
+      "sha256": "c67d2cd129c6cdf8399563c0f80e07b9a59177767ebd2ad6252692a65688c81e"
+    },
+    "game/assets/weapons/plus-v1/cognac-glass.js": {
+      "bytes": 1531,
+      "sha256": "85972991c000abac46c8ccd7a7ba59118ac4ed1ce06aa0d12b3f6ada67a1598d"
+    },
+    "game/assets/weapons/plus-v1/fp-hands.js": {
+      "bytes": 4685,
+      "sha256": "e6d096946239a9a472d2eac9f68dbbbc9e7ca08e9fd4cb0c71869508bdfb2fc6"
+    },
+    "game/assets/weapons/plus-v1/pina.js": {
+      "bytes": 1275,
+      "sha256": "bfc1121c8e5d41f10420f598ca461d85c21e9fa598ac7bd034604321e8b4ae4e"
+    },
+    "game/assets/weapons/plus-v1/vivo-gatling-legacy-preserved.js": {
+      "bytes": 3615,
+      "sha256": "338741352562fb8b2a7085c0b2d8cb0eaded15c8b270443d804a4359b151e015"
+    },
+    "game/assets/weapons/plus-v1/vivo-gatling.js": {
+      "bytes": 7384,
+      "sha256": "91176866ddc889ecbcbbc306dad6409c40c46e27eeb748e1db620ce9689dbe65"
+    },
+    "game/assets/weapons/plus-v1/zombie-bottle.js": {
+      "bytes": 1592,
+      "sha256": "b7e0d90bb73642c012e640a039f06d73a7d7804c05878460bf11b1682f694236"
+    },
+    "game/assets/weapons/plus-v1/zombie-label.webp": {
+      "bytes": 40916,
+      "sha256": "4f0b6205a6e9a2502682f2588922a88eb0540725efd29ee71e16c5fad3e0143f"
+    },
+    "game/assets/weapons/plus-v2/renders/vivo-label-upright.png": {
+      "bytes": 238456,
+      "sha256": "003da193659a381ddf5a7c198d8a903940b4c4a1807bb32949343417221be283"
+    },
+    "game/assets/world-lawn-v118-d7c4d3e9.glb": {
+      "bytes": 24982908,
+      "sha256": "d7c4d3e981d080c039154c432870f841d7088c845d4efb9c536637c46cc369be"
+    },
+    "game/audio/amb_night_loop.mp3": {
+      "bytes": 246590,
+      "sha256": "f20a2b3a2cf357a11e7df75570b714d73739e84c7b98539b0f6cd601312dafdf"
+    },
+    "game/audio/bell.mp3": {
+      "bytes": 36252,
+      "sha256": "75f546015c5390b05a6be1e1f82bdbb2077581d8a119dea0fcd02c88304801eb"
+    },
+    "game/audio/clink.mp3": {
+      "bytes": 13682,
+      "sha256": "03b59b217cb6035c6c3f5d93f723514b70c840f1486c6a045a6df7bbc105d370"
+    },
+    "game/audio/coa_hit.mp3": {
+      "bytes": 13682,
+      "sha256": "73045d1434557c428e5ab26a5ade9a9bfb107d9a4b13f0d694146c88566c4cd5"
+    },
+    "game/audio/coa_swing.mp3": {
+      "bytes": 12428,
+      "sha256": "7997933ccd83c153f86dc03ac944cf75e11c4863d5f5ca12e0e6b4a18f9b401c"
+    },
+    "game/audio/crash.mp3": {
+      "bytes": 18698,
+      "sha256": "42ead27ac226efc9ea24d03988d269e18f838ce1be45648d546c88ff711efa2e"
+    },
+    "game/audio/empty.mp3": {
+      "bytes": 12429,
+      "sha256": "b4d1ee2b398187950565a8c7cd82cb577127878b2e9251921d3b11770ed931bb"
+    },
+    "game/audio/engine_loop.mp3": {
+      "bytes": 54747,
+      "sha256": "130ee6ed29bbe241ad30775f63838c309a01566446c89802b5cdbf262c99cc5e"
+    },
+    "game/audio/game_over.mp3": {
+      "bytes": 42521,
+      "sha256": "5c78eb2d43a695a1b0ae60a83609fb3b0f44aecd814a330f118d597ac650aa01"
+    },
+    "game/audio/gatling_loop.mp3": {
+      "bytes": 42521,
+      "sha256": "fa5c9dc438e98e7863d2929df224040c77e8c6ee63c9cff152b1ee2cd3d879a7"
+    },
+    "game/audio/gatling_spin.mp3": {
+      "bytes": 18699,
+      "sha256": "75c908a397b9e5c7d585c16b47edbd3e8341a30f58719ab44733ad59de0822c8"
+    },
+    "game/audio/glug.mp3": {
+      "bytes": 13683,
+      "sha256": "9b600c99c77dba890c1529ef6c5604a5886eab845d6b10f27ea2c98d8b9ff5e8"
+    },
+    "game/audio/groan_1.mp3": {
+      "bytes": 30610,
+      "sha256": "bbd54c12a01a67fd3ccbbf1073d9564c9a3fc70612fcc59a1b89e24328a764b5"
+    },
+    "game/audio/groan_2.mp3": {
+      "bytes": 30610,
+      "sha256": "40ca7e9bf1d017e5410cef3b8935ab701ed8f0d921f3d90a79c96cb042b27384"
+    },
+    "game/audio/groan_3.mp3": {
+      "bytes": 30610,
+      "sha256": "a84895838bb57e4793c2fba0353e7aa3cbd99860a877ea2d2e97460626f21cba"
+    },
+    "game/audio/hit.mp3": {
+      "bytes": 12428,
+      "sha256": "84999fb1b7a5d93b1c0b3efa164e1af4c5d33917a19e853e558d1d1a9f7d8527"
+    },
+    "game/audio/hurt.mp3": {
+      "bytes": 13682,
+      "sha256": "fff024741cdb9788ff91daf47d8028019ad5062d75e83cfa0241d6693d1c10d3"
+    },
+    "game/audio/levelup.mp3": {
+      "bytes": 24340,
+      "sha256": "06c1c1568637704afb35bcebe4acba6ea2e5b28a86bf71e26a63a57ae9b0d53e"
+    },
+    "game/audio/loading_sting.mp3": {
+      "bytes": 42521,
+      "sha256": "eb6d1f69842041973b62f4c2a74ecd37e1bd146a4e9b7e3fa9abc0f48879148a"
+    },
+    "game/audio/music_bed_loop.mp3": {
+      "bytes": 366649,
+      "sha256": "833f6cf87881003e901fc1eee880cc34025971f0d261d039b870175c13534185"
+    },
+    "game/audio/pickup.mp3": {
+      "bytes": 12429,
+      "sha256": "71f6cadefdda9e5ef361e67f73c2f68aa9b67fbfe50b7bea3c05e1b04b615112"
+    },
+    "game/audio/reload.mp3": {
+      "bytes": 24341,
+      "sha256": "18bd33fddbd2ff13abc498b591314e7cfa92e58cdb2582d68f729741e860b285"
+    },
+    "game/audio/sergio_death.mp3": {
+      "bytes": 42521,
+      "sha256": "b2aa6b0d18ae0094e545d580fafb552e2d0fd0190043d934cc123f10187f792e"
+    },
+    "game/audio/sergio_laugh.mp3": {
+      "bytes": 42521,
+      "sha256": "8d437546f0dfc722c04bb975673ee07983713e11953b945fd80385b89deb0774"
+    },
+    "game/audio/sergio_roar.mp3": {
+      "bytes": 42521,
+      "sha256": "36627a2c03f29d464af6bc4d0239045665450c03bedbc1c7eed14bf2ecdff2dd"
+    },
+    "game/audio/sergio_stomp.mp3": {
+      "bytes": 18699,
+      "sha256": "e0c80ea63df14c5be72dc99038b57f334f1a3cf7dcaa59af768597e28c4c1ed3"
+    },
+    "game/audio/splash.mp3": {
+      "bytes": 18699,
+      "sha256": "595fbe686bbdc4580fac7f73cdf118589ac203d1a13ed1d02406e85a5817718a"
+    },
+    "game/audio/spray_loop.mp3": {
+      "bytes": 54747,
+      "sha256": "2b5fc1af9e348b296ac3f55489bcaa5a7dace6b13958ca5b2850597a4aa5bef4"
+    },
+    "game/audio/spray_start.mp3": {
+      "bytes": 13683,
+      "sha256": "9232ecbaa5a63d5032d07106e5d80908c9dd5df347b6e12fe4f4c20bbc1488b7"
+    },
+    "game/audio/throw.mp3": {
+      "bytes": 12428,
+      "sha256": "cc1c11bfd1655bfac4250ee663626758ff0d54a56356b3f0c9d1be9b0c872c4e"
+    },
+    "game/audio/ui_tap.mp3": {
+      "bytes": 12429,
+      "sha256": "197ede4c56b59d3448f8042bec051b5d7f2a65403c35f50370f5e097af2b87df"
+    },
+    "game/audio/unclip.mp3": {
+      "bytes": 13682,
+      "sha256": "4e134e6ee6f54922a728a143987836cb922de4b5ebb693caf8db11f07e99bb7a"
+    },
+    "game/audio/vo_boss.mp3": {
+      "bytes": 23400,
+      "sha256": "3f6afe1c74bd4e589778011b4c3c7dc888d99e904f8b75516591577fb3c04e06"
+    },
+    "game/audio/vo_final_wave.mp3": {
+      "bytes": 19325,
+      "sha256": "3027c310faa1d247192bacd678e0312fb7a312585d4b6e5a56c079699a79bde0"
+    },
+    "game/audio/vo_here_they_come.mp3": {
+      "bytes": 22146,
+      "sha256": "c1641607faee66b1d2b524baba425955abd8fec591a1354019189a726e3f24a4"
+    },
+    "game/audio/vo_wave_cleared.mp3": {
+      "bytes": 19011,
+      "sha256": "48aab8e80e888af815db07832c2f8752a7f17768188f1ff13b87dbbc70511b10"
+    },
+    "game/audio/wave_card.mp3": {
+      "bytes": 30610,
+      "sha256": "75022fb375732ba380e925b71856dd1019b204bc932e1ad679c8a1f4a4079d08"
+    },
+    "game/audio/zombie_attack.mp3": {
+      "bytes": 18698,
+      "sha256": "a99bf394cb92e87809af8b07fc23310255b5da47789aeee70a61274aee610575"
+    },
+    "game/audio/zombie_death_1.mp3": {
+      "bytes": 24340,
+      "sha256": "07d6721ca9754356cfa367df8174298d0f4f2d37fa101276890ce92fea23aff3"
+    },
+    "game/audio/zombie_death_2.mp3": {
+      "bytes": 24340,
+      "sha256": "c636da3e4276f18a958e61115642168666b1333ac540aba7cad88a18d1586bcb"
+    },
+    "game/authored-weapon-views.js": {
+      "bytes": 6876,
+      "sha256": "f1091a7be1a7e1e85e9481fce129af1403965a9236e28f8b1c38a9c09990c5a5"
+    },
+    "game/balloon-visuals.js": {
+      "bytes": 3234,
+      "sha256": "e0663a3463fb944e867b39b5705af418abfc9fd08231aa6debc02a4c1037067c"
+    },
+    "game/boundary-fog.js": {
+      "bytes": 3365,
+      "sha256": "cbe7e010fec1459c3030e0939a4c52df5623e907caf7834a2df81ac7e2a9bd1e"
+    },
+    "game/calibrated-minimap.js": {
+      "bytes": 6218,
+      "sha256": "20c740268c27f402969ae5818aafc42072d8acbe449260abadf87a81b11ac199"
+    },
+    "game/character-art.js": {
+      "bytes": 3218,
+      "sha256": "5c26fc5f000bc38a2b376773748cb339592ac0a7505d3882fe9dc7f581d5ea00"
+    },
+    "game/character-labels.js": {
+      "bytes": 1045,
+      "sha256": "d863d996e90d8ff58c19bcc58b80f0dcacfac679f664d88b76052cc7169c4ab8"
+    },
+    "game/coa-viewmodel.js": {
+      "bytes": 2789,
+      "sha256": "a3cbc9b82b119dd4c22b41ebb6446dfefc158b7725a74bd2016d31f583a60608"
+    },
+    "game/combat-trace.js": {
+      "bytes": 1357,
+      "sha256": "c3b85508a602ccc6d24458e6a12a01359ec7460ab14ba152d5a801540f6caa76"
+    },
+    "game/cylindrical-label.js": {
+      "bytes": 2895,
+      "sha256": "60b465593d66001a2b4cb9fced8216d0710120a5e4e5de1bc355fa251dece729"
+    },
+    "game/distillery-world.js": {
+      "bytes": 15988,
+      "sha256": "7c5b197a386dd478619c3b4d316cc7f0e67edc1ac77afecd7e667574a3581109"
+    },
+    "game/driver-viewmodel.js": {
+      "bytes": 6836,
+      "sha256": "2ac1ecf3170eee5abd48223c11e0ee4510ca518863dbfdad238fc8647d28ad63"
+    },
+    "game/dual-viewmodel.js": {
+      "bytes": 2421,
+      "sha256": "af477cfa330c15d7157db72227a63fe536ebd5210502dbad4d0894129512e817"
+    },
+    "game/fitted-zombie-variants.mjs": {
+      "bytes": 3072,
+      "sha256": "1766c89a68e13ff30d96fe93da93a4862dceb64fe41937c09974b231161e52ed"
+    },
+    "game/gatling-source-views.js": {
+      "bytes": 5359,
+      "sha256": "957299bd5ec6069080706babe616b313c0f79a862eeab6f389aba276c3b00c0d"
+    },
+    "game/grass-motion.js": {
+      "bytes": 4055,
+      "sha256": "5c2a6b3fd8a8c89643ac099ec319cb96c065cc0d1965ffed483d40be22807990"
+    },
+    "game/halloween/assets/halloween-fog-20261028.png": {
+      "bytes": 2055627,
+      "sha256": "dfbb8ababc1c2a26910c22463ca84f95ab6c0f6f041ab7068c21655fc750365c"
+    },
+    "game/halloween/assets/main-lockup-20261028.png": {
+      "bytes": 2863557,
+      "sha256": "0f31d2ce7ef5a7f7c65988ac792cac61f4f699a40be76df8e9b20b9e1d77b89a"
+    },
+    "game/halloween/halloween.css": {
+      "bytes": 3496,
+      "sha256": "7d128fcad6e2a7881faf11a8a8f0839fa7ff589fe59eb296f633183b5989adb0"
+    },
+    "game/halloween/index.html": {
+      "bytes": 3953,
+      "sha256": "98ef9e4bdb7e9fee66f6fa3f83d367c390ec51657f60db3c8a03a99e93ac92f3"
+    },
+    "game/halloween/media/intro-desktop.mp4": {
+      "bytes": 3921529,
+      "sha256": "443db4545410c94d0df186e0d39694a8d23490446723aead2db922042eaea20c"
+    },
+    "game/halloween/media/intro-mobile.mp4": {
+      "bytes": 2520926,
+      "sha256": "c0f4d31e8616b9a19c27a577632f0b406095d1fff9a6e952f6abf981f706b077"
+    },
+    "game/held-frame-layout.js": {
+      "bytes": 923,
+      "sha256": "504d49d524f6e0fb11b5c860d6fe17da2caffa2f63bb51cfb82e43b0b970e2f2"
+    },
+    "game/index.html": {
+      "bytes": 22759,
+      "sha256": "4917566a6207eefc56a23acf84fc80f351f5d415f81ce11a85ffa9451771a814"
+    },
+    "game/landing-leaderboard.css": {
+      "bytes": 4797,
+      "sha256": "d340172526ab654b7fbf2af1622f5661a2f09261e23ff2a64191684a4fcf6265"
+    },
+    "game/leaderboard-config.js": {
+      "bytes": 192,
+      "sha256": "863ad2abb47ef3db844e16fe4cdaff0707cf7aba166cb6e147660f40a23dfbb4"
+    },
+    "game/lib/neon-storage.js": {
+      "bytes": 1331,
+      "sha256": "7b875ab3cdef5c4a9846d7ecc3ef7308967e7b804a453accc6981081f336b975"
+    },
+    "game/lib/score-endpoint.js": {
+      "bytes": 1278,
+      "sha256": "ffc066d3206c21eb49b30323df5eede0b4f3d913d738aed0f997b92b47ea4e2e"
+    },
+    "game/lib/score-service.js": {
+      "bytes": 4891,
+      "sha256": "3ff715930b19cd0dee034a1559c0225afe8224c814b27c9a42598c26ce5185c2"
+    },
+    "game/minimap-gps.js": {
+      "bytes": 1062,
+      "sha256": "03b22747accbf424f0e17f7e07b5aa5eda6b6293bada5d97d1c19ce159dc4210"
+    },
+    "game/mobile-hud.css": {
+      "bytes": 23324,
+      "sha256": "8d05850c607fffcb919c28c406af3dc7d03e0b382bedaf47de69cb570d5ce72d"
+    },
+    "game/muerto-rpg-combat.js": {
+      "bytes": 3118,
+      "sha256": "5126ec7714fc580a3ae72fe6e0ff3c52f5c1cc0d79bb0b22c6984c3b4f4a61ec"
+    },
+    "game/muerto-rpg-runtime.js": {
+      "bytes": 3561,
+      "sha256": "6e37cecb5066e86af3ab168fc33c229a9a9e17a8c832d20e0ce6c5da53eceda2"
+    },
+    "game/muerto-rpg-source-views.js": {
+      "bytes": 10411,
+      "sha256": "75750aa11696829e33261251fc54ee0c718cbd86aba6b7a3162c4652d71d9b91"
+    },
+    "game/new-field-props.js": {
+      "bytes": 2033,
+      "sha256": "55e5bb76b90b1022687e3a2021e56a57df92841a22dc28cdd2d3c9c82c29ea93"
+    },
+    "game/no-zoom.js": {
+      "bytes": 869,
+      "sha256": "5887303c6b895286945a885c817ea2f8d54e9b98c33c1dcfddf845f5ccfa50e3"
+    },
+    "game/out-of-bounds.css": {
+      "bytes": 1233,
+      "sha256": "d383f10cd516b89573a2dcea45c0afbb2eb07dd9f05295716c90d1b45ddba6c1"
+    },
+    "game/out-of-bounds.js": {
+      "bytes": 4432,
+      "sha256": "bc892ba475682f6d14f7629f830f25359297c95aab3b39ffeef19b87855d30fe"
+    },
+    "game/package-lock.json": {
+      "bytes": 5700,
+      "sha256": "654796db6fb8ffb4f545948adf406cd8a43ac909c10ee9ca377d0c21ed748ec9"
+    },
+    "game/package.json": {
+      "bytes": 269,
+      "sha256": "c5a9f516f98ff2318d61a883505652ebc9b1b20fabc8f620d6c25f265e983aab"
+    },
+    "game/physical-death.mjs": {
+      "bytes": 3525,
+      "sha256": "1cc096f1a426069b000485f05cdb04cabb3587627060000b474e3ef735d3da9b"
+    },
+    "game/refill-layout.js": {
+      "bytes": 472,
+      "sha256": "d52a698e10667ff18ec26b87016f0616fa1b03a31d8040ff93958245466eee3c"
+    },
+    "game/rzr6-loader.js": {
+      "bytes": 4242,
+      "sha256": "a7cbd0c6ce662f2d1b07e7d1dc2740cb60bcf9ea37232fef21c36eddf2cc06ec"
+    },
+    "game/score-sharing.css": {
+      "bytes": 1618,
+      "sha256": "55c9bd6ab37101e930e67713738dce5eb2ddadbbbca139ba2aa3add4a09d2c37"
+    },
+    "game/score-sharing.js": {
+      "bytes": 2382,
+      "sha256": "a794f449c8f042f13febed93e97ab4fba2e33468fe474a74a4d092f0a0270605"
+    },
+    "game/sergio-boss.js": {
+      "bytes": 1754,
+      "sha256": "925aa55aea4f4829c639e5ddf6ac33362e25b282bd97efa3474e897a99d6c9f5"
+    },
+    "game/siempre-audio.js": {
+      "bytes": 4794,
+      "sha256": "1b210111afdf136867afab2cf2edeeb3ce648b94a3727779ec37d865fd514e33"
+    },
+    "game/siempre-zombie.css": {
+      "bytes": 17083,
+      "sha256": "3bf2e12fa183d775925fb90bc9360e7890f3f31d9485f195349c1a04c2e713b0"
+    },
+    "game/siempre-zombie.js": {
+      "bytes": 217359,
+      "sha256": "fed19137cc6f164ecf46dd62d6454c1e1f14b4630ac13d89550e927e6681d636"
+    },
+    "game/soldier-selection.css": {
+      "bytes": 2241,
+      "sha256": "84f6601cd1f6c8c564c5c91dd039768d1edf30fdf4aa0e0d42b122876dd7cecc"
+    },
+    "game/source-glass-projectile.js": {
+      "bytes": 3289,
+      "sha256": "14450d3f9fd5143aeae2f007362c63107a86a8b23fff291b7f6a152b52bf5f46"
+    },
+    "game/source-vivo-compositor.js": {
+      "bytes": 10437,
+      "sha256": "0d02294198111bbb67bff5141fd9949bb2084f1e62bac3feb73f7565b1467f4b"
+    },
+    "game/taco-eating-view.js": {
+      "bytes": 2003,
+      "sha256": "dc08ab8313e43266ffc5509f304b374ca2e1a285d1a2cefc7151713baaef6267"
+    },
+    "game/taco-truck-model.js": {
+      "bytes": 13834,
+      "sha256": "cc9b7aa7a0cd8f28de038508f86ffb7791ca4aa59cba4b79bb04e3312bc38a29"
+    },
+    "game/taco-truck-photo.js": {
+      "bytes": 2418,
+      "sha256": "9aed17fcf851928e47545722b18e83d78d24e70c0ba00ffce1b3e2c44c51b7f7"
+    },
+    "game/taco-truck.js": {
+      "bytes": 4749,
+      "sha256": "a95ffa78353b2a45ac52e1e4b8e134eb97ad40062558cbd0114fc92ac379116b"
+    },
+    "game/vendor/BufferGeometryUtils.js": {
+      "bytes": 31786,
+      "sha256": "92b7e1bdf50950161af5560a97848587d52e7052c39f3446ddd57f2eb0dbc43f"
+    },
+    "game/vendor/GLTFLoader.js": {
+      "bytes": 110040,
+      "sha256": "bde6bc047e8bae014d933430e2729765b4c73840c23a242308cbbbf73cdf0317"
+    },
+    "game/vendor/RGBELoader.js": {
+      "bytes": 11395,
+      "sha256": "3fd5cf67d823ede5a65dea1ebaf9eead152048755b99d437fa83a3fddaa556b0"
+    },
+    "game/vendor/three.module.min.js": {
+      "bytes": 687458,
+      "sha256": "f7cee3c7533449a1505cc12cb5128b89e3d4fd3d7ea62b05f9f5464a217472ee"
+    },
+    "game/zombie-intro.css": {
+      "bytes": 624,
+      "sha256": "f338cbee2d9f930be9927651b1938d583d9accecf526cbb250c4db8f40756a2f"
+    },
+    "game/zombie-intro.js": {
+      "bytes": 3749,
+      "sha256": "ff159db4c3e020fe111506a7146461308d8a93f69051a0161637c35489cc059d"
+    },
+    "tools/check-balloon-visuals.mjs": {
+      "bytes": 1586,
+      "sha256": "8a83a54ca4d0e3498a9944951e841d8ff56d95be48e02db14e1b74ddeee54e8e"
+    },
+    "tools/check-boot-loader.mjs": {
+      "bytes": 6939,
+      "sha256": "62627ea81153163b2daf8ecf5052a1c517e52de7079ced82016800c9463f9074"
+    },
+    "tools/check-combat-fairness.mjs": {
+      "bytes": 4178,
+      "sha256": "5faa57687f2c5d071cadb945eafc885b4e61b18ce0fbf168174cd7e83c4fc31c"
+    },
+    "tools/check-driving-unarmed.mjs": {
+      "bytes": 5944,
+      "sha256": "8dcd91281eb06e44806223a45145afd8bab26d656c8cdf6dd09020c5bb1a5d64"
+    },
+    "tools/check-ground-and-rzr-exit.mjs": {
+      "bytes": 3489,
+      "sha256": "d1f5f21d0f13640c15013a00f46859b921bee1db9871060739ba9b80d64cbfea"
+    },
+    "tools/check-held-frame-edges.mjs": {
+      "bytes": 1761,
+      "sha256": "464a9b316cf5888dab40b8fd7ae089bfe4b2fee2b159d8138e94106a8cc97f9f"
+    },
+    "tools/check-input-release.mjs": {
+      "bytes": 6366,
+      "sha256": "9f6148d980940dca8f5f171a414a3ae4c6a8964e975320a86380fcc2d899ee3a"
+    },
+    "tools/check-minimap-gps.mjs": {
+      "bytes": 1624,
+      "sha256": "ed6f81df6f3806c1fd789c2482d0ccf08e7951b76526fb7e8b7e20d6369ea1de"
+    },
+    "tools/check-mouse-look.mjs": {
+      "bytes": 9556,
+      "sha256": "8920cac23740540c82242e7cf3b6ba62f1dfaad26a3dc87ed1f7cf09d7e0dd86"
+    },
+    "tools/check-out-of-bounds.mjs": {
+      "bytes": 5955,
+      "sha256": "d15a8d6394b1916d4852f0dbede8d035a2e65cc15d49ee24b2ed2b94248693d4"
+    },
+    "tools/check-sergio-boss.mjs": {
+      "bytes": 4881,
+      "sha256": "e9732a3b486493792c7e22c321aba340a1d9c8758832c1f428f3a72e5e21d230"
+    },
+    "tools/check-weapon-scroll.mjs": {
+      "bytes": 3359,
+      "sha256": "4694958f5b8f93721466414ff16e6a45887ddd67c9bc4fba8c3297aa63fbc085"
+    },
+    "tools/check-zombie-targeting.mjs": {
+      "bytes": 1295,
+      "sha256": "e91fcc356ebbb83e4035469b0f6ec1413dc064cfaeb2c083608ee1cf4c24adae"
+    },
+    "tools/leaderboard.test.mjs": {
+      "bytes": 3403,
+      "sha256": "5180a863bdcb328db39d64ab372b083f387c747c9015a8e687fcc91443e16f2d"
+    },
+    "tools/png-read.mjs": {
+      "bytes": 1009,
+      "sha256": "fb0fdaa3c48fd96da128b3d4124122b8c1237e93d196fa4251054652e9052a75"
+    },
+    "tools/score-sharing.test.mjs": {
+      "bytes": 4329,
+      "sha256": "9f09eb14f2c298b7c484bd9506b429c012a39b991aa853b9855a26527a8ce610"
+    }
+  },
+  "textLineEndings": "LF"
+}

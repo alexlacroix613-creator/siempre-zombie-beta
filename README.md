@@ -1,6 +1,12 @@
 # Siempre Zombie
 
-Siempre's browser first-person wave game. Public beta: https://siempre-zombie-beta.vercel.app/
+Siempre's browser first-person wave game. Play: https://siempretequila.com/games/siempre-zombie/
+
+## Reusable FPS skill
+
+[First-Person Shooter](skills/first-person-shooter/SKILL.md) turns this project's implementation and approved-art workflow into an agent skill. It includes a full-game exporter pinned to a verified source snapshot, focused offline checks and guides for controls, characters, weapons, vehicles, scores and release. The art/code remain in this private repository; the skill does not grant redistribution rights or deploy anything automatically.
+
+Install by copying `skills/first-person-shooter/` into your agent's skills directory, then invoke `$first-person-shooter`. See [the skill](skills/first-person-shooter/SKILL.md) for the two-step source checkout/export workflow.
 
 ## Source
 
